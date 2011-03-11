@@ -9,7 +9,7 @@ namespace Symfony\CMF\Bundle\CoreBundle\Test;
  * best would be to implement Session->import in Jackalope
  * otherwise at least make importexport autoloader compatible?
  */
-require_once(__DIR__ . '/../../../../../../vendor/doctrine-phpcr/lib/vendor/jackalope/api-test/suite/inc/importexport.php');
+require_once(__DIR__ . '/../../../../../../vendor/phpcr-odm/lib/vendor/jackalope/api-test/suite/inc/importexport.php');
 
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
 
@@ -23,7 +23,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
  *
  * @author David Buchmann <david@liip.ch>
  */
-class PhpcrTestCase extends BaseWebTestCase
+class CmfTestCase extends BaseWebTestCase
 {
     protected $importexport;
 
