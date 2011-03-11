@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\CMF\Bundle\CoreBundle\Helper;
+namespace Symfony\Cmf\Bundle\CoreBundle\Helper;
 
 /**
  * Translate between urls and node ids.

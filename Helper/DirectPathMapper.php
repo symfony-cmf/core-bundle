@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\CMF\Bundle\CoreBundle\Helper;
+namespace Symfony\Cmf\Bundle\CoreBundle\Helper;
 
 /**
  * The direct mapper just exposes the paths within phpcr, minus a base path
@@ -8,7 +8,7 @@ namespace Symfony\CMF\Bundle\CoreBundle\Helper;
  *
  * @author David Buchmann <david@liip.ch>
  */
-class DirectPathMapper
+class DirectPathMapper implements PathMapperInterface
 {
     /**
      * @var string

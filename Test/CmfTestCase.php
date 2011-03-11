@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\CMF\Bundle\CoreBundle\Test;
+namespace Symfony\Cmf\Bundle\CoreBundle\Test;
 
 
 /*
