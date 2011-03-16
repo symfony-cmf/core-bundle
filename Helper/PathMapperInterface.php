@@ -11,6 +11,10 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Helper;
  * URLs always start with a / even though they might be prefixed in the routing,
  * to separate different menues, or language versions, ...
  *
+ * Please not that the mapper may use generic rules to translate between the two
+ * and does not necessarily validate if the element identified by the url really
+ * exists.
+ *
  * @author David Buchmann <david@liip.ch>
  */
 interface PathMapperInterface

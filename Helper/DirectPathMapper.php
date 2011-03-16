@@ -6,6 +6,8 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Helper;
  * The direct mapper just exposes the paths within phpcr, minus a base path
  * that is used to organize the tree in phpcr.
  *
+ * This class makes sure that there is exactly one slash between basepath and path inside cms.
+ *
  * @author David Buchmann <david@liip.ch>
  */
 class DirectPathMapper implements PathMapperInterface
@@ -23,22 +25,32 @@ class DirectPathMapper implements PathMapperInterface
     protected $basepathlen;
 
     /**
-     * @param string $basepath phpcr path to the root of the navigation tree
+     * @param string $basepath phpcr path to the root of the navigation tree, without trailing slash
      */
     public function __construct($basepath)
     {
-        $this->basepath = $basepath;
         $this->basepathlen = strlen($basepath);
+        if ($basepath[$this->basepathlen-1] == '/') {
+            //ensure trailing slash
+            $basepath = substr($basepath, 0, -1);
+            $this->basepathlen--;
+        }
+        $this->basepath = $basepath;
     }
 
     /**
      * map the web url to the id used to retrieve content from storage
      *
-     * @param string $url the request url (without the prefix that might be used to get into this menu context)
-     * @return mixed storage identifier (i.e. absolute node path within phpcr)
+     * @param string $url the request url starting with / (but without the prefix that might be used to get into this menu context)
+     * @return mixed storage identifier = absolute node path within phpcr
      */
     public function getStorageId($url)
     {
+        if ($url[0] != '/') {
+            $url = "/$url";
+        } elseif ($url == '/') {
+            return $this->basepath; //avoid trailing slash duplication for root node
+        }
         return $this->basepath . $url;
     }
 
@@ -46,8 +58,8 @@ class DirectPathMapper implements PathMapperInterface
      * map the storage id to a web url
      * i.e. translate path to node in phpcr into url for that page
      *
-     * @param mixed $storageId id of the storage backend (i.e. path to node in phpcr)
-     * @return string $url the url (without the prefix that might be used to get into this menu context)
+     * @param mixed $storageId id of the storage backend = absolute path to node in phpcr. if this is not a path below the basepath, the result will be wrong.
+     * @return string $url the url starting with / (but without the prefix that might be used to get into this menu context)
      */
     public function getUrl($storageId)
     {
@@ -56,5 +68,6 @@ class DirectPathMapper implements PathMapperInterface
             //we are at root, but path is without trailing slash, so it would be empty
             $path = '/';
         }
+        return $path;
     }
 }
