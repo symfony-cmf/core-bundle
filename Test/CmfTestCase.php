@@ -21,6 +21,20 @@ use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
  *
  * Connection information is read from jackalope.options... parameters
  *
+ * Fixtures are loaded from PHPCR XML dumps.
+ * To acquire some fixtures, create the necessary content in your repository, 
+ * then locate jack.jar inside phpcr-odm to dump the repository. You should
+ * specify the base xpath to the name of the root node of your content. 
+ * Without that, you will dump all kinds of basic definitions and get a file 
+ * of 40+ M.
+ *
+ * java -jar /path/to/jack.jar exportsystem dump.xml repository-base-xpath=/cms
+ *
+ * The document view is more readable than the system view. However, types
+ * are not stored and you can get problems, i.e. with node references.
+ *
+ * java -jar /path/to/jack.jar exportdocument dump.xml repository-base-xpath=/cms
+ *
  * @author David Buchmann <david@liip.ch>
  */
 class CmfTestCase extends BaseWebTestCase
