@@ -1,0 +1,9 @@
+
+services:
+    symfony.cmf.core.pathMapper:
+        class: Symfony\Cmf\Bundle\CoreBundle\Helper\DirectPathMapper
+        arguments:
+            basepath: %symfony.cmf.mainmenu_basepath%
+        shared: true
+
+

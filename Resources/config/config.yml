@@ -1,11 +1,3 @@
 parameters:
-    symfony.cmf.mainmenu_basepath: /menu/main
-
-services:
-    symfony.cmf.core.pathMapper:
-        class: Symfony\CMF\Bundle\CoreBundle\Helpers\DirectPathMapper
-        arguments:
-            basepath: %symfony.cmf.mainmenubasepath%
-        shared: true
-
+    symfony.cmf.mainmenu_basepath: /navigation/main
 

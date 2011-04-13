@@ -25,3 +25,8 @@ java -jar jack.jar exportdocument dump.xml url=http://localhost:8080 user=admin 
     load the file into the repository. This will overwrite everything you have
     in that repository.
 
+
+### TODO
+* Clean up bundle parameters (what belongs here, what in NavigationBundle?) and allow configuration
+* more documentation
+
