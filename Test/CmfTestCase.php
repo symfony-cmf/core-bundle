@@ -44,7 +44,7 @@ class CmfTestCase extends BaseWebTestCase
         if (is_null($fixturesPath)) {
             $fixturesPath = __DIR__.'/../Fixtures/';
         }
-        $this->importexport = new \jackalope_importexport($fixturesPath);
+        $this->importexport = new \jackrabbit_importexport($fixturesPath);
     }
 
     /**
