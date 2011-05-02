@@ -45,8 +45,6 @@ class CmfTestCase extends BaseWebTestCase
             $fixturesPath = __DIR__.'/../Fixtures/';
         }
         $this->importexport = new \jackalope_importexport($fixturesPath);
-
-        $_SERVER['KERNEL_DIR'] = __DIR__.'/../../../../../../app'; //TODO: improve this. seems to be needed by liiptestbundle
     }
 
     /**
