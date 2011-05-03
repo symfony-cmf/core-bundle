@@ -2,15 +2,6 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Test;
 
-
-/*
- * TODO: this is ugly.
- *
- * best would be to implement Session->import in Jackalope
- * otherwise at least make importexport autoloader compatible?
- */
-require_once(__DIR__ . '/../../../../../../vendor/doctrine-phpcr-odm/lib/vendor/jackalope/api-test/suite/inc/importexport.php');
-
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
 
 /**
@@ -56,9 +47,7 @@ class CmfTestCase extends BaseWebTestCase
         if (is_null($fixturesPath)) {
             $fixturesPath = __DIR__.'/../Fixtures/';
         }
-        $this->importexport = new \jackalope_importexport($fixturesPath);
-
-        $_SERVER['KERNEL_DIR'] = __DIR__.'/../../../../../../app'; //TODO: improve this. seems to be needed by liiptestbundle
+        $this->importexport = new \jackrabbit_importexport($fixturesPath);
     }
 
     /**

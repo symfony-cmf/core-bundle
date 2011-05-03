@@ -8,6 +8,16 @@ bundles.
 
 DISCLAIMER: This bundle is still in an experimental state.
 
+### Installation
+This bundle depends on jackrabbit_importexport for fixtures loading. You need to add this
+to the autoload mechanism. Add in app/autoload.php:
+
+```php
+$phpcr_loader = new MapFileClassLoader(
+  __DIR__.'/../vendor/doctrine-phpcr-odm/lib/vendor/jackalope/api-test/suite/inc/autoload.php'
+);
+$phpcr_loader->register();
+```
 
 ### Testing
 
