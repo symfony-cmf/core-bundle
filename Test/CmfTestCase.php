@@ -28,8 +28,11 @@ use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
  * Without that, you will dump all kinds of basic definitions and get a file 
  * of 40+ M.
  *
- * java -jar /path/to/jack.jar exportsystem dump.xml repository-base-xpath=/cms
+ * java -jar /path/to/jack.jar export dump.xml repository-base-xpath=/cms
  *
+ * Jack dumps the file on one single line. You can format that for better
+ * reading, i.e. xmllint --format dump.xml > dump-formatted.xml
+ * 
  * The document view is more readable than the system view. However, types
  * are not stored and you can get problems, i.e. with node references.
  *
