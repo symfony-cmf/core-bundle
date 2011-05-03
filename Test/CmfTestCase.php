@@ -65,7 +65,7 @@ class CmfTestCase extends BaseWebTestCase
         $GLOBALS['jcr.user'] = $container->getParameter('jackalope.options.user');
         $GLOBALS['jcr.pass'] = $container->getParameter('jackalope.options.pass');
 
-        $this->importexport->import($filename);
+        $this->importexport->import($name);
     }
 
     /**
