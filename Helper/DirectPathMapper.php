@@ -41,15 +41,16 @@ class DirectPathMapper implements PathMapperInterface
     /**
      * map the web url to the id used to retrieve content from storage
      *
-     * @param string $url the request url starting with / (but without the prefix that might be used to get into this menu context)
+     * @param string $url the request path starting with / (but without the prefix that might be used to get into this menu context)
      * @return mixed storage identifier = absolute node path within phpcr
      */
     public function getStorageId($url)
     {
+        if (strlen($url) == 0 || $url == '/') {
+            return $this->basepath; //avoid trailing slash duplication for root node
+        }
         if ($url[0] != '/') {
             $url = "/$url";
-        } elseif ($url == '/') {
-            return $this->basepath; //avoid trailing slash duplication for root node
         }
         return $this->basepath . $url;
     }
