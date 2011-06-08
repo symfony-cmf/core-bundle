@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ title }} | CMF Sandbox</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}{{ title }} | CMF Sandbox{% endblock %}</title>
 
         {% block includes %}
             <link href="/bundles/symfonycmfcore/css/style.css" media="screen" type="text/css" rel="stylesheet" />
+            <link href="/bundles/symfonycmfnavigation/css/cmf-navigation.css" media="screen" type="text/css" rel="stylesheet" />
         {% endblock %}
 
         {% block top_scripts %}
@@ -21,9 +22,17 @@
             {% block navigation %}
                 {% include "SymfonyCmfCoreBundle:Default:navigation.html.twig" %}
             {% endblock %}
+        </div>
         <div id="content">
             <div class="inner">
                 {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <div id="content_extra">
+            <div class="inner">
+                {% block content_extra %}
                 {% endblock %}
             </div>
         </div>
