@@ -1,3 +1,4 @@
 parameters:
+
+    #TODO: make this path configurable
     symfony.cmf.mainmenu_basepath: /cms/navigation/main
-    #FIXME: make this path configurable
