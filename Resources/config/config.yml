@@ -2,3 +2,6 @@ parameters:
 
     #TODO: make this path configurable
     symfony.cmf.mainmenu_basepath: /cms/navigation/main
+    symfony.cmf.content_basepath: /cms/content
+    symfony.cmf.filestore_basepath: %kernel.root_dir%/../../web/filestore
+    symfony.cmf.filestore_relative_basepath: filestore
