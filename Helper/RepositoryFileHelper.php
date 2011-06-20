@@ -87,14 +87,16 @@ class RepositoryFileHelper implements FileMapperInterface
             }
         }
 
-        return $this->webRelativePath . $relativePath;
+        return $this->webRelativePath . $relativePath . $this->getExtension($contentNode);
     }
 
     protected function saveData($contentNode, $fileSystemPath)
     {
         $data = $contentNode->getProperty('jcr:data')->getString();
         $dirname = dirname($fileSystemPath);
-        mkdir($dirname, 0755, true);
+        if (!file_exists($dirname)) {
+            mkdir($dirname, 0755, true);
+        }
         file_put_contents($fileSystemPath, $data);
     }
 
@@ -117,8 +119,8 @@ class RepositoryFileHelper implements FileMapperInterface
      */
     protected function getExtensionFromMimeType($imageMimeType)
     {
-        if(empty($imageMimetype)) return '';
-        switch($imagetype)
+        if(empty($imageMimeType)) return '';
+        switch($imageMimeType)
         {
             case 'image/bmp': return '.bmp';
             case 'image/cis-cod': return '.cod';
