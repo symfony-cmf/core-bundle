@@ -116,8 +116,11 @@ class RepositoryFileHelper implements FileMapperInterface
     {
         if ($contentNode->hasProperty('jcr:mimeType')) {
             $mimeType = $contentNode->getPropertyValue('jcr:mimeType');
-            return '.' . ExtensionGuesser::guess($mimeType);
-            #return '.' . ExtensionGuesser::getInstance()->guess($mimeType);
+            $extension = ExtensionGuesser::guess($mimeType);
+            #$extension = ExtensionGuesser::getInstance()->guess($mimeType);
+            if (null !== $extension) {
+                return '.' . $extension;
+            }
         }
 
         return '';
