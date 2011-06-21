@@ -18,6 +18,11 @@
                 {% include "SymfonyCmfCoreBundle:Default:header.html.twig" %}
             {% endblock %}
         </div>
+        <div id="language_selector">
+            {% block language_selector %}
+                {% render "symfony_cmf_multilang_content.languageSelectorController:languagesAction" with {"url" : url, "languageUrls": languageUrls|default(false) } %}
+            {% endblock %}
+        </div>
         <div id="navigation">
             {% block navigation %}
                 {% include "SymfonyCmfCoreBundle:Default:navigation.html.twig" %}
