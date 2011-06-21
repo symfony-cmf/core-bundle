@@ -2,9 +2,12 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Helper;
 
-use Symfony\Cmf\Bundle\CoreBundle\Helper\DirectPathMapper;
 use Symfony\Bundle\DoctrinePHPCRBundle\JackalopeLoader;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use PHPCR\NodeInterface;
+use Symfony\Cmf\Bundle\CoreBundle\Helper\DirectPathMapper;
+use Symfony\Cmf\Bundle\CoreBundle\Helper\ExtensionGuesser;
+#use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
 /**
  * Helper class to get paths for and save files to filesystem from repository
@@ -75,29 +78,32 @@ class RepositoryFileHelper implements FileMapperInterface
 
         $path = $node->getPath();
         $relativePath = $this->pathMapper->getUrl($path);
-        $fullPath = $this->fileBasePath . $relativePath . $this->getExtension($contentNode);
+        $extension = $this->getExtension($contentNode);
+        $fullPath = $this->fileBasePath . $relativePath . $extension;
 
         if (!file_exists($fullPath)) {
-            try {
-                $this->saveData($contentNode, $fullPath);
-            } catch (Imagine\Exception\Exception $e) {
-                //TODO: notfound exception is not appropriate ... how to best do this?
-                //throw new NotFoundHttpException('image save to filesystem failed: ' . $e->getMessage());
-                return 'notfound';
+            if (!$this->saveData($contentNode, $fullPath)) {
+                throw new FileException('failed to save data to file: ' . $fullPath);
             }
         }
 
-        return $this->webRelativePath . $relativePath . $this->getExtension($contentNode);
+        return $this->webRelativePath . $relativePath . $extension;
     }
 
-    protected function saveData($contentNode, $fileSystemPath)
+    /**
+     *
+     *
+     * @param NodeInterface $contentNode
+     * @param string $filesystemPath
+     * @return Boolean
+     */
+    protected function saveData($contentNode, $filesystemPath)
     {
         $data = $contentNode->getProperty('jcr:data')->getString();
-        $dirname = dirname($fileSystemPath);
-        if (!file_exists($dirname)) {
-            mkdir($dirname, 0755, true);
-        }
-        file_put_contents($fileSystemPath, $data);
+        $dirname = dirname($filesystemPath);
+        mkdir($dirname, 0755, true);
+
+        return file_put_contents($filesystemPath, $data);
     }
 
     /* TODO: should this be provided as a service? If so, then probably the parent node of the content node should be passed in,
@@ -109,42 +115,11 @@ class RepositoryFileHelper implements FileMapperInterface
     protected function getExtension($contentNode)
     {
         if ($contentNode->hasProperty('jcr:mimeType')) {
-            return $this->getExtensionFromMimeType($contentNode->getPropertyValue('jcr:mimeType'));
+            $mimeType = $contentNode->getPropertyValue('jcr:mimeType');
+            return '.' . ExtensionGuesser::guess($mimeType);
+            #return '.' . ExtensionGuesser::getInstance()->guess($mimeType);
         }
+
         return '';
     }
-
-    /**
-     * A very incomplete list of mime types mapped to their most likely extensions.
-     */
-    protected function getExtensionFromMimeType($imageMimeType)
-    {
-        if(empty($imageMimeType)) return '';
-        switch($imageMimeType)
-        {
-            case 'image/bmp': return '.bmp';
-            case 'image/cis-cod': return '.cod';
-            case 'image/gif': return '.gif';
-            case 'image/ief': return '.ief';
-            case 'image/jpeg': return '.jpg';
-            case 'image/pipeg': return '.jfif';
-            case 'image/tiff': return '.tif';
-            case 'image/x-cmu-raster': return '.ras';
-            case 'image/x-cmx': return '.cmx';
-            case 'image/x-icon': return '.ico';
-            case 'image/x-portable-anymap': return '.pnm';
-            case 'image/x-portable-bitmap': return '.pbm';
-            case 'image/x-portable-graymap': return '.pgm';
-            case 'image/x-portable-pixmap': return '.ppm';
-            case 'image/x-rgb': return '.rgb';
-            case 'image/x-xbitmap': return '.xbm';
-            case 'image/x-xpixmap': return '.xpm';
-            case 'image/x-xwindowdump': return '.xwd';
-            case 'image/png': return '.png';
-            case 'image/x-jps': return '.jps';
-            case 'image/x-freehand': return '.fh';
-            default: return '';
-        }
-    }
-
 }
