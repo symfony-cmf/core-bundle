@@ -21,5 +21,10 @@
             "Symfony\\Cmf\\Bundle\\CoreBundle": ""
         }
     },
-    "target-dir": "Symfony/Cmf/Bundle/CoreBundle"
+    "target-dir": "Symfony/Cmf/Bundle/CoreBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
