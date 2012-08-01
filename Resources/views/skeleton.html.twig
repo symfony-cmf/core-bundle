@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>{% block title %}{{ title }} | CMF Sandbox{% endblock %}</title>
+        <title>{% block title %}{{ title|default('CMF Sandbox')|striptags }}{% endblock %}</title>
 
         {% block includes %}
             <link href="/bundles/symfonycmfcore/css/style.css" media="screen" type="text/css" rel="stylesheet" />
