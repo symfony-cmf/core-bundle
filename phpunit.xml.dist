@@ -22,10 +22,11 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>./</directory>
             <exclude>
-                <directory suffix="Bundle.php">../</directory>
-                <directory>*/DependencyInjection</directory>
-                <directory>*/Resources</directory>
-                <directory>*/Tests</directory>
+                <directory suffix="Bundle.php">./</directory>
+                <directory>./DependencyInjection</directory>
+                <directory>./Resources</directory>
+                <directory>./Tests</directory>
+                <directory>./vendor</directory>
             </exclude>
         </whitelist>
     </filter>
