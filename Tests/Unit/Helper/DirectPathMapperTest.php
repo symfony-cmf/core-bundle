@@ -28,12 +28,12 @@ class HierarchyWalkerTest extends \PHPUnit_Framework_TestCase
     public function testGetUrl()
     {
         $url = $this->mapper->getUrl('/path/to/base/my/url');
-        $this->assertEquals('/my/url', $url);
+        $this->assertEquals('my/url', $url);
     }
 
     public function testGetUrlRoot()
     {
         $url = $this->mapper->getUrl('/path/to/base');
-        $this->assertEquals('/', $url);
+        $this->assertEquals('', $url);
     }
 }

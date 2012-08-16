@@ -9,26 +9,24 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="../../../../../../app/bootstrap.php"
+         bootstrap="./Tests/bootstrap.php"
 >
 
     <testsuites>
-        <testsuite name="Functional Test Suite">
-            <directory>Functional/*</directory>
-        </testsuite>
-        <testsuite name="Application Test Suite">
-            <directory>Unit/*</directory>
+        <testsuite name="Test Suite">
+            <directory>./Tests/Unit/*</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>../</directory>
+            <directory>./</directory>
             <exclude>
                 <directory suffix="Bundle.php">../</directory>
-                <directory>../*/DependencyInjection</directory>
-                <directory>../*/Resources</directory>
-                <directory>../*/Tests</directory>
+                <directory>*/DependencyInjection</directory>
+                <directory>*/Resources</directory>
+                <directory>*/Test</directory>
+                <directory>*/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
