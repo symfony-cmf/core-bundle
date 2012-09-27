@@ -15,4 +15,4 @@ This is part of the Symfony Cmf: <https://github.com/symfony-cmf/symfony-cmf>
 
 ## Documentation
 
-Coming soon
+http://symfony-cmf.readthedocs.org/en/latest/reference/core.html
