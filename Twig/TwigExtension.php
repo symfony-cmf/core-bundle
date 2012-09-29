@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
-use Symfony\Cmf\Bundle\ContentBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
 class TwigExtension extends \Twig_Extension
@@ -89,12 +89,12 @@ class TwigExtension extends \Twig_Extension
 
     public function prev($current)
     {
-        return $this->search($current);
+        return $this->search($current, true);
     }
 
     public function next($current)
     {
-        return $this->search($current, true);
+        return $this->search($current);
     }
 
     public function isPublished($document)

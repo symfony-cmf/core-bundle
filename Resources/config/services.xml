@@ -19,5 +19,10 @@
             <tag name="twig.extension"/>
         </service>
 
+        <service id="symfony_cmf_content.publish_workflow_checker" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker">
+            <argument>%symfony_cmf_core.role%</argument>
+            <argument type="service" id="security.context" on-invalid="ignore"/>
+        </service>
+
     </services>
 </container>
