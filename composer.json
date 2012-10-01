@@ -16,6 +16,12 @@
         "symfony/framework-bundle": ">2.0,<2.2-dev",
         "phpcr/phpcr": "dev-master"
     },
+    "require-dev": {
+        "symfony/twig-bundle": ">2.0,<2.2-dev"
+    },
+    "suggest": {
+        "symfony/twig-bundle": ">2.0,<2.2-dev"
+    },
     "autoload":{
         "psr-0":{
             "Symfony\\Cmf\\Bundle\\CoreBundle": ""
