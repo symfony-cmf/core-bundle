@@ -2,6 +2,9 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
+/**
+ * Interface models can implement if they want to support publish workflow checking
+ */
 interface PublishWorkflowInterface
 {
     public function getIsPublished();

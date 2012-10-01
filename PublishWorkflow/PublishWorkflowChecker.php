@@ -6,6 +6,11 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Implementation of a publish workflow checker. It gives "admins" full access,
+ * while for other users it checks that both the publish flag is on and the
+ * publish date isn't reached if one is set.
+ */
 class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
 {
     /**
