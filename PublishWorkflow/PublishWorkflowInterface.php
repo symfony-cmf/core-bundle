@@ -7,11 +7,11 @@ namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
  */
 interface PublishWorkflowInterface
 {
-    public function getIsPublished();
+    public function getPublishStartDate();
 
-    public function setIsPublished($isPublished);
+    public function setPublishStartDate(\DateTime $publishDate = null);
 
-    public function getPublishDate();
+    public function getPublishEndDate();
 
-    public function setPublishDate(\DateTime $publishDate = null);
+    public function setPublishEndDate(\DateTime $publishDate = null);
 }

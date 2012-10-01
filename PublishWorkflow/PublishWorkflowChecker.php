@@ -46,9 +46,14 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
             return true;
         }
 
-        if ($contentDocument->getIsPublished()
-            && (null === $contentDocument->getPublishDate()
-                || ($request ? $request->server->get('REQUEST_TIME') : time()) >= $contentDocument->getPublishDate()->getTimestamp()
+        $now = $request ? $request->server->get('REQUEST_TIME') : time();
+        if (null === $contentDocument->getPublishStartDate()) {
+            return true;
+        }
+
+        if ($now >= $contentDocument->getPublishStartDate()->getTimestamp()
+            && (null === $contentDocument->getPublishEndDate()
+                || $now < $contentDocument->getPublishEndDate()->getTimestamp()
             )
         ) {
             return true;
