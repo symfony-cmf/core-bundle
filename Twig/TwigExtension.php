@@ -99,7 +99,7 @@ class TwigExtension extends \Twig_Extension
 
     public function isPublished($document)
     {
-        return $this->publishWorkflowChecker->checkIsPublished($document);
+        return $this->publishWorkflowChecker->checkIsPublished($document, true);
     }
 
     public function getName()

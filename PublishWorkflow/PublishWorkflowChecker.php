@@ -36,14 +36,16 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
         $this->securityContext = $securityContext;
     }
 
-    public function checkIsPublished($contentDocument, Request $request = null)
+    public function checkIsPublished($contentDocument, $ignoreRole = false, Request $request = null)
     {
         if (!($contentDocument instanceOf PublishWorkflowInterface)) {
             return true;
         }
 
         if ($this->securityContext && $this->securityContext->isGranted($this->requiredRole)) {
-            return true;
+            if (!$ignoreRole) {
+                return true;
+            }
         }
 
         $startDate = $contentDocument->getPublishStartDate();

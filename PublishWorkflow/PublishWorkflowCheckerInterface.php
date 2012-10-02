@@ -9,5 +9,5 @@ use Symfony\Component\HttpFoundation\Request;
  */
 interface PublishWorkflowCheckerInterface
 {
-    public function checkIsPublished($contentDocument, Request $request = null);
+    public function checkIsPublished($contentDocument, $ignoreRole = false, Request $request = null);
 }
