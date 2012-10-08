@@ -38,11 +38,11 @@ class TwigExtension extends \Twig_Extension
         );
     }
 
-    public function children($current, $limit = false)
+    public function children($current, $limit = false, $ignoreRole = false)
     {
         $children = $this->dm->getChildren($current);
         foreach ($children as $key => $child) {
-            if (!$this->publishWorkflowChecker->checkIsPublished($child)) {
+            if (!$this->publishWorkflowChecker->checkIsPublished($child, $ignoreRole)) {
                 $children->remove($key);
             }
 
