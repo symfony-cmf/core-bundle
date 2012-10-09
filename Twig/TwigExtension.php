@@ -35,6 +35,7 @@ class TwigExtension extends \Twig_Extension
             'cmf_prev' => new \Twig_Function_Method($this, 'prev'),
             'cmf_next' => new \Twig_Function_Method($this, 'next'),
             'cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'),
+            'cmf_find' => new \Twig_Function_Method($this, 'find'),
         );
     }
 
@@ -100,6 +101,11 @@ class TwigExtension extends \Twig_Extension
     public function isPublished($document)
     {
         return $this->publishWorkflowChecker->checkIsPublished($document, true);
+    }
+
+    public function find($path, $class = null)
+    {
+        return $this->dm->find($class, $path);
     }
 
     public function getName()
