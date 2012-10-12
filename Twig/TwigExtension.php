@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
+use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
 class TwigExtension extends \Twig_Extension
@@ -74,9 +75,13 @@ class TwigExtension extends \Twig_Extension
         $check = false;
         foreach ($childNames as $name) {
             if ($check) {
-                $child = $this->dm->find(null, $parent->getPath().'/'.$name);
-                if ($this->publishWorkflowChecker->checkIsPublished($child)) {
-                    return $child;
+                try {
+                    $child = $this->dm->find(null, $parent->getPath().'/'.$name);
+                    if ($this->publishWorkflowChecker->checkIsPublished($child)) {
+                        return $child;
+                    }
+                } catch (MissingTranslationException $e) {
+                    continue;
                 }
             }
 
