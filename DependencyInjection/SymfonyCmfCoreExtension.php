@@ -17,8 +17,6 @@ class SymfonyCmfCoreExtension extends Extension
         $loader->load('services.xml');
 
         $container->setParameter($this->getAlias() . '.content_basepath', $config['content_basepath']);
-        $container->setParameter($this->getAlias() . '.filestore_basepath', $config['filestore_basepath']);
-        $container->setParameter($this->getAlias() . '.filestore_relative_basepath', $config['filestore_relative_basepath']);
         $container->setParameter($this->getAlias().'.role', $config['role']);
     }
 }
