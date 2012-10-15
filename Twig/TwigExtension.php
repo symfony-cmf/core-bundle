@@ -109,9 +109,9 @@ class TwigExtension extends \Twig_Extension
         return $this->publishWorkflowChecker->checkIsPublished($document, true);
     }
 
-    public function find($path, $class = null)
+    public function find($path)
     {
-        return $this->dm->find($class, $path);
+        return $this->dm->find(null, $path);
     }
 
     public function getLocalesFor($document, $includeFallbacks = false)
