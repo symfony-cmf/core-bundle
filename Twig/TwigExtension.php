@@ -37,6 +37,7 @@ class TwigExtension extends \Twig_Extension
             'cmf_next' => new \Twig_Function_Method($this, 'next'),
             'cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'),
             'cmf_find' => new \Twig_Function_Method($this, 'find'),
+            'cmf_document_locales' => new \Twig_Function_Method($this, 'getLocalesFor'),
         );
     }
 
@@ -111,6 +112,17 @@ class TwigExtension extends \Twig_Extension
     public function find($path, $class = null)
     {
         return $this->dm->find($class, $path);
+    }
+
+    public function getLocalesFor($document, $includeFallbacks = false)
+    {
+        try {
+            $locales = $this->dm->getLocalesFor($document, $includeFallbacks);
+        } catch (MissingTranslationException $e) {
+            $locales = array();
+        }
+
+        return $locales;
     }
 
     public function getName()
