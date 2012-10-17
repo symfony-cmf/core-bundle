@@ -16,7 +16,7 @@ class SymfonyCmfCoreExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $container->setParameter($this->getAlias() . '.content_basepath', $config['content_basepath']);
         $container->setParameter($this->getAlias().'.role', $config['role']);
+        $container->setParameter($this->getAlias() . '.document_manager_name', $config['document_manager_name']);
     }
 }

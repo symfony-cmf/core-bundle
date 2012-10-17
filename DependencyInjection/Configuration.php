@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
+                ->scalarNode('document_manager_name')->defaultValue('default')->end()
                 ->scalarNode('role')->defaultValue('IS_AUTHENTICATED_ANONYMOUSLY')->end()
             ->end()
         ;

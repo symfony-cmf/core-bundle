@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
@@ -21,11 +22,13 @@ class TwigExtension extends \Twig_Extension
     /**
      * Instantiate the content controller.
      *
+     * @param ManagerRegistry $registry
+     * @param string $objectManagerName
      * @param PublishWorkflowCheckerInterface $publishWorkflowChecker
      */
-    public function __construct(DocumentManager $dm, PublishWorkflowCheckerInterface $publishWorkflowChecker)
+    public function __construct(ManagerRegistry $registry, $objectManagerName, PublishWorkflowCheckerInterface $publishWorkflowChecker)
     {
-        $this->dm = $dm;
+        $this->dm = $registry->getManager($objectManagerName);
         $this->publishWorkflowChecker = $publishWorkflowChecker;
     }
 

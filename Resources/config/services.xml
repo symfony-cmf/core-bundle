@@ -7,8 +7,8 @@
     <services>
 
         <service id="symfony_cmf_core.twig.children_extension" class="Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension">
-            <!-- TODO make configurable -->
-            <argument type="service" id="doctrine_phpcr.odm.default_document_manager"/>
+            <argument type="service" id="doctrine_phpcr"/>
+            <argument>%symfony_cmf_menu.document_manager_name%</argument>
             <argument type="service" id="symfony_cmf_core.publish_workflow_checker"/>
             <tag name="twig.extension"/>
         </service>
