@@ -8,7 +8,7 @@
 
         <service id="symfony_cmf_core.twig.children_extension" class="Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension">
             <argument type="service" id="doctrine_phpcr"/>
-            <argument>%symfony_cmf_menu.document_manager_name%</argument>
+            <argument>%symfony_cmf_core.document_manager_name%</argument>
             <argument type="service" id="symfony_cmf_core.publish_workflow_checker"/>
             <tag name="twig.extension"/>
         </service>
