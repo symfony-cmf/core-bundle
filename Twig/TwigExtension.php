@@ -47,11 +47,14 @@ class TwigExtension extends \Twig_Extension
     public function children($current, $limit = false, $ignoreRole = false)
     {
         $children = $this->dm->getChildren($current);
-        foreach ($children as $key => $child) {
+
+        $result = array();
+        foreach ($children as $child) {
             if (!$this->publishWorkflowChecker->checkIsPublished($child, $ignoreRole)) {
-                $children->remove($key);
+                continue;
             }
 
+            $result[] = $child;
             if (false !== $limit) {
                 $limit--;
                 if (!$limit) {
@@ -60,7 +63,7 @@ class TwigExtension extends \Twig_Extension
             }
         }
 
-        return $children;
+        return $result;
     }
 
     private function search($current, $reverse = false)
