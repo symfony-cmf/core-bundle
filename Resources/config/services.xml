@@ -18,5 +18,9 @@
             <argument type="service" id="security.context" on-invalid="ignore"/>
         </service>
 
+        <service id="symfony_cmf_core.migrate.migrator.route_compiler_class" class="Symfony\Cmf\Bundle\CoreBundle\Migrator\RouteCompilerClassMigrator">
+            <tag name="doctrine_phpcr.migrator" alias="routing_compiler_class"/>
+        </service>
+
     </services>
 </container>
