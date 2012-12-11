@@ -44,9 +44,9 @@ class TwigExtension extends \Twig_Extension
         );
     }
 
-    public function children($current, $limit = false, $ignoreRole = false)
+    public function children($parent, $limit = false, $ignoreRole = false, $filter = null)
     {
-        $children = $this->dm->getChildren($current);
+        $children = $this->dm->getChildren($parent, $filter);
 
         $result = array();
         foreach ($children as $child) {
