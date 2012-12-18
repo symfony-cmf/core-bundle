@@ -35,6 +35,7 @@ class TwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'cmf_child' => new \Twig_Function_Method($this, 'child'),
             'cmf_children' => new \Twig_Function_Method($this, 'children'),
             'cmf_prev' => new \Twig_Function_Method($this, 'prev'),
             'cmf_next' => new \Twig_Function_Method($this, 'next'),
@@ -44,8 +45,18 @@ class TwigExtension extends \Twig_Extension
         );
     }
 
+    public function child($parent, $name)
+    {
+        $parentId = $this->dm->getUnitOfWork()->getDocumentId($parent);
+        return $this->dm->find(null, $parentId.'/'.$name);
+    }
+
     public function children($parent, $limit = false, $ignoreRole = false, $filter = null)
     {
+        if (empty($parent)) {
+            return array();
+        }
+
         $children = $this->dm->getChildren($parent, $filter);
 
         $result = array();
@@ -68,6 +79,10 @@ class TwigExtension extends \Twig_Extension
 
     private function search($current, $reverse = false)
     {
+        if (empty($current)) {
+            return null;
+        }
+
         // TODO optimize
         $path = $this->dm->getUnitOfWork()->getDocumentId($current);
         $node = $this->dm->getPhpcrSession()->getNode($path);
@@ -112,6 +127,10 @@ class TwigExtension extends \Twig_Extension
 
     public function isPublished($document)
     {
+        if (empty($document)) {
+            return false;
+        }
+
         return $this->publishWorkflowChecker->checkIsPublished($document, true);
     }
 
@@ -123,6 +142,10 @@ class TwigExtension extends \Twig_Extension
     public function getLocalesFor($document, $includeFallbacks = false)
     {
         try {
+            if (empty($document)) {
+                return array();
+            }
+
             $locales = $this->dm->getLocalesFor($document, $includeFallbacks);
         } catch (MissingTranslationException $e) {
             $locales = array();
