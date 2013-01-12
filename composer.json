@@ -13,8 +13,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/framework-bundle": ">=2.1,<2.3-dev",
-        "phpcr/phpcr": "dev-master"
+        "symfony/framework-bundle": ">=2.1,<2.3-dev"
     },
     "require-dev": {
         "symfony/twig-bundle": ">=2.1,<2.3-dev"
