@@ -36,9 +36,9 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
         $this->securityContext = $securityContext;
     }
 
-    public function checkIsPublished($contentDocument, $ignoreRole = false, Request $request = null)
+    public function checkIsPublished($document, $ignoreRole = false, Request $request = null)
     {
-        if (!($contentDocument instanceOf PublishWorkflowInterface)) {
+        if (!($document instanceOf PublishWorkflowInterface)) {
             return true;
         }
 
@@ -48,8 +48,8 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
             }
         }
 
-        $startDate = $contentDocument->getPublishStartDate();
-        $endDate = $contentDocument->getPublishEndDate();
+        $startDate = $document->getPublishStartDate();
+        $endDate = $document->getPublishEndDate();
         if (null === $startDate && null === $endDate) {
             return true;
         }
