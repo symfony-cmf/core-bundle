@@ -83,15 +83,12 @@ class TwigExtension extends \Twig_Extension
             return null;
         }
 
-        // TODO optimize
         $path = $this->dm->getUnitOfWork()->getDocumentId($current);
         $node = $this->dm->getPhpcrSession()->getNode($path);
         $parent = $node->getParent();
-        $children = $parent->getNodes();
-
-        $childNames = array_keys($children->getArrayCopy());
+        $childNames = $parent->getNodeNames();
         if ($reverse) {
-            $childNames = array_reverse($childNames);
+            $childNames = array_reverse($childNames->getArrayCopy());
         }
 
         $check = false;
