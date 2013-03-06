@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
@@ -18,5 +19,11 @@ class SymfonyCmfCoreExtension extends Extension
 
         $container->setParameter($this->getAlias().'.role', $config['role']);
         $container->setParameter($this->getAlias() . '.document_manager_name', $config['document_manager_name']);
+
+        if (!$config['publish_workflow_listener']) {
+            $container->removeDefinition($this->getAlias() . '.publish_workflow_listener');
+        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter')) {
+            throw new InvalidConfigurationException("The 'publish_workflow_listener' may not be enabled unless 'Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter' is available.");
+        }
     }
 }

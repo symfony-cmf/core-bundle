@@ -16,6 +16,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('document_manager_name')->defaultValue('default')->end()
                 ->scalarNode('role')->defaultValue('IS_AUTHENTICATED_ANONYMOUSLY')->end()
+                ->booleanNode('publish_workflow_listener')->defaultFalse()->end()
             ->end()
         ;
 
