@@ -6,6 +6,7 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterfac
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Symfony\Cmf\Component\Routing\RouteAwareInterface;
 
 class TwigExtension extends \Twig_Extension
 {
@@ -96,7 +97,7 @@ class TwigExtension extends \Twig_Extension
             if ($check) {
                 try {
                     $child = $this->dm->find(null, $parent->getPath().'/'.$name);
-                    if ($this->publishWorkflowChecker->checkIsPublished($child)) {
+                    if ($this->publishWorkflowChecker->checkIsPublished($child) && $child instanceof RouteAwareInterface) {
                         return $child;
                     }
                 } catch (MissingTranslationException $e) {
