@@ -22,27 +22,38 @@ class TwigExtension extends \Twig_Extension
     /**
      * Instantiate the content controller.
      *
+     * @param PublishWorkflowCheckerInterface $publishWorkflowChecker
      * @param ManagerRegistry $registry
      * @param string $objectManagerName
-     * @param PublishWorkflowCheckerInterface $publishWorkflowChecker
      */
-    public function __construct(ManagerRegistry $registry, $objectManagerName, PublishWorkflowCheckerInterface $publishWorkflowChecker)
+    public function __construct(PublishWorkflowCheckerInterface $publishWorkflowChecker, $registry = null, $objectManagerName = null)
     {
-        $this->dm = $registry->getManager($objectManagerName);
         $this->publishWorkflowChecker = $publishWorkflowChecker;
+
+        if ($registry && $registry instanceof ManagerRegistry) {
+            $this->dm = $registry->getManager($objectManagerName);
+        }
     }
 
     public function getFunctions()
     {
-        return array(
-            'cmf_child' => new \Twig_Function_Method($this, 'child'),
-            'cmf_children' => new \Twig_Function_Method($this, 'children'),
-            'cmf_prev' => new \Twig_Function_Method($this, 'prev'),
-            'cmf_next' => new \Twig_Function_Method($this, 'next'),
-            'cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'),
-            'cmf_find' => new \Twig_Function_Method($this, 'find'),
-            'cmf_document_locales' => new \Twig_Function_Method($this, 'getLocalesFor'),
-        );
+        $functions = array('cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'));
+
+        if ($this->dm) {
+            $functions['cmf_child'] = new \Twig_Function_Method($this, 'child');
+            $functions['cmf_children'] = new \Twig_Function_Method($this, 'children');
+            $functions['cmf_prev'] = new \Twig_Function_Method($this, 'prev');
+            $functions['cmf_next'] = new \Twig_Function_Method($this, 'next');
+            $functions['cmf_find'] = new \Twig_Function_Method($this, 'find');
+            $functions['cmf_document_locales'] = new \Twig_Function_Method($this, 'getLocalesFor');
+
+            if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
+                $functions['cmf_prev_linkable'] = new \Twig_Function_Method($this, 'prevLinkable');
+                $functions['cmf_next_linkable'] = new \Twig_Function_Method($this, 'nextLinkable');
+            }
+        }
+
+        return $functions;
     }
 
     public function child($parent, $name)
@@ -77,7 +88,7 @@ class TwigExtension extends \Twig_Extension
         return $result;
     }
 
-    private function search($current, $reverse = false)
+    private function search($current, $reverse = false, $class = null)
     {
         if (empty($current)) {
             return null;
@@ -96,7 +107,9 @@ class TwigExtension extends \Twig_Extension
             if ($check) {
                 try {
                     $child = $this->dm->find(null, $parent->getPath().'/'.$name);
-                    if ($this->publishWorkflowChecker->checkIsPublished($child)) {
+                    if ($this->publishWorkflowChecker->checkIsPublished($child)
+                        && (null === $class || $child instanceof $class)
+                    ) {
                         return $child;
                     }
                 } catch (MissingTranslationException $e) {
@@ -120,6 +133,16 @@ class TwigExtension extends \Twig_Extension
     public function next($current)
     {
         return $this->search($current);
+    }
+
+    public function prevLinkable($current)
+    {
+        return $this->search($current, true, 'Symfony\Cmf\Component\Routing\RouteAwareInterface');
+    }
+
+    public function nextLinkable($current)
+    {
+        return $this->search($current, false, 'Symfony\Cmf\Component\Routing\RouteAwareInterface');
     }
 
     public function isPublished($document)
