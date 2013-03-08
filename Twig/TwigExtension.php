@@ -50,6 +50,7 @@ class TwigExtension extends \Twig_Extension
             if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
                 $functions['cmf_prev_linkable'] = new \Twig_Function_Method($this, 'prevLinkable');
                 $functions['cmf_next_linkable'] = new \Twig_Function_Method($this, 'nextLinkable');
+                $functions['cmf_children_linkable'] = new \Twig_Function_Method($this, 'childrenLinkable');
             }
         }
 
@@ -62,7 +63,12 @@ class TwigExtension extends \Twig_Extension
         return $this->dm->find(null, $parentId.'/'.$name);
     }
 
-    public function children($parent, $limit = false, $ignoreRole = false, $filter = null)
+    public function childrenLinkable($parent, $limit = false, $ignoreRole = false, $filter = null)
+    {
+        return $this->children($parent, $limit, $ignoreRole, $filter, 'Symfony\Cmf\Component\Routing\RouteAwareInterface');
+    }
+    
+    public function children($parent, $limit = false, $ignoreRole = false, $filter = null, $class = null)
     {
         if (empty($parent)) {
             return array();
@@ -72,7 +78,7 @@ class TwigExtension extends \Twig_Extension
 
         $result = array();
         foreach ($children as $child) {
-            if (!$this->publishWorkflowChecker->checkIsPublished($child, $ignoreRole)) {
+            if (!$this->publishWorkflowChecker->checkIsPublished($child, $ignoreRole) || (null != $class && !($child instanceof $class))) {
                 continue;
             }
 
@@ -84,7 +90,6 @@ class TwigExtension extends \Twig_Extension
                 }
             }
         }
-
         return $result;
     }
 
