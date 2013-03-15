@@ -86,18 +86,46 @@ class TwigExtension extends \Twig_Extension
     {
         return $this->children($parent, $limit, $ignoreRole, $filter, 'Symfony\Cmf\Component\Routing\RouteAwareInterface');
     }
-    
-    public function children($parent, $limit = false, $ignoreRole = false, $filter = null, $class = null)
+
+    /**
+     * @param object $parent parent document
+     * @param int|bool $limit int limit or false
+     * @param string|bool $offset string node name to which to skip to or false
+     * @param bool|null $ignoreRole boolean if the role should be ignored or null if publish workflow should be ignored
+     * @param string|null $filter child filter
+     * @param string|null $class class name to filter on
+     * @return array
+     */
+    public function children($parent, $limit = false, $offset = false, $ignoreRole = false, $filter = null, $class = null)
     {
         if (empty($parent)) {
             return array();
         }
 
-        $children = $this->dm->getChildren($parent, $filter);
+        if ($limit || $offset) {
+            $parentId = $this->dm->getUnitOfWork()->getDocumentId($parent);
+            $node = $this->dm->getPhpcrSession()->getNode($parentId);
+            $children = (array) $node->getNodeNames();
+            if ($offset) {
+                $key = array_search($offset, $children);
+                if (false === $key) {
+                    return array();
+                }
+                $children = array_slice($children, $key);
+            }
+        } else {
+            $children = $this->dm->getChildren($parent, $filter);
+        }
 
         $result = array();
         foreach ($children as $child) {
-            if (!$this->publishWorkflowChecker->checkIsPublished($child, $ignoreRole) || (null != $class && !($child instanceof $class))) {
+            if ($limit !== false || $offset !== false) {
+                $child = $this->dm->find(null, "$parentId/$child");
+            }
+
+            if (null === $ignoreRole || !$this->publishWorkflowChecker->checkIsPublished($child, $ignoreRole)
+                || (null != $class && !($child instanceof $class))
+            ) {
                 continue;
             }
 
@@ -109,6 +137,7 @@ class TwigExtension extends \Twig_Extension
                 }
             }
         }
+
         return $result;
     }
 
