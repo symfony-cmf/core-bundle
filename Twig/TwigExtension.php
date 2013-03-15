@@ -2,6 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
+use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
@@ -45,6 +46,9 @@ class TwigExtension extends \Twig_Extension
             $functions['cmf_prev'] = new \Twig_Function_Method($this, 'prev');
             $functions['cmf_next'] = new \Twig_Function_Method($this, 'next');
             $functions['cmf_find'] = new \Twig_Function_Method($this, 'find');
+            $functions['cmf_nodename'] = new \Twig_Function_Method($this, 'getNodeName');
+            $functions['cmf_parent_path'] = new \Twig_Function_Method($this, 'getParentPath');
+            $functions['cmf_path'] = new \Twig_Function_Method($this, 'getPath');
             $functions['cmf_document_locales'] = new \Twig_Function_Method($this, 'getLocalesFor');
 
             if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
@@ -55,6 +59,21 @@ class TwigExtension extends \Twig_Extension
         }
 
         return $functions;
+    }
+
+    public function getNodeName($document)
+    {
+        return PathHelper::getNodeName($this->getPath($document));
+    }
+
+    public function getParentPath($document)
+    {
+        return PathHelper::getParentPath($this->getPath($document));
+    }
+
+    public function getPath($document)
+    {
+        return $this->dm->getUnitOfWork()->getDocumentId($document);
     }
 
     public function child($parent, $name)
