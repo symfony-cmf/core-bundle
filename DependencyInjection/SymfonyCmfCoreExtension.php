@@ -26,4 +26,19 @@ class SymfonyCmfCoreExtension extends Extension
             throw new InvalidConfigurationException("The 'publish_workflow_listener' may not be enabled unless 'Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter' is available.");
         }
     }
+
+    /**
+     * Returns the base path for the XSD files.
+     *
+     * @return string The XSD base path
+     */
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__.'/../Resources/config/schema';
+    }
+
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/core';
+    }
 }
