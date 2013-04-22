@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xsd:schema xmlns="http://cmf.symfony.com/schema/dic/core"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://cmf.symfony.com/schema/dic/core"
+    elementFormDefault="qualified">
+
+    <xsd:element name="config" type="config" />
+
+    <xsd:complexType name="config">
+        <xsd:attribute name="document-manager-name" type="xsd:string" />
+        <xsd:attribute name="role" type="xsd:string" />
+        <xsd:attribute name="publish-workflow-listener" type="boolean" />
+    </xsd:complexType>
+    
+    <xsd:simpleType name="boolean">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="true" />
+            <xsd:enumeration value="false" />
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
