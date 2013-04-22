@@ -26,4 +26,9 @@ class SymfonyCmfCoreExtension extends Extension
             throw new InvalidConfigurationException("The 'publish_workflow_listener' may not be enabled unless 'Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter' is available.");
         }
     }
+
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/core';
+    }
 }
