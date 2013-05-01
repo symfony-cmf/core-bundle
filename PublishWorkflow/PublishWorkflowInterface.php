@@ -62,5 +62,5 @@ interface PublishWorkflowInterface
      *
      * @return boolean
      */
-    public function isPublished();
+    public function isPublishable();
 }

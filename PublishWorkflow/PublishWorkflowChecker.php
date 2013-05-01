@@ -50,10 +50,10 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
 
         $startDate = $document->getPublishStartDate();
         $endDate = $document->getPublishEndDate();
-        $isPublished = $document->isPublished();
+        $isPublishable = $document->isPublishable();
 
         if (null === $startDate && null === $endDate) {
-            return $isPublished;
+            return $isPublishable;
         }
 
         $now = $request ? $request->server->get('REQUEST_TIME') : time();
@@ -62,7 +62,7 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
             (null === $startDate || $now >= $startDate->getTimestamp()) &&
             (null === $endDate || $now < $endDate->getTimestamp())
         ) {
-            return $isPublished;
+            return $isPublishable;
         }
 
         return false;

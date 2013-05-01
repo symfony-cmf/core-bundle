@@ -90,7 +90,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
         $grantedRole = 'NONE', 
         $startDate = null, 
         $endDate = null, 
-        $isPublished = false
+        $isPublishable = false
     )
     {
         $this->sc->expects($this->any())
@@ -108,8 +108,8 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue($endDate));
 
         $this->doc->expects($this->any())
-            ->method('isPublished')
-            ->will($this->returnValue($isPublished));
+            ->method('isPublishable')
+            ->will($this->returnValue($isPublishable));
 
         $res = $this->pwfc->checkIsPublished($this->doc);
 
