@@ -15,6 +15,9 @@
         "php": ">=5.3.3",
         "symfony/framework-bundle": ">=2.1,<2.3-dev"
     },
+    "require-dev": {
+        "symfony/security-bundle": ">=2.1,<2.3-dev"
+    },
     "suggest": {
         "symfony/twig-bundle": "To get access to the CMF twig extension, >=2.1,<2.3-dev",
         "doctrine/phpcr-bundle": "To be able to use the CMF twig extension, 1.0.*",
