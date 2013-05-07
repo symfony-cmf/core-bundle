@@ -22,8 +22,8 @@ class SymfonyCmfCoreExtension extends Extension
 
         if (!$config['publish_workflow_listener']) {
             $container->removeDefinition($this->getAlias() . '.publish_workflow_listener');
-        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter')) {
-            throw new InvalidConfigurationException("The 'publish_workflow_listener' may not be enabled unless 'Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter' is available.");
+        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
+            throw new InvalidConfigurationException("The 'publish_workflow_listener' may not be enabled unless 'Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter' is available.");
         }
     }
 
