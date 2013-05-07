@@ -24,7 +24,7 @@
         "doctrine/phpcr-odm": "To be able to use the CMF twig extension, 1.0.*",
         "symfony/security-bundle": "To be able to use the publish worklow system, >=2.1,<2.3-dev",
         "symfony-cmf/routing": "To be able to use the CMF twig extension functions cmf_prev_linkable/cmf_next_linkable, 1.0.*",
-        "symfony-cmf/routing-extra-bundle": "To be able to enable the publish_workflow_listener, 1.0.*"
+        "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener, 1.0.*"
     },
     "autoload":{
         "psr-0":{
