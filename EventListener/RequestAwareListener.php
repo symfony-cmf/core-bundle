@@ -28,9 +28,7 @@ class RequestAwareListener implements EventSubscriberInterface
         }
 
         foreach ($this->services as $service) {
-            if (method_exists($service, 'setRequest')) {
-                $service->setRequest($event->getRequest());
-            }
+            $service->setRequest($event->getRequest());
         }
     }
 
