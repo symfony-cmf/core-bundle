@@ -79,6 +79,55 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
                 new \DateTime('01/01/2030'), // will finish in 2030
                 true, // is published = true
             ),
+            array(
+                true,
+                'UNAUTH_ROLE',
+                null,
+                null,
+                null, // is published = null
+            ),
+            array(
+                true,
+                'TEST-3',
+                new \DateTime('2000-01-01'),
+                new \DateTime('2030-01-01'), // in valid date range
+                null, // is published = null
+            ),
+            array(
+                false,
+                'UNAUTH_ROLE',
+                new \DateTime('01/01/2000'),
+                new \DateTime('01/01/2001'), // in in-valid date range
+                null, // is published = null
+            ),
+            array(
+                false,
+                'UNAUTH_ROLE',
+                new \DateTime('01/01/2000'),
+                new \DateTime('01/01/2030'), // in valid date range
+                false, // is published = false
+            ),
+            array(
+                true,
+                'UNAUTH_ROLE',
+                new \DateTime('01/01/2000'), // already started
+                null, // no end date
+                null, // is published = null
+            ),
+            array(
+                false,
+                'UNAUTH_ROLE',
+                null, // no start date
+                new \DateTime('01/01/2000'), // already finished
+                null, // is published = null
+            ),
+            array(
+                true,
+                'UNAUTH_ROLE',
+                null, // no start date
+                new \DateTime('01/01/2030'), // will finish in 2030
+                null, // is published = null
+            ),
         );
     }
 
