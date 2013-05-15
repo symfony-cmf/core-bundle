@@ -23,10 +23,6 @@ class RequestAwareListener implements EventSubscriberInterface
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
-            return;
-        }
-
         foreach ($this->services as $service) {
             $service->setRequest($event->getRequest());
         }
