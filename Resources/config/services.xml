@@ -8,6 +8,7 @@
         <parameter key="symfony_cmf_core.twig_extension_class">Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension</parameter>
         <parameter key="symfony_cmf_core.publish_workflow_checker_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker</parameter>
         <parameter key="symfony_cmf_core.publish_workflow_listener_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener</parameter>
+        <parameter key="symfony_cmf_core.listener.request_aware_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
     </parameters>
 
     <services>
@@ -27,6 +28,10 @@
         <service id="symfony_cmf_core.publish_workflow_listener" class="%symfony_cmf_core.publish_workflow_listener_class%">
             <tag name="kernel.event_subscriber"/>
             <argument type="service" id="symfony_cmf_core.publish_workflow_checker"/>
+        </service>
+
+        <service id="symfony_cmf_core.listener.request_aware" class="%symfony_cmf_core.listener.request_aware_class%">
+            <tag name="kernel.event_subscriber"/>
         </service>
 
     </services>
