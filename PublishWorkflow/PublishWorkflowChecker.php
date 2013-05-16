@@ -24,6 +24,11 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
     protected $securityContext;
 
     /**
+     * @var \DateTime
+     */
+    protected $currentTime;
+
+    /**
      * @param string $requiredRole the role to check with the securityContext
      *      (if you pass one), defaults to everybody: IS_AUTHENTICATED_ANONYMOUSLY
      * @param \Symfony\Component\Security\Core\SecurityContextInterface|null $securityContext
@@ -34,9 +39,23 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
     {
         $this->requiredRole = $requiredRole;
         $this->securityContext = $securityContext;
+        $this->currentTime = new \DateTime();
     }
 
-    public function checkIsPublished($document, $ignoreRole = false, Request $request = null)
+    /**
+     * Overwrite the current time
+     *
+     * @param \DateTime $currentTime
+     */
+    public function setCurrentTime(\DateTime $currentTime)
+    {
+        $this->currentTime = $currentTime;
+    }
+
+    /**
+     * {inheritDoc}
+     */
+    public function checkIsPublished($document, $ignoreRole = false)
     {
         if (!$document instanceOf PublishWorkflowInterface) {
             return true;
@@ -56,10 +75,8 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
             return $isPublishable !== false;
         }
 
-        $now = $request ? $request->server->get('REQUEST_TIME') : time();
-
-        if ((null === $startDate || $now >= $startDate->getTimestamp()) &&
-            (null === $endDate || $now < $endDate->getTimestamp())
+        if ((null === $startDate || $this->currentTime >= $startDate) &&
+            (null === $endDate || $this->currentTime < $endDate)
         ) {
             return $isPublishable !== false;
         }
