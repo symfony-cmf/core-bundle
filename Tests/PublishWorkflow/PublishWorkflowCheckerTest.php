@@ -13,9 +13,6 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
         $this->sc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
         $this->stdClass = new \stdClass;
-        $this->request = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $this->serverBag = $this->getMock('Symfony\Component\HttpFoundation\ServerBag');
-        $this->request->server = $this->serverBag;
 
         $this->pwfc = new PublishWorkflowChecker($this->role, $this->sc);
     }
@@ -129,20 +126,19 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
                 'end_date' => new \DateTime('01/01/2030'), 
                 'is_publishable' => null, 
             )),
-            // Test request time
+            // Test overwrite current time
             array(array(
                 'expected' => false, 
                 'is_publishable' => true, 
                 'end_date' => new \DateTime('01/01/2000'), 
                 'use_request_time' => true,
-                'request_time' => time(),
+                'current_time' => new \DateTime('01/01/2001'),
             )),
             array(array(
                 'expected' => true, 
                 'is_publishable' => true, 
                 'end_date' => new \DateTime('01/01/2000'), 
-                'use_request_time' => true,
-                'request_time' => 0,
+                'current_time' => new \DateTime('01/01/1980'),
             )),
         );
     }
@@ -158,7 +154,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
             'start_date' => null,
             'end_date' => null,
             'is_publishable' => null,
-            'use_request_time' => false,
+            'current_time' => null,
         ), $options);
 
         $this->sc->expects($this->any())
@@ -179,12 +175,8 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
             ->method('isPublishable')
             ->will($this->returnValue($options['is_publishable']));
 
-        if ($options['use_request_time']) {
-            $this->serverBag->expects($this->once())
-                ->method('get')
-                ->with('REQUEST_TIME')
-                ->will($this->returnValue($options['request_time']));
-            $this->pwfc->setRequest($this->request);
+        if ($options['current_time']) {
+            $this->pwfc->setCurrentTime($options['current_time']);
         }
 
         $res = $this->pwfc->checkIsPublished($this->doc);

@@ -24,9 +24,9 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
     protected $securityContext;
 
     /**
-     * @var Request
+     * @var \DateTime
      */
-    protected $request;
+    protected $currentTime;
 
     /**
      * @param string $requiredRole the role to check with the securityContext
@@ -39,6 +39,17 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
     {
         $this->requiredRole = $requiredRole;
         $this->securityContext = $securityContext;
+        $this->currentTime = new \DateTime();
+    }
+
+    /**
+     * Overwrite the current time
+     *
+     * @param \DateTime $currentTime
+     */
+    public function setCurrentTime(\DateTime $currentTime)
+    {
+        $this->currentTime = $currentTime;
     }
 
     /**
@@ -64,26 +75,12 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
             return $isPublishable !== false;
         }
 
-        $now = $this->request ? $this->request->server->get('REQUEST_TIME') : time();
-
-        if ((null === $startDate || $now >= $startDate->getTimestamp()) &&
-            (null === $endDate || $now < $endDate->getTimestamp())
+        if ((null === $startDate || $this->currentTime >= $startDate) &&
+            (null === $endDate || $this->currentTime < $endDate)
         ) {
             return $isPublishable !== false;
         }
 
         return false;
-    }
-
-    /**
-     * Set the request object which will be used
-     * by the checkIsPublished method to determine the
-     * request time.
-     *
-     * @param Request $request
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
     }
 }
