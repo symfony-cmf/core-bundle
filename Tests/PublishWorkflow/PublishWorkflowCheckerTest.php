@@ -131,7 +131,6 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
                 'expected' => false, 
                 'is_publishable' => true, 
                 'end_date' => new \DateTime('01/01/2000'), 
-                'use_request_time' => true,
                 'current_time' => new \DateTime('01/01/2001'),
             )),
             array(array(
