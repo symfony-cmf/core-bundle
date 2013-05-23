@@ -9,6 +9,7 @@
         <parameter key="cmf_core.publish_workflow_checker_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker</parameter>
         <parameter key="cmf_core.publish_workflow_listener_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener</parameter>
         <parameter key="cmf_core.listener.request_aware_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
+        <parameter key="cmf_core.admin_extension.publish_workflow_class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishWorkflowExtension</parameter>
     </parameters>
 
     <services>
@@ -32,6 +33,10 @@
 
         <service id="cmf_core.listener.request_aware" class="%cmf_core.listener.request_aware_class%">
             <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="cmf_core.admin_extension.publish_workflow" class="%cmf_core.admin_extension.publish_workflow_class%">
+            <tag name="sonata.admin.extension"/>
         </service>
 
     </services>
