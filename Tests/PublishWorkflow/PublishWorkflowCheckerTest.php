@@ -139,6 +139,18 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
                 'end_date' => new \DateTime('01/01/2000'), 
                 'current_time' => new \DateTime('01/01/1980'),
             )),
+            // Test default publishable value
+            array(array(
+                'expected' => true,
+                'is_publishable' => null,
+                'default_publishable_value' => true
+            )),
+            // Test default publishable value
+            array(array(
+                'expected' => false,
+                'is_publishable' => null,
+                'default_publishable_value' => false
+            )),
         );
     }
 
@@ -154,6 +166,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
             'end_date' => null,
             'is_publishable' => null,
             'current_time' => null,
+            'default_publishable_value' => null,
         ), $options);
 
         $this->sc->expects($this->any())
@@ -176,6 +189,10 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
 
         if ($options['current_time']) {
             $this->pwfc->setCurrentTime($options['current_time']);
+        }
+
+        if (null !== $options['default_publishable_value']) {
+            $this->pwfc->setDefaultPublishableValue($options['default_publishable_value']);
         }
 
         $res = $this->pwfc->checkIsPublished($this->doc);

@@ -29,6 +29,11 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
     protected $currentTime;
 
     /**
+     * @var Boolean
+     */
+    protected $defaultPublishableValue = true;
+
+    /**
      * @param string $requiredRole the role to check with the securityContext
      *      (if you pass one), defaults to everybody: IS_AUTHENTICATED_ANONYMOUSLY
      * @param \Symfony\Component\Security\Core\SecurityContextInterface|null $securityContext
@@ -69,7 +74,12 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
 
         $startDate = $document->getPublishStartDate();
         $endDate = $document->getPublishEndDate();
-        $isPublishable = $document->isPublishable();
+
+        if (null === $document->isPublishable()) {
+            $isPublishable = $this->defaultPublishableValue;
+        } else {
+            $isPublishable = $document->isPublishable();
+        }
 
         if (null === $startDate && null === $endDate) {
             return $isPublishable !== false;
@@ -82,5 +92,15 @@ class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
         }
 
         return false;
+    }
+
+    public function getDefaultPublishableValue()
+    {
+        return $this->defaultPublishableValue;
+    }
+
+    public function setDefaultPublishableValue($defaultPublishableValue)
+    {
+        $this->defaultPublishableValue = $defaultPublishableValue;
     }
 }
