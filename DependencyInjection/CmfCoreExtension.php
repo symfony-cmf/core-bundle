@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
-class SymfonyCmfCoreExtension extends Extension
+class CmfCoreExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {

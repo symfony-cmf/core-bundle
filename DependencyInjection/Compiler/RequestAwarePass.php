@@ -21,11 +21,11 @@ class RequestAwarePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('symfony_cmf_core.listener.request_aware')) {
+        if (!$container->hasDefinition('cmf_core.listener.request_aware')) {
             return;
         }
 
-        $listener = $container->getDefinition('symfony_cmf_core.listener.request_aware');
+        $listener = $container->getDefinition('cmf_core.listener.request_aware');
         $services = $container->findTaggedServiceIds('cmf_request_aware');
         foreach ($services as $id => $attributes) {
             $listener->addMethodCall('addService', array(new Reference($id)));

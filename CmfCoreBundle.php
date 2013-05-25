@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\RequestAwarePass;
 
-class SymfonyCmfCoreBundle extends Bundle
+class CmfCoreBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
