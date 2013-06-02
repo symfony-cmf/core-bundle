@@ -19,12 +19,19 @@ class PublishWorkflowExtension extends AdminExtension
             'required' => false,
         );
 
-        $formMapper->with('form.group_publish_workflow')
+        $formMapper->with('form.group_publish_workflow', array(
+            'translation_domain' => 'CmfCoreBundle'
+        ))
             ->add('publishable', 'checkbox', array(
                 'required' => false,
+            ), array(
             ))
-            ->add('publish_start_date', 'date', $dateOptions)
-            ->add('publish_end_date', 'date', $dateOptions)
+            ->add('publish_start_date', 'date', $dateOptions, array(
+                'help' => 'form.help_publish_start_date',
+            ))
+            ->add('publish_end_date', 'date', $dateOptions, array(
+                'help' => 'form.help_publish_end_date',
+            ))
             ->end();
     }
 }
