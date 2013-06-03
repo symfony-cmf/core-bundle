@@ -436,9 +436,8 @@ class TwigExtension extends \Twig_Extension
                 && (null === $depth || PathHelper::getPathDepth($path() - PathHelper::getPathDepth($anchor)) < $depth)
             ) {
                 $childNames = $node->getNodeNames();
-
                 if ($childNames->count()) {
-                    $result = $this-> checkChildren($childNames, $reverse, $path, $ignoreRole, $class);
+                    $result = $this->checkChildren($childNames, $reverse, $path, $ignoreRole, $class);
                     if ($result) {
                         return $result;
                     }
