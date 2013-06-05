@@ -1,0 +1,9 @@
+form:
+    group_publish_workflow: Publish Workflow
+    label_publishable: Publishable
+    label_publish_start_date: Publish from
+    label_publish_end_date: Publish until
+
+    help_publish_start_date: Only publish on or after this date, leave empty to always publish
+    help_publish_end_date: Only publish before this date, leave empty to always publish
+
