@@ -17,8 +17,12 @@ class PublishWorkflowExtensionTest extends \PHPUnit_Framework_Testcase
 
     public function testFormMapper()
     {
+        $this->formMapper->expects($this->once())
+            ->method('with')
+            ->will($this->returnSelf());
         $this->formMapper->expects($this->exactly(3))
-            ->method('add');
+            ->method('add')
+            ->will($this->returnSelf());
 
         $this->extension->configureFormFields($this->formMapper);
     }
