@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false"
-         bootstrap="./Tests/bootstrap.php"
->
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    colors="true"
+    bootstrap="vendor/symfony-cmf/testing/bootstrap/bootstrap.php"
+    >
 
     <testsuites>
-        <testsuite name="Test Suite">
-            <directory>./Tests/*</directory>
+        <testsuite name="Symfony CmfCoreBundle Test Suite">
+            <directory>./Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>./</directory>
+            <directory>.</directory>
             <exclude>
-                <directory suffix="Bundle.php">./</directory>
-                <directory>./DependencyInjection</directory>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
-                <directory>./vendor</directory>
+                <file>*Bundle.php</file>
+                <directory>Resources/</directory>
+                <directory>Admin/</directory>
+                <directory>Tests/</directory>
+                <directory>vendor/</directory>
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="Tests/Functional/App" />
+    </php>
 
 </phpunit>
