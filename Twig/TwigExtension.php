@@ -123,9 +123,10 @@ class TwigExtension extends \Twig_Extension
     /**
      * Get a document instance and validate if its eligible
      *
-     * @param string|object $document
+     * @param string|object $document the id of a document or the document object itself
      * @param Boolean|null $ignoreRole if the role should be ignored or null if publish workflow should be ignored
      * @param null|string $class class name to filter on
+     *
      * @return null|object
      */
     private function getDocument($document, $ignoreRole = false, $class = null)
@@ -260,9 +261,11 @@ class TwigExtension extends \Twig_Extension
             $node = $this->dm->getPhpcrSession()->getNode($parent);
             $children = (array) $node->getNodeNames();
             foreach ($children as $key => $child) {
+                // filter before fetching data already to save some traffic
                 if (strpos($child, 'phpcr_locale:') === 0) {
                     unset($children[$key]);
                 }
+                $children[$key] = "$parent/$child";
             }
             if ($offset) {
                 $key = array_search($offset, $children);
@@ -277,10 +280,12 @@ class TwigExtension extends \Twig_Extension
 
         $result = array();
         foreach ($children as $name => $child) {
+            // if we requested all children above, we did not filter yet
             if (strpos($name, 'phpcr_locale:') === 0) {
                 continue;
             }
 
+            // $child is already a document, but this method also checks access
             $child = $this->getDocument($child, $ignoreRole, $class);
             if (null === $child) {
                 continue;
