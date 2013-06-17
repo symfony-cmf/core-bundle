@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Slugifier;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Slugifier;
 
 use Symfony\Cmf\Bundle\CoreBundle\Slugifier\CallbackSlugifier;
 

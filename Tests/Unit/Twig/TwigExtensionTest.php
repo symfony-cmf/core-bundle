@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig;
 
 use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
 
@@ -58,7 +58,6 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetNodeName()
     {
         $document = new \stdClass();
-
 
         $this->assertEquals(false, $this->extension->getNodeName($document));
 
@@ -269,41 +268,6 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetLinkableChildren()
     {
         $this->assertEquals(array(), $this->extension->getLinkableChildren(null));
-
-        $this->markTestIncomplete('TODO: write test');
-    }
-
-    public function testGetDescendants()
-    {
-        $this->assertEquals(array(), $this->extension->getDescendants(null));
-
-        $this->markTestIncomplete('TODO: write test');
-    }
-
-    public function testGetPrev()
-    {
-        $this->assertNull($this->extension->getPrev(null));
-
-        $this->markTestIncomplete('TODO: write test');
-    }
-
-    public function testGetNext()
-    {
-        $this->assertNull($this->extension->getNext(null));
-
-        $this->markTestIncomplete('TODO: write test');
-    }
-
-    public function testGetPrevLinkable()
-    {
-        $this->assertNull($this->extension->getPrevLinkable(null));
-
-        $this->markTestIncomplete('TODO: write test');
-    }
-
-    public function testGetNextLinkable()
-    {
-        $this->assertNull($this->extension->getNextLinkable(null));
 
         $this->markTestIncomplete('TODO: write test');
     }
