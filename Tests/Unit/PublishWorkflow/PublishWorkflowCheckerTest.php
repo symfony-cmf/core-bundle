@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\PublishWorkflow;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\SecurityContextInterface;

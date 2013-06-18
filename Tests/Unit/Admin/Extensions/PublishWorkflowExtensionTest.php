@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Admin\Extension;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Admin\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishWorkflowExtension;
 
