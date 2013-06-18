@@ -9,7 +9,7 @@ class CallbackSlugifierTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->slugifier = new CallbackSlugifier(
-            'Symfony\Cmf\Bundle\CoreBundle\Tests\Slugifier\CallbackSlugifierTest::slugify'
+            'Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Slugifier\CallbackSlugifierTest::slugify'
         );
     }
 
