@@ -17,9 +17,8 @@
         "symfony/framework-bundle": "~2.1"
     },
     "require-dev": {
-        "symfony-cmf/routing": "~1.1-dev",
         "symfony-cmf/testing": "~1.0-dev",
-        "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*"
+        "sonata-project/admin-bundle": "2.2.*"
     },
     "suggest": {
         "symfony/twig-bundle": "To get access to the CMF twig extension, ~2.1",
