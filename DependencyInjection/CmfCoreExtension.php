@@ -17,13 +17,23 @@ class CmfCoreExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $container->setParameter($this->getAlias().'.role', $config['role']);
         $container->setParameter($this->getAlias() . '.document_manager_name', $config['document_manager_name']);
 
-        if (!$config['publish_workflow_listener']) {
-            $container->removeDefinition($this->getAlias() . '.publish_workflow_listener');
-        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
-            throw new InvalidConfigurationException("The 'publish_workflow_listener' may not be enabled unless 'Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter' is available.");
+        if (isset($config['publish_workflow'])) {
+            $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
+        }
+    }
+
+    public function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container) {
+        $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
+        $loader->load('publish_workflow.xml');
+
+        if ($config['request_listener']) {
+            if (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
+                throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
+            }
+        } else {
+            $container->removeDefinition($this->getAlias() . '.publish_workflow.request_listener');
         }
     }
 

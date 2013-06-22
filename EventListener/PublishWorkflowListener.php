@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * Makes sure only published routes and content can be accessed
@@ -16,16 +16,16 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterfac
 class PublishWorkflowListener implements EventSubscriberInterface
 {
     /**
-     * @var PublishWorkflowCheckerInterface
+     * @var SecurityContext
      */
-    protected $publishWorkflowChecker;
+    protected $context;
 
     /**
-     * @param PublishWorkflowCheckerInterface $publishWorkflowChecker
+     * @param SecurityContext $context
      */
-    public function __construct(PublishWorkflowCheckerInterface $publishWorkflowChecker)
+    public function __construct(SecurityContext $context)
     {
-        $this->publishWorkflowChecker = $publishWorkflowChecker;
+        $this->context = $context;
     }
 
     /**
@@ -38,12 +38,12 @@ class PublishWorkflowListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $route = $request->attributes->get(DynamicRouter::ROUTE_KEY);
-        if ($route && !$this->publishWorkflowChecker->checkIsPublished($route, false, $request)) {
+        if ($route && !$this->context->isGranted('VIEW', $route)) {
             throw new NotFoundHttpException('Route not found at: ' . $request->getPathInfo());
         }
 
         $content = $request->attributes->get(DynamicRouter::CONTENT_KEY);
-        if ($content && !$this->publishWorkflowChecker->checkIsPublished($content, false, $request)) {
+        if ($content && !$this->context->isGranted('VIEW', $content)) {
             throw new NotFoundHttpException('Content not found for: ' . $request->getPathInfo());
         }
     }

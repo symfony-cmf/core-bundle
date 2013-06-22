@@ -2,11 +2,11 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Util\PathHelper;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class TwigExtension extends \Twig_Extension
 {
@@ -16,20 +16,20 @@ class TwigExtension extends \Twig_Extension
     protected $dm;
 
     /**
-     * @var PublishWorkflowCheckerInterface
+     * @var SecurityContext
      */
-    protected $publishWorkflowChecker;
+    protected $context;
 
     /**
      * Instantiate the content controller.
      *
-     * @param PublishWorkflowCheckerInterface $publishWorkflowChecker
+     * @param SecurityContext $context
      * @param ManagerRegistry $registry
      * @param string $objectManagerName
      */
-    public function __construct(PublishWorkflowCheckerInterface $publishWorkflowChecker, $registry = null, $objectManagerName = null)
+    public function __construct(SecurityContext $context, $registry = null, $objectManagerName = null)
     {
-        $this->publishWorkflowChecker = $publishWorkflowChecker;
+        $this->context = $context;
 
         if ($registry && $registry instanceof ManagerRegistry) {
             $this->dm = $registry->getManager($objectManagerName);
@@ -43,8 +43,6 @@ class TwigExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        $functions = array('cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'));
-
         if ($this->dm) {
             $functions['cmf_child'] = new \Twig_Function_Method($this, 'getChild');
             $functions['cmf_children'] = new \Twig_Function_Method($this, 'getChildren');
@@ -136,7 +134,7 @@ class TwigExtension extends \Twig_Extension
         }
 
         if (empty($document)
-            || (null !== $ignoreRole && !$this->publishWorkflowChecker->checkIsPublished($document, $ignoreRole))
+            || (null !== $ignoreRole && !$this->context->isGranted('VIEW', $document))
             || (null != $class && !($document instanceof $class))
         ) {
             return null;
@@ -176,21 +174,6 @@ class TwigExtension extends \Twig_Extension
         }
 
         return $result;
-    }
-
-    /**
-     * Check if a document is published
-     *
-     * @param $document
-     * @return Boolean
-     */
-    public function isPublished($document)
-    {
-        if (empty($document)) {
-            return false;
-        }
-
-        return $this->publishWorkflowChecker->checkIsPublished($document, true);
     }
 
     /**
