@@ -2,11 +2,13 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
+use PHPCR\Util\PathHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
-use PHPCR\Util\PathHelper;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TwigExtension extends \Twig_Extension
 {
@@ -16,20 +18,20 @@ class TwigExtension extends \Twig_Extension
     protected $dm;
 
     /**
-     * @var SecurityContext
+     * @var SecurityContextInterface
      */
-    protected $context;
+    protected $publishWorkflowChecker;
 
     /**
      * Instantiate the content controller.
      *
-     * @param SecurityContext $context
+     * @param SecurityContextInterface $publishWorkflowChecker
      * @param ManagerRegistry $registry
      * @param string $objectManagerName
      */
-    public function __construct(SecurityContext $context, $registry = null, $objectManagerName = null)
+    public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $objectManagerName = null)
     {
-        $this->context = $context;
+        $this->publishWorkflowChecker = $publishWorkflowChecker;
 
         if ($registry && $registry instanceof ManagerRegistry) {
             $this->dm = $registry->getManager($objectManagerName);
@@ -43,6 +45,7 @@ class TwigExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
+        $functions = array('cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'));
         if ($this->dm) {
             $functions['cmf_child'] = new \Twig_Function_Method($this, 'getChild');
             $functions['cmf_children'] = new \Twig_Function_Method($this, 'getChildren');
@@ -121,8 +124,11 @@ class TwigExtension extends \Twig_Extension
     /**
      * Get a document instance and validate if its eligible
      *
-     * @param string|object $document the id of a document or the document object itself
-     * @param Boolean|null $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * @param string|object $document the id of a document or the document
+     *      object itself
+     * @param boolean|null $ignoreRole whether the bypass role should be
+     *      ignored (leading to only show published content regardless of the
+     *      current user) or null to skip the published check completely.
      * @param null|string $class class name to filter on
      *
      * @return null|object
@@ -132,9 +138,13 @@ class TwigExtension extends \Twig_Extension
         if (is_string($document)) {
             $document = $this->dm->find(null, $document);
         }
+        if (null !== $ignoreRole && null === $this->publishWorkflowChecker) {
+            throw new InvalidConfigurationException('You can not fetch only published documents when the publishWorkflowChecker is not set. Either enable the publish workflow or pass "ignoreRole = null" to skip publication checks.');
+        }
 
         if (empty($document)
-            || (null !== $ignoreRole && !$this->context->isGranted('VIEW', $document))
+            || (false === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $document))
+            || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_PUBLISHED_ATTRIBUTE, $document))
             || (null != $class && !($document instanceof $class))
         ) {
             return null;
@@ -174,6 +184,26 @@ class TwigExtension extends \Twig_Extension
         }
 
         return $result;
+    }
+
+    /**
+     * Check if a document is published, regardless of the current users role.
+     *
+     * @param object $document
+     *
+     * @return boolean
+     */
+    public function isPublished($document)
+    {
+        if (null === $this->publishWorkflowChecker) {
+            throw new InvalidConfigurationException('You can not check for publication as the publish workflow is not enabled.');
+        }
+
+        if (empty($document)) {
+            return false;
+        }
+
+        return $this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_PUBLISHED_ATTRIBUTE, true);
     }
 
     /**

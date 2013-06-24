@@ -1,13 +1,16 @@
 Changelog
 =========
 
-* **2013-06-20**: [PublishWorkflow] Moved the access checks to security voter
-  and using isGranted 'VIEW' instead.
-  Removed twig function cmf_is_published, just use is_granted('VIEW', content)
-  instead.
+* **2013-06-20**: [PublishWorkflow] The PublishWorkflowChecker now implements
+  SecurityContextInterface and the individual checks are moved to voters.
+  Use the service cmf_core.publish_workflow.checker and call
+  `isGranted('VIEW', $content)` - or `'VIEW_PUBLISHED'` if you don't want to
+  see unpublished content even if the current user is allowed to see it.
   Configuration was adjusted: The parameter for the role that may see unpublished
-  content moved from `role` to `publish_workflow.view_non_published_role`. The
-  publish_workflow_listener moved to `publish_workflow.request_listener`.
+  content moved from `role` to `publish_workflow.view_non_published_role`.
+  The security context is also triggered by a core security voter, so that
+  using the isGranted method of the standard security will check for
+  publication.
 
 * **2013-05-16**: [PublishWorkFlowChecker] Removed Request argument
   from check method. Class now accepts a DateTime object to

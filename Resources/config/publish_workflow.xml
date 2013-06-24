@@ -5,32 +5,50 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_core.twig_extension_class">Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension</parameter>
-        <parameter key="cmf_core.publish_workflow_listener_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener</parameter>
-        <parameter key="cmf_core.security.publishable_voter_class">Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter\PublishableVoter</parameter>
-        <parameter key="cmf_core.security.publish_time_period_voter_class">Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter\PublishTimePeriodVoter</parameter>
-        <parameter key="cmf_core.listener.request_aware_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
+        <parameter key="cmf_core.publish_workflow.checker_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker</parameter>
+        <parameter key="cmf_core.publish_workflow.access_decision_manager_class">Symfony\Component\Security\Core\Authorization\AccessDecisionManager</parameter>
+        <parameter key="cmf_core.security.publishable_voter_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter</parameter>
+        <parameter key="cmf_core.security.publish_time_period_voter_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishTimePeriodVoter</parameter>
+        <parameter key="cmf_core.publish_workflow.request_listener_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener</parameter>
+        <parameter key="cmf_core.security.published_voter_class">Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter\PublishedVoter</parameter>
         <parameter key="cmf_core.admin_extension.publish_workflow_class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishWorkflowExtension</parameter>
     </parameters>
 
     <services>
 
-        <service id="cmf_core.security.publishable_voter" class="%cmf_core.security.publishable_voter_class%">
-            <argument type="service" id="service_container" on-invalid="ignore"/>
+        <service id="cmf_core.publish_workflow.access_decision_manager" class="%cmf_core.publish_workflow.access_decision_manager_class%">
+            <argument type="collection"></argument>
+            <argument>unanimous</argument>
+            <argument>true</argument>
+        </service>
+
+        <service id="cmf_core.publish_workflow.checker" class="%cmf_core.publish_workflow.checker_class%">
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="cmf_core.publish_workflow.access_decision_manager"/>
             <argument>%cmf_core.publish_workflow.view_non_published_role%</argument>
-            <tag name="security.voter"/>
+        </service>
+
+        <service id="cmf_core.security.publishable_voter" class="%cmf_core.security.publishable_voter_class%">
+            <tag name="cmf_published_voter"/>
         </service>
 
         <service id="cmf_core.security.publish_time_period_voter" class="%cmf_core.security.publish_time_period_voter_class%">
+            <tag name="cmf_published_voter"/>
+        </service>
+
+        <service id="cmf_core.publish_workflow.request_listener" class="%cmf_core.publish_workflow.request_listener_class%">
+            <argument type="service" id="cmf_core.publish_workflow.checker"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <!-- integration with core security service -->
+
+        <service id="cmf_core.security.published_voter" class="%cmf_core.security.publishable_voter_class%">
             <argument type="service" id="service_container" on-invalid="ignore"/>
-            <argument>%cmf_core.publish_workflow.view_non_published_role%</argument>
             <tag name="security.voter"/>
         </service>
 
-        <service id="cmf_core.publish_workflow.request_listener" class="%cmf_core.publish_workflow_listener_class%">
-            <tag name="kernel.event_subscriber"/>
-            <argument type="service" id="security.context"/>
-        </service>
+        <!-- integration with sonata admin -->
 
         <service id="cmf_core.admin_extension.publish_workflow" class="%cmf_core.admin_extension.publish_workflow_class%">
             <tag name="sonata.admin.extension"/>

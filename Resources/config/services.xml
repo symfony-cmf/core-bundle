@@ -12,8 +12,8 @@
     <services>
 
         <service id="cmf_core.twig.children_extension" class="%cmf_core.twig_extension_class%">
-            <argument type="service" id="security.context"/>
-            <argument type="service" id="doctrine_phpcr" on-invalid="ignore" />
+            <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
+            <argument type="service" id="doctrine_phpcr" on-invalid="ignore"/>
             <argument>%cmf_core.document_manager_name%</argument>
             <tag name="twig.extension"/>
         </service>

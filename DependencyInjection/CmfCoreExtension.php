@@ -19,21 +19,24 @@ class CmfCoreExtension extends Extension
 
         $container->setParameter($this->getAlias() . '.document_manager_name', $config['document_manager_name']);
 
-        if (isset($config['publish_workflow'])) {
+        if ($config['publish_workflow']['enabled']) {
             $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
         }
     }
 
-    public function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container) {
+    public function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
         $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
         $loader->load('publish_workflow.xml');
 
-        if ($config['request_listener']) {
-            if (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
-                throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
-            }
-        } else {
+        if (!$config['request_listener']) {
             $container->removeDefinition($this->getAlias() . '.publish_workflow.request_listener');
+        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
+            throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
+        }
+
+        if (!class_exists('Sonata\AdminBundle\Admin\AdminExtension')) {
+            $container->removeDefinition($this->getAlias() . '.cmf_core.admin_extension.publish_workflow');
         }
     }
 
