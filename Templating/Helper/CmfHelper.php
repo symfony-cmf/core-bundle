@@ -3,12 +3,20 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface;
+
+use Symfony\Component\Templating\Helper\Helper;
+
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Util\PathHelper;
 
-class TwigExtension extends \Twig_Extension
+/**
+ * Provides CMF helper functions.
+ *
+ * @author Wouter J <waldio.webdesign@gmail.com>
+ */
+class CmfHelper extends Helper
 {
     /**
      * @var DocumentManager
@@ -37,45 +45,13 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get list of available functions
-     *
-     * @return array
-     */
-    public function getFunctions()
-    {
-        $functions = array('cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'));
-
-        if ($this->dm) {
-            $functions['cmf_child'] = new \Twig_Function_Method($this, 'getChild');
-            $functions['cmf_children'] = new \Twig_Function_Method($this, 'getChildren');
-            $functions['cmf_prev'] = new \Twig_Function_Method($this, 'getPrev');
-            $functions['cmf_next'] = new \Twig_Function_Method($this, 'getNext');
-            $functions['cmf_find'] = new \Twig_Function_Method($this, 'find');
-            $functions['cmf_find_many'] = new \Twig_Function_Method($this, 'findMany');
-            $functions['cmf_descendants'] = new \Twig_Function_Method($this, 'getDescendants');
-            $functions['cmf_nodename'] = new \Twig_Function_Method($this, 'getNodeName');
-            $functions['cmf_parent_path'] = new \Twig_Function_Method($this, 'getParentPath');
-            $functions['cmf_path'] = new \Twig_Function_Method($this, 'getPath');
-            $functions['cmf_document_locales'] = new \Twig_Function_Method($this, 'getLocalesFor');
-
-            if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
-                $functions['cmf_prev_linkable'] = new \Twig_Function_Method($this, 'getPrevLinkable');
-                $functions['cmf_next_linkable'] = new \Twig_Function_Method($this, 'getNextLinkable');
-                $functions['cmf_linkable_children'] = new \Twig_Function_Method($this, 'getLinkableChildren');
-            }
-        }
-
-        return $functions;
-    }
-
-    /**
      * Get the extension name
      *
      * @return string
      */
     public function getName()
     {
-        return 'cmf_extension';
+        return 'cmf';
     }
 
     /**
