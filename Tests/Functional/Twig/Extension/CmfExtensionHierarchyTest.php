@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Twig\Extension;
 
-use Symfony\Cmf\Bundle\CoreBundle\Twig\CmfExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class CmfExtensionHierarchyTest extends BaseTestCase

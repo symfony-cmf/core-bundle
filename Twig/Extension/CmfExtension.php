@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
