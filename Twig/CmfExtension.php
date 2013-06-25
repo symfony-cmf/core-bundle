@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
 
-use Symfony\Cmf\Bundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
 class CmfExtension extends CmfHelper implements \Twig_ExtensionInterface
 {
@@ -47,7 +47,7 @@ class CmfExtension extends CmfHelper implements \Twig_ExtensionInterface
      *
      * @param Twig_Environment $environment The current Twig_Environment instance
      */
-    public function initRuntime(Twig_Environment $environment)
+    public function initRuntime(\Twig_Environment $environment)
     {
     }
 
@@ -72,21 +72,21 @@ class CmfExtension extends CmfHelper implements \Twig_ExtensionInterface
     }
 
     /**
-     * Returns a list of tests to add to the existing list.
+     * Returns a list of filters to add to the existing list.
      *
-     * @return array An array of tests
+     * @return array An array of filters
      */
-    public function getTests()
+    public function getFilters()
     {
         return array();
     }
 
     /**
-     * Returns a list of functions to add to the existing list.
+     * Returns a list of tests to add to the existing list.
      *
-     * @return array An array of functions
+     * @return array An array of tests
      */
-    public function getFunctions()
+    public function getTests()
     {
         return array();
     }

@@ -2,9 +2,9 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig;
 
-use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
-class TwigExtensionTest extends \PHPUnit_Framework_TestCase
+class CmfHelperTest extends \PHPUnit_Framework_TestCase
 {
     private $pwc;
     private $managerRegistry;
@@ -44,15 +44,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->uow))
         ;
 
-        $this->extension = new TwigExtension($this->pwc, $this->managerRegistry, 'foo');
-    }
-
-    public function testGetFunctions()
-    {
-        $extension = new TwigExtension($this->pwc);
-        $this->assertCount(1, $extension->getFunctions());
-
-        $this->assertCount(15, $this->extension->getFunctions());
+        $this->extension = new CmfHelper($this->pwc, $this->managerRegistry, 'foo');
     }
 
     public function testGetNodeName()

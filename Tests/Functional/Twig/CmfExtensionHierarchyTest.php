@@ -2,10 +2,10 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Twig;
 
-use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Twig\CmfExtension;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
-class TwigExtensionHierarchyTest extends BaseTestCase
+class CmfExtensionHierarchyTest extends BaseTestCase
 {
     private $pwc;
     private $extension;
@@ -36,7 +36,7 @@ class TwigExtensionHierarchyTest extends BaseTestCase
             ->method('checkIsPublished')
             ->will($this->returnValue(true));
 
-        $this->extension = new TwigExtension($this->pwc, $managerRegistry, 'default');
+        $this->extension = new CmfExtension($this->pwc, $managerRegistry, 'default');
     }
 
     public function testGetDescendants()
