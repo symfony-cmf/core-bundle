@@ -22,7 +22,7 @@ class PublishableVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         return PublishWorkflowChecker::VIEW_ATTRIBUTE === $attribute
-            || PublishWorkflowChecker::VIEW_PUBLISHED_ATTRIBUTE === $attribute
+            || PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE === $attribute
         ;
     }
 
@@ -44,16 +44,21 @@ class PublishableVoter implements VoterInterface
         if (!$this->supportsClass(get_class($object))) {
             return self::ACCESS_ABSTAIN;
         }
+
+        $decision = self::ACCESS_GRANTED;
         foreach($attributes as $attribute) {
             if (! $this->supportsAttribute($attribute)) {
-                return self::ACCESS_ABSTAIN;
+                // there was an unsupported attribute in the request.
+                // now we only abstain or deny if we find a supported attribute
+                // and the content is not publishable
+                $decision = self::ACCESS_ABSTAIN;
+                continue;
+            }
+            if (! $object->isPublishable()) {
+                return self::ACCESS_DENIED;
             }
         }
 
-        if (! $object->isPublishable()) {
-            return self::ACCESS_DENIED;
-        }
-
-        return self::ACCESS_GRANTED;
+        return $decision;
     }
 }

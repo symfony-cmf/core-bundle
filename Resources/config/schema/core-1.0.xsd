@@ -9,10 +9,14 @@
 
     <xsd:complexType name="config">
         <xsd:attribute name="document-manager-name" type="xsd:string" />
-        <xsd:attribute name="role" type="xsd:string" />
-        <xsd:attribute name="publish-workflow-listener" type="boolean" />
     </xsd:complexType>
-    
+
+    <xsd:complexType name="publish-workflow">
+        <xsd:attribute name="enabled" type="boolean" />
+        <xsd:attribute name="view-non-published-role" type="xsd:string" />
+        <xsd:attribute name="request-listener" type="boolean" />
+    </xsd:complexType>
+
     <xsd:simpleType name="boolean">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="true" />

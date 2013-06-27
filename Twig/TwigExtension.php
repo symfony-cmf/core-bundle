@@ -144,7 +144,7 @@ class TwigExtension extends \Twig_Extension
 
         if (empty($document)
             || (false === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $document))
-            || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_PUBLISHED_ATTRIBUTE, $document))
+            || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
             || (null != $class && !($document instanceof $class))
         ) {
             return null;
@@ -203,7 +203,7 @@ class TwigExtension extends \Twig_Extension
             return false;
         }
 
-        return $this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_PUBLISHED_ATTRIBUTE, true);
+        return $this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, true);
     }
 
     /**

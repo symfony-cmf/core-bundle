@@ -32,9 +32,9 @@ class PublishWorkflowChecker implements SecurityContextInterface
      * publication check is not wanted.
      *
      * The role exception is handled by the workflow checker, the individual
-     * voters should treat VIEW and VIEW_PUBLISHED the same.
+     * voters should treat VIEW and VIEW_ANONYMOUS the same.
      */
-    const VIEW_PUBLISHED_ATTRIBUTE = 'VIEW_PUBLISHED';
+    const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
 
     /**
      * @var ContainerInterface

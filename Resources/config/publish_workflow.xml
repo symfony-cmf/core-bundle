@@ -29,11 +29,11 @@
         </service>
 
         <service id="cmf_core.security.publishable_voter" class="%cmf_core.security.publishable_voter_class%">
-            <tag name="cmf_published_voter"/>
+            <tag name="cmf_published_voter" priority="10"/>
         </service>
 
         <service id="cmf_core.security.publish_time_period_voter" class="%cmf_core.security.publish_time_period_voter_class%">
-            <tag name="cmf_published_voter"/>
+            <tag name="cmf_published_voter" priority="20"/>
         </service>
 
         <service id="cmf_core.publish_workflow.request_listener" class="%cmf_core.publish_workflow.request_listener_class%">

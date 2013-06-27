@@ -4,7 +4,7 @@ Changelog
 * **2013-06-20**: [PublishWorkflow] The PublishWorkflowChecker now implements
   SecurityContextInterface and the individual checks are moved to voters.
   Use the service cmf_core.publish_workflow.checker and call
-  `isGranted('VIEW', $content)` - or `'VIEW_PUBLISHED'` if you don't want to
+  `isGranted('VIEW', $content)` - or `'VIEW_ANONYMOUS'` if you don't want to
   see unpublished content even if the current user is allowed to see it.
   Configuration was adjusted: The parameter for the role that may see unpublished
   content moved from `role` to `publish_workflow.view_non_published_role`.

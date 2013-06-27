@@ -12,7 +12,8 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 
 /**
- * Makes sure only published routes and content can be accessed.
+ * A request listener that makes sure only published routes and content can be
+ * accessed.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
@@ -24,11 +25,29 @@ class PublishWorkflowListener implements EventSubscriberInterface
     protected $publishWorkflowChecker;
 
     /**
-     * @param PublishWorkflowChecker $publishWorkflowChecker
+     * The attribute to check with the workflow checker, typically VIEW or VIEW_ANONYMOUS
+     *
+     * @var string
      */
-    public function __construct(PublishWorkflowChecker $publishWorkflowChecker)
+    private $attribute;
+
+    /**
+     * @param PublishWorkflowChecker $publishWorkflowChecker
+     * @param string                 $attribute              the attribute name to check
+     */
+    public function __construct(PublishWorkflowChecker $publishWorkflowChecker, $attribute = 'VIEW')
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
+        $this->attribute = $attribute;
+    }
+
+    public function getAttribute()
+    {
+        return $this->attribute;
+    }
+    public function setAttribute($attribute)
+    {
+        $this->attribute = $attribute;
     }
 
     /**
@@ -41,12 +60,12 @@ class PublishWorkflowListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $route = $request->attributes->get(DynamicRouter::ROUTE_KEY);
-        if ($route && !$this->publishWorkflowChecker->isGranted('VIEW', $route)) {
+        if ($route && !$this->publishWorkflowChecker->isGranted($this->getAttribute(), $route)) {
             throw new NotFoundHttpException('Route not found at: ' . $request->getPathInfo());
         }
 
         $content = $request->attributes->get(DynamicRouter::CONTENT_KEY);
-        if ($content && !$this->publishWorkflowChecker->isGranted('VIEW', $content)) {
+        if ($content && !$this->publishWorkflowChecker->isGranted($this->getAttribute(), $content)) {
             throw new NotFoundHttpException('Content not found for: ' . $request->getPathInfo());
         }
     }
@@ -62,5 +81,4 @@ class PublishWorkflowListener implements EventSubscriberInterface
             KernelEvents::REQUEST => array(array('onKernelRequest', 1)),
         );
     }
-
 }

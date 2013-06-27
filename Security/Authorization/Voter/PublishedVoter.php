@@ -35,7 +35,7 @@ class PublishedVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         return PublishWorkflowChecker::VIEW_ATTRIBUTE === $attribute
-            || PublishWorkflowChecker::VIEW_PUBLISHED_ATTRIBUTE === $attribute
+            || PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE === $attribute
         ;
     }
 
