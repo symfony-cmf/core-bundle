@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enabled')->defaultTrue()->end()
-                        ->scalarNode('view_non_published_role')->defaultValue('CAN_VIEW_NON_PUBLISHED')->end()
+                        ->scalarNode('view_non_published_role')->defaultValue('ROLE_CAN_VIEW_NON_PUBLISHED')->end()
                         ->booleanNode('request_listener')->defaultTrue()->end()
                     ->end()
                 ->end()

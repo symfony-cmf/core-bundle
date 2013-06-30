@@ -116,6 +116,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
         }
 
         $securityContext = $this->container->get('security.context');
+
         if (null !== $securityContext->getToken()
             && (count($attributes) === 1)
             && self::VIEW_ATTRIBUTE === reset($attributes)

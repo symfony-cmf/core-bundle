@@ -2,18 +2,29 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Twig;
 
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use PHPCR\SessionInterface;
 use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class TwigExtensionHierarchyTest extends BaseTestCase
 {
+    /**
+     * @var SecurityContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
     private $pwc;
+
+    /**
+     * @var TwigExtension
+     */
     private $extension;
 
     public function setUp()
     {
         $container = $this->getContainer();
         $managerRegistry = $container->get('doctrine_phpcr');
+        /** @var $session SessionInterface */
         $session = $managerRegistry->getConnection();
         $root = $session->getRootNode();
         if ($root->hasNode('a')) {
@@ -31,10 +42,11 @@ class TwigExtensionHierarchyTest extends BaseTestCase
 
         $session->save();
 
-        $this->pwc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface');
+        $this->pwc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->pwc->expects($this->any())
-            ->method('checkIsPublished')
-            ->will($this->returnValue(true));
+            ->method('isGranted')
+            ->will($this->returnValue(true))
+        ;
 
         $this->extension = new TwigExtension($this->pwc, $managerRegistry, 'default');
     }

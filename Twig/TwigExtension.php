@@ -203,7 +203,7 @@ class TwigExtension extends \Twig_Extension
             return false;
         }
 
-        return $this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, true);
+        return $this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document);
     }
 
     /**
