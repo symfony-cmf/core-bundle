@@ -1,14 +1,14 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Twig\Extension;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use PHPCR\SessionInterface;
-use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class TwigExtensionHierarchyTest extends BaseTestCase
+class CmfExtensionHierarchyTest extends BaseTestCase
 {
     /**
      * @var SecurityContextInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -16,7 +16,7 @@ class TwigExtensionHierarchyTest extends BaseTestCase
     private $pwc;
 
     /**
-     * @var TwigExtension
+     * @var CmfExtension
      */
     private $extension;
 
@@ -48,7 +48,7 @@ class TwigExtensionHierarchyTest extends BaseTestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->extension = new TwigExtension($this->pwc, $managerRegistry, 'default');
+        $this->extension = new CmfExtension($this->pwc, $managerRegistry, 'default');
     }
 
     public function testGetDescendants()

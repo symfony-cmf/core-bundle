@@ -3,16 +3,16 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
-class TwigExtensionTest extends \PHPUnit_Framework_TestCase
+class CmfHelperTest extends \PHPUnit_Framework_TestCase
 {
     private $pwc;
     private $managerRegistry;
     private $manager;
     private $uow;
     /**
-     * @var TwigExtension
+     * @var CmfHelper
      */
     private $extension;
 
@@ -48,15 +48,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->uow))
         ;
 
-        $this->extension = new TwigExtension($this->pwc, $this->managerRegistry, 'foo');
-    }
-
-    public function testGetFunctions()
-    {
-        $extension = new TwigExtension($this->pwc);
-        $this->assertCount(1, $extension->getFunctions());
-
-        $this->assertCount(15, $this->extension->getFunctions());
+        $this->extension = new CmfHelper($this->pwc, $this->managerRegistry, 'foo');
     }
 
     public function testGetNodeName()
@@ -205,7 +197,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindManyNoWorkflow()
     {
-        $this->extension = new TwigExtension(null, $this->managerRegistry, 'foo');
+        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
 
         $documentA = new \stdClass();
 
@@ -239,7 +231,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsPublishedNoWorkflow()
     {
-        $this->extension = new TwigExtension(null, $this->managerRegistry, 'foo');
+        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
         $this->extension->isPublished(new \stdClass());
     }
 

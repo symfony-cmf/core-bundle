@@ -1,8 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
 use PHPCR\Util\PathHelper;
+
+use Symfony\Component\Templating\Helper\Helper;
+
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
@@ -10,7 +13,12 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class TwigExtension extends \Twig_Extension
+/**
+ * Provides CMF helper functions.
+ *
+ * @author Wouter J <waldio.webdesign@gmail.com>
+ */
+class CmfHelper extends Helper
 {
     /**
      * @var DocumentManager
@@ -23,7 +31,7 @@ class TwigExtension extends \Twig_Extension
     protected $publishWorkflowChecker;
 
     /**
-     * Instantiate the content controller.
+     * Instantiates the content controller.
      *
      * @param SecurityContextInterface $publishWorkflowChecker
      * @param ManagerRegistry $registry
@@ -39,44 +47,13 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get list of available functions
-     *
-     * @return array
-     */
-    public function getFunctions()
-    {
-        $functions = array('cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'));
-        if ($this->dm) {
-            $functions['cmf_child'] = new \Twig_Function_Method($this, 'getChild');
-            $functions['cmf_children'] = new \Twig_Function_Method($this, 'getChildren');
-            $functions['cmf_prev'] = new \Twig_Function_Method($this, 'getPrev');
-            $functions['cmf_next'] = new \Twig_Function_Method($this, 'getNext');
-            $functions['cmf_find'] = new \Twig_Function_Method($this, 'find');
-            $functions['cmf_find_many'] = new \Twig_Function_Method($this, 'findMany');
-            $functions['cmf_descendants'] = new \Twig_Function_Method($this, 'getDescendants');
-            $functions['cmf_nodename'] = new \Twig_Function_Method($this, 'getNodeName');
-            $functions['cmf_parent_path'] = new \Twig_Function_Method($this, 'getParentPath');
-            $functions['cmf_path'] = new \Twig_Function_Method($this, 'getPath');
-            $functions['cmf_document_locales'] = new \Twig_Function_Method($this, 'getLocalesFor');
-
-            if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
-                $functions['cmf_prev_linkable'] = new \Twig_Function_Method($this, 'getPrevLinkable');
-                $functions['cmf_next_linkable'] = new \Twig_Function_Method($this, 'getNextLinkable');
-                $functions['cmf_linkable_children'] = new \Twig_Function_Method($this, 'getLinkableChildren');
-            }
-        }
-
-        return $functions;
-    }
-
-    /**
-     * Get the extension name
+     * Gets the helper name.
      *
      * @return string
      */
     public function getName()
     {
-        return 'cmf_extension';
+        return 'cmf';
     }
 
     /**
@@ -111,7 +88,7 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Find a document by path
+     * Finds a document by path.
      *
      * @param $path
      * @return null|object
@@ -122,14 +99,20 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get a document instance and validate if its eligible
+     * Gets a document instance and validate if its eligible.
      *
+<<<<<<< HEAD:Twig/TwigExtension.php
      * @param string|object $document the id of a document or the document
      *      object itself
      * @param boolean|null $ignoreRole whether the bypass role should be
      *      ignored (leading to only show published content regardless of the
      *      current user) or null to skip the published check completely.
      * @param null|string $class class name to filter on
+=======
+     * @param string|object $document    the id of a document or the document object itself
+     * @param Boolean|null  $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
+     * @param null|string   $class class name to filter on
+>>>>>>> origin/master:Templating/Helper/CmfHelper.php
      *
      * @return null|object
      */
@@ -154,11 +137,12 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * @param array $paths list of paths
-     * @param int|Boolean $limit int limit or false
-     * @param string|Boolean $offset string node name to which to skip to or false
-     * @param Boolean|null $ignoreRole if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string $class class name to filter on
+     * @param array          $paths       list of paths
+     * @param int|Boolean    $limit       int limit or false
+     * @param string|Boolean $offset      string node name to which to skip to or false
+     * @param Boolean|null   $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
+     * @param null|string    $class       class name to filter on
+     *
      * @return array
      */
     public function findMany($paths = array(), $limit = false, $offset = false, $ignoreRole = false, $class = null)
@@ -187,11 +171,19 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
+<<<<<<< HEAD:Twig/TwigExtension.php
      * Check if a document is published, regardless of the current users role.
      *
      * @param object $document
      *
      * @return boolean
+=======
+     * Checks if a document is published.
+     *
+     * @param string $document
+     *
+     * @return Boolean
+>>>>>>> origin/master:Templating/Helper/CmfHelper.php
      */
     public function isPublished($document)
     {
@@ -209,8 +201,8 @@ class TwigExtension extends \Twig_Extension
     /**
      * Get the locales of the document
      *
-     * @param string|object $document document instance or path
-     * @param Boolean $includeFallbacks
+     * @param string|object $document         Document instance or path
+     * @param Boolean       $includeFallbacks
      * @return array
      */
     public function getLocalesFor($document, $includeFallbacks = false)
@@ -234,7 +226,8 @@ class TwigExtension extends \Twig_Extension
 
     /**
      * @param string|object $parent parent path/document
-     * @param string $name
+     * @param string        $name
+     *
      * @return boolean|null|object child or null if the child cannot be found or false if the parent is not in the unit of work
      */
     public function getChild($parent, $name)
@@ -251,14 +244,15 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get child documents
+     * Gets child documents.
      *
-     * @param string|object $parent parent path/document
-     * @param int|Boolean $limit int limit or false
-     * @param string|Boolean $offset string node name to which to skip to or false
-     * @param null|string $filter child filter
-     * @param Boolean|null $ignoreRole if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string $class class name to filter on
+     * @param string|object  $parent      parent path/document
+     * @param int|Boolean    $limit       int limit or false
+     * @param string|Boolean $offset      string node name to which to skip to or false
+     * @param null|string    $filter      child filter
+     * @param Boolean|null   $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
+     * @param null|string    $class       class name to filter on
+     *
      * @return array
      */
     public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
@@ -317,13 +311,14 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get linkable child documents
+     * Gets linkable child documents.
      *
-     * @param string|object $parent parent path/document
-     * @param int|Boolean $limit int limit or false
-     * @param string|Boolean $offset string node name to which to skip to or false
-     * @param null|string $filter child filter
-     * @param Boolean|null $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * @param string|object  $parent      parent path/document
+     * @param int|Boolean    $limit       int limit or false
+     * @param string|Boolean $offset      string node name to which to skip to or false
+     * @param null|string    $filter      child filter
+     * @param Boolean|null   $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
+     *
      * @return array
      */
     public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false)
@@ -332,10 +327,10 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get the paths of children
+     * Gets the paths of children.
      *
-     * @param string $path
-     * @param array $children
+     * @param string  $path
+     * @param array   $children
      * @param integer $depth
      */
     private function getChildrenPaths($path, array &$children, $depth)
@@ -360,7 +355,8 @@ class TwigExtension extends \Twig_Extension
 
     /**
      * @param string|object $parent parent path/document
-     * @param null|int $depth null denotes no limit, depth of 1 means direct children only etc.
+     * @param null|int      $depth  null denotes no limit, depth of 1 means direct children only etc.
+     *
      * @return array
      */
     public function getDescendants($parent, $depth = null)
@@ -382,11 +378,12 @@ class TwigExtension extends \Twig_Extension
      * Check children for a possible following document
      *
      * @param \Traversable $childNames
-     * @param Boolean $reverse
-     * @param string $parentPath
-     * @param Boolean $ignoreRole
-     * @param null|string $class
-     * @param null|string $nodeName
+     * @param Boolean      $reverse
+     * @param string       $parentPath
+     * @param Boolean      $ignoreRole
+     * @param null|string  $class
+     * @param null|string  $nodeName
+     *
      * @return null|object
      */
     private function checkChildren($childNames, $reverse, $parentPath, $ignoreRole = false, $class = null, $nodeName = null)
@@ -421,12 +418,13 @@ class TwigExtension extends \Twig_Extension
     /**
      * Search for a following document
      *
-     * @param string|object $path document instance or path
-     * @param string|object $anchor document instance or path
-     * @param null|integer $depth
-     * @param Boolean $reverse
-     * @param Boolean $ignoreRole
-     * @param null|string $class
+     * @param string|object $path       document instance or path
+     * @param string|object $anchor     document instance or path
+     * @param null|integer  $depth
+     * @param Boolean       $reverse
+     * @param Boolean       $ignoreRole
+     * @param null|string   $class
+     *
      * @return null|object
      */
     private function search($path, $anchor = null, $depth = null, $reverse = false, $ignoreRole = false, $class = null)
@@ -484,13 +482,14 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get the previous document
+     * Gets the previous document.
      *
-     * @param string|object $current document instance or path
-     * @param string|object $parent document instance or path
-     * @param null|integer $depth
-     * @param Boolean $ignoreRole
-     * @param null|string $class
+     * @param string|object       $current    document instance or path
+     * @param string|object       $parent     document instance or path
+     * @param null|integer        $depth
+     * @param Boolean             $ignoreRole
+     * @param null|string         $class
+     *
      * @return null|object
      */
     public function getPrev($current, $parent = null, $depth = null, $ignoreRole = false, $class = null)
@@ -499,13 +498,14 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get the next document
+     * Gets the next document.
      *
-     * @param string|object $current document instance or path
-     * @param string|object $parent document instance or path
-     * @param null|integer $depth
-     * @param Boolean $ignoreRole
-     * @param null|string $class
+     * @param string|object       $current    document instance or path
+     * @param string|object       $parent     document instance or path
+     * @param null|integer        $depth
+     * @param Boolean             $ignoreRole
+     * @param null|string         $class
+     *
      * @return null|object
      */
     public function getNext($current, $parent = null, $depth = null, $ignoreRole = false, $class = null)
@@ -514,12 +514,13 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get the previous linkable document
+     * Gets the previous linkable document.
      *
-     * @param string|object $current document instance or path
-     * @param string|object $parent document instance or path
-     * @param null|integer $depth
-     * @param Boolean $ignoreRole
+     * @param string|object       $current    document instance or path
+     * @param string|object       $parent     document instance or path
+     * @param null|integer        $depth
+     * @param Boolean             $ignoreRole
+     *
      * @return null|object
      */
     public function getPrevLinkable($current, $parent = null, $depth = null, $ignoreRole = false)
@@ -528,12 +529,13 @@ class TwigExtension extends \Twig_Extension
     }
 
     /**
-     * Get the next linkable document
+     * Gets the next linkable document.
      *
-     * @param string|object $current document instance or path
-     * @param string|object $parent document instance or path
-     * @param null|integer $depth
-     * @param Boolean $ignoreRole
+     * @param string|object       $current    document instance or path
+     * @param string|object       $parent     document instance or path
+     * @param null|integer        $depth
+     * @param Boolean             $ignoreRole
+     *
      * @return null|object
      */
     public function getNextLinkable($current, $parent = null, $depth = null, $ignoreRole = false)
