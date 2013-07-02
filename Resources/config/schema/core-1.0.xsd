@@ -8,6 +8,9 @@
     <xsd:element name="config" type="config" />
 
     <xsd:complexType name="config">
+        <xsd:sequence>
+            <xsd:element name="publish-workflow" type="publish-workflow" minOccurs="0" />
+        </xsd:sequence>
         <xsd:attribute name="document-manager-name" type="xsd:string" />
     </xsd:complexType>
 
