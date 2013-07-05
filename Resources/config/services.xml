@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_core.twig_extension_class">Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension</parameter>
+        <parameter key="cmf_core.twig_extension_class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension</parameter>
         <parameter key="cmf_core.publish_workflow_checker_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker</parameter>
         <parameter key="cmf_core.publish_workflow_listener_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener</parameter>
         <parameter key="cmf_core.listener.request_aware_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
