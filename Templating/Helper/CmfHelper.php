@@ -46,6 +46,15 @@ class CmfHelper extends Helper
         }
     }
 
+    protected function getDm()
+    {
+        if (!$this->dm) {
+            throw new \RuntimeException('Document Manager has not been initialized yet.');
+        }
+
+        return $this->dm;
+    }
+
     /**
      * Gets the helper name.
      *
@@ -81,7 +90,7 @@ class CmfHelper extends Helper
     public function getPath($document)
     {
         try {
-            return $this->dm->getUnitOfWork()->getDocumentId($document);
+            return $this->getDm()->getUnitOfWork()->getDocumentId($document);
         } catch (\Exception $e) {
             return false;
         }
@@ -95,7 +104,7 @@ class CmfHelper extends Helper
      */
     public function find($path)
     {
-        return $this->dm->find(null, $path);
+        return $this->getDm()->find(null, $path);
     }
 
     /**
@@ -113,7 +122,7 @@ class CmfHelper extends Helper
     private function getDocument($document, $ignoreRole = false, $class = null)
     {
         if (is_string($document)) {
-            $document = $this->dm->find(null, $document);
+            $document = $this->getDm()->find(null, $document);
         }
         if (null !== $ignoreRole && null === $this->publishWorkflowChecker) {
             throw new InvalidConfigurationException('You can not fetch only published documents when the publishWorkflowChecker is not set. Either enable the publish workflow or pass "ignoreRole = null" to skip publication checks.');
@@ -194,7 +203,7 @@ class CmfHelper extends Helper
     public function getLocalesFor($document, $includeFallbacks = false)
     {
         if (is_string($document)) {
-            $document = $this->dm->find(null, $document);
+            $document = $this->getDm()->find(null, $document);
         }
 
         if (empty($document)) {
@@ -202,7 +211,7 @@ class CmfHelper extends Helper
         }
 
         try {
-            $locales = $this->dm->getLocalesFor($document, $includeFallbacks);
+            $locales = $this->getDm()->getLocalesFor($document, $includeFallbacks);
         } catch (MissingTranslationException $e) {
             $locales = array();
         }
@@ -220,13 +229,13 @@ class CmfHelper extends Helper
     {
         if (is_object($parent)) {
             try {
-                $parent = $this->dm->getUnitOfWork()->getDocumentId($parent);
+                $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
             } catch (\Exception $e) {
                 return false;
             }
         }
 
-        return $this->dm->find(null, "$parent/$name");
+        return $this->getDm()->find(null, "$parent/$name");
     }
 
     /**
@@ -249,9 +258,9 @@ class CmfHelper extends Helper
 
         if ($limit || $offset) {
             if (is_object($parent)) {
-                $parent = $this->dm->getUnitOfWork()->getDocumentId($parent);
+                $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
             }
-            $node = $this->dm->getPhpcrSession()->getNode($parent);
+            $node = $this->getDm()->getPhpcrSession()->getNode($parent);
             $children = (array) $node->getNodeNames();
             foreach ($children as $key => $child) {
                 // filter before fetching data already to save some traffic
@@ -268,7 +277,7 @@ class CmfHelper extends Helper
                 $children = array_slice($children, $key);
             }
         } else {
-            $children = $this->dm->getChildren($parent, $filter);
+            $children = $this->getDm()->getChildren($parent, $filter);
         }
 
         $result = array();
@@ -327,7 +336,7 @@ class CmfHelper extends Helper
 
         --$depth;
 
-        $node = $this->dm->getPhpcrSession()->getNode($path);
+        $node = $this->getDm()->getPhpcrSession()->getNode($path);
         $names = (array) $node->getNodeNames();
         foreach ($names as $name) {
             if (strpos($name, 'phpcr_locale:') === 0) {
@@ -353,7 +362,7 @@ class CmfHelper extends Helper
 
         $children = array();
         if (is_object($parent)) {
-            $parent = $this->dm->getUnitOfWork()->getDocumentId($parent);
+            $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
         }
         $this->getChildrenPaths($parent, $children, $depth);
 
@@ -407,7 +416,7 @@ class CmfHelper extends Helper
     {
         foreach ($childNames as $childName) {
             $childPath = "$path/$childName";
-            $node = $this->dm->getPhpcrSession()->getNode($childPath);
+            $node = $this->getDm()->getPhpcrSession()->getNode($childPath);
             if (null === $depth || PathHelper::getPathDepth($childPath) - $anchorDepth < $depth) {
                 $childNames = $node->getNodeNames()->getArrayCopy();
                 if (!empty($childNames)) {
@@ -440,17 +449,17 @@ class CmfHelper extends Helper
     private function searchDepthPrev($path, $anchor, $depth = null, $ignoreRole = false, $class = null)
     {
         if (is_object($path)) {
-            $path = $this->dm->getUnitOfWork()->getDocumentId($path);
+            $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
         }
 
         if (null === $path || '/' === $path) {
             return null;
         }
 
-        $node = $this->dm->getPhpcrSession()->getNode($path);
+        $node = $this->getDm()->getPhpcrSession()->getNode($path);
 
         if (is_object($anchor)) {
-            $anchor = $this->dm->getUnitOfWork()->getDocumentId($anchor);
+            $anchor = $this->getDm()->getUnitOfWork()->getDocumentId($anchor);
         }
 
         if (0 !== strpos($path, $anchor)) {
@@ -514,17 +523,17 @@ class CmfHelper extends Helper
     private function searchDepthNext($path, $anchor, $depth = null, $ignoreRole = false, $class = null)
     {
         if (is_object($path)) {
-            $path = $this->dm->getUnitOfWork()->getDocumentId($path);
+            $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
         }
 
         if (null === $path || '/' === $path) {
             return null;
         }
 
-        $node = $this->dm->getPhpcrSession()->getNode($path);
+        $node = $this->getDm()->getPhpcrSession()->getNode($path);
 
         if (is_object($anchor)) {
-            $anchor = $this->dm->getUnitOfWork()->getDocumentId($anchor);
+            $anchor = $this->getDm()->getUnitOfWork()->getDocumentId($anchor);
         }
 
         if (0 !== strpos($path, $anchor)) {
@@ -588,14 +597,14 @@ class CmfHelper extends Helper
     private function search($path, $reverse = false, $ignoreRole = false, $class = null)
     {
         if (is_object($path)) {
-            $path = $this->dm->getUnitOfWork()->getDocumentId($path);
+            $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
         }
 
         if (null === $path || '/' === $path) {
             return null;
         }
 
-        $node = $this->dm->getPhpcrSession()->getNode($path);
+        $node = $this->getDm()->getPhpcrSession()->getNode($path);
         $parentNode = $node->getParent();
         $childNames = $parentNode->getNodeNames()->getArrayCopy();
         if ($reverse) {

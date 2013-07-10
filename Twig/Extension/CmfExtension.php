@@ -4,8 +4,15 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
-class CmfExtension extends CmfHelper implements \Twig_ExtensionInterface
+class CmfExtension implements \Twig_ExtensionInterface
 {
+    protected $cmfHelper;
+
+    public function __construct(CmfHelper $cmfHelper)
+    {
+        $this->cmfHelper = $cmfHelper;
+    }
+
     /**
      * Get list of available functions
      *
@@ -13,32 +20,31 @@ class CmfExtension extends CmfHelper implements \Twig_ExtensionInterface
      */
     public function getFunctions()
     {
-        $functions = array('cmf_is_published' => new \Twig_Function_Method($this, 'isPublished'));
+        $functions = array(
+            new \Twig_SimpleFunction('cmf_is_published', array($this->cmfHelper, 'isPublished')),
+            new \Twig_SimpleFunction('cmf_child', array($this->cmfHelper, 'getChild')),
+            new \Twig_SimpleFunction('cmf_children', array($this->cmfHelper, 'getChildren')),
+            new \Twig_SimpleFunction('cmf_prev', array($this->cmfHelper, 'getPrev')),
+            new \Twig_SimpleFunction('cmf_next', array($this->cmfHelper, 'getNext')),
+            new \Twig_SimpleFunction('cmf_find', array($this->cmfHelper, 'find')),
+            new \Twig_SimpleFunction('cmf_find_many', array($this->cmfHelper, 'findMany')),
+            new \Twig_SimpleFunction('cmf_descendants', array($this->cmfHelper, 'getDescendants')),
+            new \Twig_SimpleFunction('cmf_nodename', array($this->cmfHelper, 'getNodeName')),
+            new \Twig_SimpleFunction('cmf_parent_path', array($this->cmfHelper, 'getParentPath')),
+            new \Twig_SimpleFunction('cmf_path', array($this->cmfHelper, 'getPath')),
+            new \Twig_SimpleFunction('cmf_document_locales', array($this->cmfHelper, 'getLocalesFor')),
+        );
 
-        if ($this->dm) {
-            $functions['cmf_child'] = new \Twig_Function_Method($this, 'getChild');
-            $functions['cmf_children'] = new \Twig_Function_Method($this, 'getChildren');
-            $functions['cmf_prev'] = new \Twig_Function_Method($this, 'getPrev');
-            $functions['cmf_next'] = new \Twig_Function_Method($this, 'getNext');
-            $functions['cmf_find'] = new \Twig_Function_Method($this, 'find');
-            $functions['cmf_find_many'] = new \Twig_Function_Method($this, 'findMany');
-            $functions['cmf_descendants'] = new \Twig_Function_Method($this, 'getDescendants');
-            $functions['cmf_nodename'] = new \Twig_Function_Method($this, 'getNodeName');
-            $functions['cmf_parent_path'] = new \Twig_Function_Method($this, 'getParentPath');
-            $functions['cmf_path'] = new \Twig_Function_Method($this, 'getPath');
-            $functions['cmf_document_locales'] = new \Twig_Function_Method($this, 'getLocalesFor');
-
-            if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
-                $functions['cmf_prev_linkable'] = new \Twig_Function_Method($this, 'getPrevLinkable');
-                $functions['cmf_next_linkable'] = new \Twig_Function_Method($this, 'getNextLinkable');
-                $functions['cmf_linkable_children'] = new \Twig_Function_Method($this, 'getLinkableChildren');
-            }
+        if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
+            $functions = array_merge($functions, array(
+                new \Twig_SimpleFunction('cmf_prev_linkable', array($this->cmfHelper, 'getPrevLinkable')),
+                new \Twig_SimpleFunction('cmf_next_linkable', array($this->cmfHelper, 'getNextLinkable')),
+                new \Twig_SimpleFunction('cmf_linkable_children', array($this->cmfHelper, 'getLinkableChildren')),
+            ));
         }
 
         return $functions;
     }
-
-    // from \Twig_Extension
 
     /**
      * Initializes the runtime environment.
@@ -109,5 +115,10 @@ class CmfExtension extends CmfHelper implements \Twig_ExtensionInterface
     public function getGlobals()
     {
         return array();
+    }
+
+    public function getName()
+    {
+        return 'cmf';
     }
 }
