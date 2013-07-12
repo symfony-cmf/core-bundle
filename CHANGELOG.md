@@ -11,6 +11,12 @@ Changelog
   The security context is also triggered by a core security voter, so that
   using the isGranted method of the standard security will check for
   publication.
+  The PublishWorkflowInterface is split into the reading interfaces
+  PublishableInterface and PublishTimePeriodInterface as well as
+  PublishableWriteInterface and PublishableTimePeriodWriteInterface. The sonata
+  admin extension has been split accordingly and there are now
+  cmf_core.admin_extension.publish_workflow.time_period and
+  cmf_core.admin_extension.publish_workflow.publishable.
 
 * **2013-05-16**: [PublishWorkFlowChecker] Removed Request argument
   from check method. Class now accepts a DateTime object to

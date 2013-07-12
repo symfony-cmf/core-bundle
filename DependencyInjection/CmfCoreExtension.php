@@ -36,7 +36,8 @@ class CmfCoreExtension extends Extension
         }
 
         if (!class_exists('Sonata\AdminBundle\Admin\AdminExtension')) {
-            $container->removeDefinition($this->getAlias() . '.cmf_core.admin_extension.publish_workflow');
+            $container->removeDefinition($this->getAlias() . '.cmf_core.admin_extension.publish_workflow.publishable');
+            $container->removeDefinition($this->getAlias() . '.cmf_core.admin_extension.publish_workflow.time_period');
         }
     }
 

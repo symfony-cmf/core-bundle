@@ -3,9 +3,9 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
 /**
- * Interface models can implement to expose editable publishing settings.
+ * Interface to expose editable time period publishing information.
  */
-interface PublishWorkflowInterface extends PublishableInterface, PublishTimePeriodInterface
+interface PublishTimePeriodWriteInterface extends PublishTimePeriodInterface
 {
     /**
      * Set the date from which the content should
@@ -28,11 +28,4 @@ interface PublishWorkflowInterface extends PublishableInterface, PublishTimePeri
      * @param \DateTime|null $publishDate
      */
     public function setPublishEndDate(\DateTime $publishDate = null);
-
-    /**
-     * Set the boolean flag if this content should be published or not.
-     *
-     * @return boolean
-     */
-    public function setPublishable($publishable);
 }

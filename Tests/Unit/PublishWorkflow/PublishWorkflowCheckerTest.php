@@ -2,8 +2,8 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableWriteInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -32,7 +32,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
     private $sc;
 
     /**
-     * @var PublishWorkflowInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var PublishableWriteInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $doc;
 
@@ -52,7 +52,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
             ->with('security.context')
             ->will($this->returnValue($this->sc))
         ;
-        $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
+        $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableWriteInterface');
         $this->adm = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
         $this->stdClass = new \stdClass;
 

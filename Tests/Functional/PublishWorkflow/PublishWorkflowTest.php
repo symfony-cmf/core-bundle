@@ -4,6 +4,8 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow;
 
 use PHPCR\SessionInterface;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
@@ -38,7 +40,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testPublishable()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface');
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(true))
@@ -50,7 +52,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testPublishPeriod()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow\PublishModel');
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(true))
@@ -66,7 +68,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testIgnoreRoleHas()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow\PublishModel');
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(false))
@@ -84,7 +86,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testIgnoreRoleNotHas()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow\PublishModel');
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(false))
@@ -101,3 +103,5 @@ class PublishWorkflowTest extends BaseTestCase
         $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
     }
 }
+
+abstract class PublishModel implements PublishableInterface, PublishTimePeriodInterface {}
