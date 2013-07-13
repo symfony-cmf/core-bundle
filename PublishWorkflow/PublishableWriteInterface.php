@@ -8,7 +8,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 interface PublishableWriteInterface extends PublishableInterface
 {
     /**
-     * Set the boolean flag if this content should be published or not.
+     * Set the boolean flag whether this content is publishable or not.
      *
      * @return boolean
      */

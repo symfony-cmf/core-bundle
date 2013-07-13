@@ -3,12 +3,10 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
 /**
- * Interface models can implement if they want to support publish checking with
- * a binary flag.
+ * Interface for a binary publishable flag.
  *
- * Several publish interfaces can be combined. Publish voters will return DENY
- * if the condition is not met and ABSTAIN if it is met, to allow other voters
- * to influence the decision as well.
+ * If the flag is false, the content is not published, if it is true it is
+ * published if no other voter objects.
  */
 interface PublishableInterface
 {

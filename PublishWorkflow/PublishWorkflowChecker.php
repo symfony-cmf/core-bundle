@@ -11,10 +11,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Implementation of a publish workflow checker as a security context.
+ * The publish workflow decides if a content is allowed to be shown. Contrary
+ * to the symfony core security context, this is even possible without a
+ * firewall configured for the current route.
  *
- * It gives "admins" full access,
- * while for other users it runs all cmf_published_voter
+ * The access decision manager is configured to be unanimous by default, and
+ * provided with all published voters tagged with cmf_published_voter.
+ *
+ * If the VIEW attribute is used and there is a firewall in place, there is a
+ * check if the current user is granted the bypassing role and if so, he can
+ * see even unpublished content.
+ *
+ * If VIEW_ANONYMOUS is used, the publication check is never bypassed.
  *
  * @author David Buchmann <mail@davidbu.ch>
 */
@@ -31,7 +39,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
      * users. This can be used where the role based exception from the
      * publication check is not wanted.
      *
-     * The role exception is handled by the workflow checker, the individual
+     * The bypass role is handled by the workflow checker, the individual
      * voters should treat VIEW and VIEW_ANONYMOUS the same.
      */
     const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
@@ -42,8 +50,8 @@ class PublishWorkflowChecker implements SecurityContextInterface
     private $container;
 
     /**
-     * @var bool|string Role allowed to bypass security check or false to never
-     *      bypass
+     * @var bool|string Role allowed to bypass the published check if the
+     *      VIEW attribute is used, or false to never bypass
      */
     private $bypassingRole;
 
@@ -63,7 +71,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
      *      to a circular reference.
      * @param AccessDecisionManagerInterface $accessDecisionManager
      * @param string $bypassingRole A role that is allowed to bypass the
-     *      publishable check.
+     *      published check if we ask for the VIEW attribute  .
      */
     public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {
@@ -74,6 +82,9 @@ class PublishWorkflowChecker implements SecurityContextInterface
 
     /**
      * {@inheritDoc}
+     *
+     * Defaults to the token from the default security context, but can be
+     * overwritten locally.
      */
     public function getToken()
     {

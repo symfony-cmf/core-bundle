@@ -7,7 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * Adds all configured publish workflow voters to the access decision manager.
+ * Adds all configured publish voters to the access decision manager used for
+ * the publish workflow checker.
  *
  * This is about the same as Symfony\Bundle\SecurityBundle\DependencyInjection\Compiler\AddSecurityVotersPass
  *

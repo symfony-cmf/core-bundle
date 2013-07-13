@@ -49,7 +49,7 @@
             <tag name="security.voter"/>
         </service>
 
-        <!-- integration with sonata admin -->
+        <!-- integration with sonata admin - removed by the DI class if sonata is not available -->
 
         <service id="cmf_core.admin_extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable_class%">
             <tag name="sonata.admin.extension"/>

@@ -3,8 +3,10 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
 /**
- * Interface models can implement if they want to support time based publish
- * checking.
+ * Interface for time period based publish checking.
+ *
+ * Both start and end date are optional, with null being interpreted as always
+ * started resp. never ending.
  */
 interface PublishTimePeriodInterface
 {

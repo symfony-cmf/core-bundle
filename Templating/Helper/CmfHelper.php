@@ -176,6 +176,9 @@ class CmfHelper extends Helper
     /**
      * Check if a document is published, regardless of the current users role.
      *
+     * If you need the bypass role, you will have a firewall configured and can
+     * simply use {{ is_granted('VIEW', document) }}
+     *
      * @param object $document
      *
      * @return boolean
