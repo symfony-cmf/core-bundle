@@ -2,85 +2,148 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Implementation of a publish workflow checker. It gives "admins" full access,
- * while for other users it checks that both the publish flag is on and the
- * publish date isn't reached if one is set.
- */
-class PublishWorkflowChecker implements PublishWorkflowCheckerInterface
+ * The publish workflow decides if a content is allowed to be shown. Contrary
+ * to the symfony core security context, this is even possible without a
+ * firewall configured for the current route.
+ *
+ * The access decision manager is configured to be unanimous by default, and
+ * provided with all published voters tagged with cmf_published_voter.
+ *
+ * If the VIEW attribute is used and there is a firewall in place, there is a
+ * check if the current user is granted the bypassing role and if so, he can
+ * see even unpublished content.
+ *
+ * If VIEW_ANONYMOUS is used, the publication check is never bypassed.
+ *
+ * @author David Buchmann <mail@davidbu.ch>
+*/
+class PublishWorkflowChecker implements SecurityContextInterface
 {
     /**
-     * @var string the role name for the security check
+     * This attribute means the user is allowed to see this content, either
+     * because it is published or because he is granted the bypassingRole.
      */
-    protected $requiredRole;
+    const VIEW_ATTRIBUTE = 'VIEW';
 
     /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
-
-    /**
-     * @var \DateTime
-     */
-    protected $currentTime;
-
-    /**
-     * @param string $requiredRole the role to check with the securityContext
-     *      (if you pass one), defaults to everybody: IS_AUTHENTICATED_ANONYMOUSLY
-     * @param \Symfony\Component\Security\Core\SecurityContextInterface|null $securityContext
-     *      the security context to use to check for the role. No security
-     *      check if this is null
-     */
-    public function __construct($requiredRole = "IS_AUTHENTICATED_ANONYMOUSLY", SecurityContextInterface $securityContext = null)
-    {
-        $this->requiredRole = $requiredRole;
-        $this->securityContext = $securityContext;
-        $this->currentTime = new \DateTime();
-    }
-
-    /**
-     * Overwrite the current time
+     * This attribute means the content is available for viewing by anonymous
+     * users. This can be used where the role based exception from the
+     * publication check is not wanted.
      *
-     * @param \DateTime $currentTime
+     * The bypass role is handled by the workflow checker, the individual
+     * voters should treat VIEW and VIEW_ANONYMOUS the same.
      */
-    public function setCurrentTime(\DateTime $currentTime)
+    const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var bool|string Role allowed to bypass the published check if the
+     *      VIEW attribute is used, or false to never bypass
+     */
+    private $bypassingRole;
+
+    /**
+     * @var AccessDecisionManagerInterface
+     */
+    private $accessDecisionManager;
+
+    /**
+     * @var TokenInterface
+     */
+    private $token;
+
+    /**
+     * @param ContainerInterface $container to get the security context from.
+     *      We cannot inject the security context directly as this would lead
+     *      to a circular reference.
+     * @param AccessDecisionManagerInterface $accessDecisionManager
+     * @param string $bypassingRole A role that is allowed to bypass the
+     *      published check if we ask for the VIEW attribute  .
+     */
+    public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {
-        $this->currentTime = $currentTime;
+        $this->container = $container;
+        $this->accessDecisionManager = $accessDecisionManager;
+        $this->bypassingRole = $bypassingRole;
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
+     *
+     * Defaults to the token from the default security context, but can be
+     * overwritten locally.
      */
-    public function checkIsPublished($document, $ignoreRole = false)
+    public function getToken()
     {
-        if (!$document instanceOf PublishWorkflowInterface) {
+        if (null === $this->token) {
+            $securityContext = $this->container->get('security.context');
+
+            return $securityContext->getToken();
+        }
+
+        return $this->token;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setToken(TokenInterface $token = null)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * Checks if the access decision manager supports the given class.
+     *
+     * @param string $class A class name
+     *
+     * @return boolean true if this decision manager can process the class
+     */
+    public function supportsClass($class)
+    {
+        return $this->accessDecisionManager->supportsClass($class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isGranted($attributes, $object = null)
+    {
+        if (!is_array($attributes)) {
+            $attributes = array($attributes);
+        }
+
+        $securityContext = $this->container->get('security.context');
+
+        if (null !== $securityContext->getToken()
+            && (count($attributes) === 1)
+            && self::VIEW_ATTRIBUTE === reset($attributes)
+            && $securityContext->isGranted($this->bypassingRole)
+        ) {
             return true;
         }
 
-        if ($this->securityContext && $this->securityContext->isGranted($this->requiredRole)) {
-            if (!$ignoreRole) {
-                return true;
-            }
+        $token = $this->getToken();
+        if (null === $token) {
+            // not logged in, surely we can not skip the check.
+            // create a dummy token to check for publication even if no
+            // firewall is present.
+            $token = new AnonymousToken('', '');
         }
 
-        $startDate = $document->getPublishStartDate();
-        $endDate = $document->getPublishEndDate();
-        $isPublishable = $document->isPublishable();
-
-        if (null === $startDate && null === $endDate) {
-            return $isPublishable !== false;
-        }
-
-        if ((null === $startDate || $this->currentTime >= $startDate) &&
-            (null === $endDate || $this->currentTime < $endDate)
-        ) {
-            return $isPublishable !== false;
-        }
-
-        return false;
+        return $this->accessDecisionManager->decide($token, $attributes, $object);
     }
 }
