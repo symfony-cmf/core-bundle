@@ -2,188 +2,159 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableWriteInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
 {
+    /**
+     * @var PublishWorkflowChecker
+     */
+    private $pwfc;
+
+    /**
+     * @var string
+     */
+    private $role;
+
+    /**
+     * @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $container;
+
+    /**
+     * @var SecurityContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $sc;
+
+    /**
+     * @var PublishableWriteInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $doc;
+
+    /**
+     * @var AccessDecisionManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $adm;
+
     public function setUp()
     {
         $this->role = 'IS_FOOBAR';
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $this->sc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface');
+        $this->container
+            ->expects($this->any())
+            ->method('get')
+            ->with('security.context')
+            ->will($this->returnValue($this->sc))
+        ;
+        $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableWriteInterface');
+        $this->adm = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
         $this->stdClass = new \stdClass;
 
-        $this->pwfc = new PublishWorkflowChecker($this->role, $this->sc);
-    }
-
-    public function testDocDoesntImplementInterface()
-    {
-        $res = $this->pwfc->checkIsPublished($this->stdClass);
-        $this->assertTrue($res);
-    }
-
-    public function providePublishWorkflowChecker()
-    {
-        return array(
-            array(array(
-                'expected' => true, 
-                'granted_role' => 'IS_FOOBAR', 
-                'is_publishable' => false, 
-            )),
-            array(array(
-                'expected' => true, 
-                'is_publishable' => true, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'TEST-3',
-                'start_date' => new \DateTime('2000-01-01'),
-                'end_date' => new \DateTime('2030-01-01'), 
-                'is_publishable' => true, 
-            )),
-            array(array(
-                'expected' => false,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => new \DateTime('01/01/2000'),
-                'end_date' => new \DateTime('01/01/2001'), 
-                'is_publishable' => true, 
-            )),
-            array(array(
-                'expected' => false,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => new \DateTime('01/01/2000'),
-                'end_date' => new \DateTime('01/01/2030'), 
-                'is_publishable' => false, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => new \DateTime('01/01/2000'), 
-                'end_date' => null,  
-                'is_publishable' => true, 
-            )),
-            array(array(
-                'expected' => false,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => null, 
-                'end_date' => new \DateTime('01/01/2000'), 
-                'is_publishable' => true, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => null, 
-                'end_date' => new \DateTime('01/01/2030'), 
-                'is_publishable' => true, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => null,
-                'end_date' => null, 
-                'is_publishable' => null, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'TEST-3',
-                'start_date' => new \DateTime('2000-01-01'),
-                'end_date' => new \DateTime('2030-01-01'), 
-                'is_publishable' => null, 
-            )),
-            array(array(
-                'expected' => false,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => new \DateTime('01/01/2000'),
-                'end_date' => new \DateTime('01/01/2001'), 
-                'is_publishable' => null, 
-            )),
-            array(array(
-                'expected' => false,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => new \DateTime('01/01/2000'),
-                'end_date' => new \DateTime('01/01/2030'), 
-                'is_publishable' => false, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => new \DateTime('01/01/2000'), 
-                'end_date' => null,  
-                'is_publishable' => null, 
-            )),
-            array(array(
-                'expected' => false,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => null, 
-                'end_date' => new \DateTime('01/01/2000'), 
-                'is_publishable' => null, 
-            )),
-            array(array(
-                'expected' => true,
-                'granted_role' => 'UNAUTH_ROLE',
-                'start_date' => null, 
-                'end_date' => new \DateTime('01/01/2030'), 
-                'is_publishable' => null, 
-            )),
-            // Test overwrite current time
-            array(array(
-                'expected' => false, 
-                'is_publishable' => true, 
-                'end_date' => new \DateTime('01/01/2000'), 
-                'current_time' => new \DateTime('01/01/2001'),
-            )),
-            array(array(
-                'expected' => true, 
-                'is_publishable' => true, 
-                'end_date' => new \DateTime('01/01/2000'), 
-                'current_time' => new \DateTime('01/01/1980'),
-            )),
-        );
+        $this->pwfc = new PublishWorkflowChecker($this->container, $this->adm, $this->role);
     }
 
     /**
-     * @dataProvider providePublishWorkflowChecker
+     * Calling
      */
-    public function testPublishWorkflowChecker($options)
+    public function testIsGranted()
     {
-        $options = array_merge(array(
-            'expected' => false,
-            'granted_role' => 'NONE',
-            'start_date' => null,
-            'end_date' => null,
-            'is_publishable' => null,
-            'current_time' => null,
-        ), $options);
-
+        $token = new AnonymousToken('', '');
         $this->sc->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token))
+        ;
+        $this->sc->expects($this->never())
             ->method('isGranted')
-            ->will($this->returnCallback(function ($given) use ($options) {
-                return $given === $options['granted_role'];
-            }));
+        ;
+        $this->adm->expects($this->once())
+            ->method('decide')
+            ->with($token, array(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE), $this->doc)
+            ->will($this->returnValue(true))
+        ;
 
-        $this->doc->expects($this->any())
-            ->method('getPublishStartDate')
-            ->will($this->returnValue($options['start_date']));
+        $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $this->doc));
+    }
 
-        $this->doc->expects($this->any())
-            ->method('getPublishEndDate')
-            ->will($this->returnValue($options['end_date']));
+    public function testNotHasBypassRole()
+    {
+        $token = new AnonymousToken('', '');
+        $this->sc->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token))
+        ;
+        $this->sc->expects($this->once())
+            ->method('isGranted')
+            ->with($this->role)
+            ->will($this->returnValue(false))
+        ;
+        $this->adm->expects($this->once())
+            ->method('decide')
+            ->with($token, array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->doc)
+            ->will($this->returnValue(true))
+        ;
 
-        $this->doc->expects($this->any())
-            ->method('isPublishable')
-            ->will($this->returnValue($options['is_publishable']));
+        $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
+    }
 
-        if ($options['current_time']) {
-            $this->pwfc->setCurrentTime($options['current_time']);
-        }
+    public function testHasBypassRole()
+    {
+        $token = new AnonymousToken('', '');
+        $this->sc->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token))
+        ;
+        $this->sc->expects($this->once())
+            ->method('isGranted')
+            ->with($this->role)
+            ->will($this->returnValue(true))
+        ;
+        $this->adm->expects($this->never())
+            ->method('decide')
+        ;
 
-        $res = $this->pwfc->checkIsPublished($this->doc);
+        $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
+    }
 
-        if (true === $options['expected']) {
-            $this->assertTrue($res);
-        } else {
-            $this->assertFalse($res);
-        }
+    public function testNoFirewall()
+    {
+        $token = new AnonymousToken('', '');
+        $this->sc->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue(null))
+        ;
+        $this->sc->expects($this->never())
+            ->method('isGranted')
+        ;
+        $this->adm->expects($this->once())
+            ->method('decide')
+            ->with($token, array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->doc)
+            ->will($this->returnValue(true))
+        ;
+
+        $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
+    }
+
+    public function testSetToken()
+    {
+        $token = new AnonymousToken('x', 'y');
+        $this->pwfc->setToken($token);
+        $this->assertSame($token, $this->pwfc->getToken());
+    }
+
+    public function testSupportsClass()
+    {
+        $class = 'Test\Class';
+        $this->adm->expects($this->once())
+            ->method('supportsClass')
+            ->with($class)
+            ->will($this->returnValue(true))
+        ;
+        $this->assertTrue($this->pwfc->supportsClass($class));
     }
 }

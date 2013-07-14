@@ -6,11 +6,11 @@ use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * Admin extension to add publish workflow fields.
+ * Admin extension to add publish workflow time period fields.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
-class PublishWorkflowExtension extends AdminExtension
+class PublishTimePeriodExtension extends AdminExtension
 {
     public function configureFormFields(FormMapper $formMapper)
     {
@@ -21,10 +21,6 @@ class PublishWorkflowExtension extends AdminExtension
 
         $formMapper->with('form.group_publish_workflow', array(
             'translation_domain' => 'CmfCoreBundle'
-        ))
-            ->add('publishable', 'checkbox', array(
-                'required' => false,
-            ), array(
             ))
             ->add('publish_start_date', 'date', $dateOptions, array(
                 'help' => 'form.help_publish_start_date',

@@ -15,8 +15,14 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('document_manager_name')->defaultValue('default')->end()
-                ->scalarNode('role')->defaultValue('IS_AUTHENTICATED_ANONYMOUSLY')->end()
-                ->booleanNode('publish_workflow_listener')->defaultFalse()->end()
+                ->arrayNode('publish_workflow')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                        ->scalarNode('view_non_published_role')->defaultValue('ROLE_CAN_VIEW_NON_PUBLISHED')->end()
+                        ->booleanNode('request_listener')->defaultTrue()->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

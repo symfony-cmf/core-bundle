@@ -2,6 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
 class CmfHelperTest extends \PHPUnit_Framework_TestCase
@@ -10,11 +11,14 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     private $managerRegistry;
     private $manager;
     private $uow;
+    /**
+     * @var CmfHelper
+     */
     private $extension;
 
     public function setUp()
     {
-        $this->pwc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowCheckerInterface');
+        $this->pwc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
 
         $this->managerRegistry = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
             ->disableOriginalConstructor()
@@ -92,6 +96,19 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/foo/bar', $this->extension->getPath($document));
     }
 
+    public function testGetPathInvalid()
+    {
+        $document = new \stdClass();
+
+        $this->uow->expects($this->once())
+            ->method('getDocumentId')
+            ->with($document)
+            ->will($this->throwException(new \Exception('test')));
+        ;
+
+        $this->assertFalse($this->extension->getPath($document));
+    }
+
     public function testFind()
     {
         $document = new \stdClass();
@@ -132,17 +149,32 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->manager->expects($this->any())
             ->method('find')
-            ->will($this->onConsecutiveCalls($documentA, null, $documentA, $documentB))
+            ->will($this->onConsecutiveCalls($documentA, $documentB))
         ;
 
         $this->pwc->expects($this->any())
-            ->method('checkIsPublished')
-            ->with($documentA)
+            ->method('isGranted')
             ->will($this->onConsecutiveCalls(false, true))
         ;
 
-        $this->assertEquals(array($documentA), $this->extension->findMany(array('/foo', 'bar'), false, false, null));
-        $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', 'bar'), false, false, false));
+        $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', '/bar'), false, false, true));
+    }
+
+    public function testFindManyIgnoreWorkflow()
+    {
+        $documentA = new \stdClass();
+        $documentB = new \stdClass();
+
+        $this->manager->expects($this->any())
+            ->method('find')
+            ->will($this->onConsecutiveCalls($documentA, $documentB))
+        ;
+
+        $this->pwc->expects($this->never())
+            ->method('isGranted')
+        ;
+
+        $this->assertEquals(array($documentA, $documentB), $this->extension->findMany(array('/foo', '/bar'), false, false, null));
     }
 
     public function testFindManyLimitOffset()
@@ -160,6 +192,24 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', 'bar'), 1, 1, null));
     }
 
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testFindManyNoWorkflow()
+    {
+        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
+
+        $documentA = new \stdClass();
+
+        $this->manager->expects($this->any())
+            ->method('find')
+            ->with(null, '/foo')
+            ->will($this->returnValue($documentA))
+        ;
+
+        $this->extension->findMany(array('/foo', '/bar'), false, false);
+    }
+
     public function testIsPublished()
     {
         $this->assertFalse($this->extension->isPublished(null));
@@ -167,13 +217,22 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $document = new \stdClass();
 
         $this->pwc->expects($this->any())
-            ->method('checkIsPublished')
-            ->with($document)
+            ->method('isGranted')
+            ->with(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document)
             ->will($this->onConsecutiveCalls(false, true))
         ;
 
         $this->assertFalse($this->extension->isPublished($document));
         $this->assertTrue($this->extension->isPublished($document));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testIsPublishedNoWorkflow()
+    {
+        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
+        $this->extension->isPublished(new \stdClass());
     }
 
     public function testGetLocalesFor()
@@ -225,6 +284,19 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertEquals($child, $this->extension->getChild($parent, 'bar'));
+    }
+
+    public function testGetChildError()
+    {
+        $parent = new \stdClass();
+
+        $this->uow->expects($this->once())
+            ->method('getDocumentId')
+            ->with($parent)
+            ->will($this->throwException(new \Exception('test')))
+        ;
+
+        $this->assertFalse($this->extension->getChild($parent, 'bar'));
     }
 
     public function testGetChildren()

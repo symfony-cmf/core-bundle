@@ -2,9 +2,9 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Admin\Extension;
 
-use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishWorkflowExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishTimePeriodExtension;
 
-class PublishWorkflowExtensionTest extends \PHPUnit_Framework_Testcase
+class PublishTimePeriodExtensionTest extends \PHPUnit_Framework_Testcase
 {
     public function setUp()
     {
@@ -12,7 +12,7 @@ class PublishWorkflowExtensionTest extends \PHPUnit_Framework_Testcase
             'Sonata\AdminBundle\Form\FormMapper'
         )->disableOriginalConstructor()->getMock();
 
-        $this->extension = new PublishWorkflowExtension;
+        $this->extension = new PublishTimePeriodExtension();
     }
 
     public function testFormMapper()
@@ -20,7 +20,7 @@ class PublishWorkflowExtensionTest extends \PHPUnit_Framework_Testcase
         $this->formMapper->expects($this->once())
             ->method('with')
             ->will($this->returnSelf());
-        $this->formMapper->expects($this->exactly(3))
+        $this->formMapper->expects($this->exactly(2))
             ->method('add')
             ->will($this->returnSelf());
 
