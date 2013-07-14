@@ -3,17 +3,20 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow;
 
 use PHPCR\SessionInterface;
+
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Cmf\Bundle\CoreBundle\Twig\TwigExtension;
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+
+use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class PublishWorkflowTest extends BaseTestCase
 {
@@ -23,19 +26,13 @@ class PublishWorkflowTest extends BaseTestCase
     private $pwc;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var TwigExtension
+     * @var CmfExtension
      */
     private $extension;
 
     public function setUp()
     {
-        $this->container = $this->getContainer();
-        $this->pwc = $this->container->get('cmf_core.publish_workflow.checker');
+        $this->pwc = $this->getContainer()->get('cmf_core.publish_workflow.checker');
     }
 
     public function testPublishable()
@@ -77,7 +74,7 @@ class PublishWorkflowTest extends BaseTestCase
             new Role('ROLE_CAN_VIEW_NON_PUBLISHED')
         );
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
-        $context = $this->container->get('security.context');
+        $context = $this->getContainer()->get('security.context');
         $context->setToken($token);
 
         $this->assertTrue($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
@@ -96,7 +93,7 @@ class PublishWorkflowTest extends BaseTestCase
         );
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         /** @var $context SecurityContext */
-        $context = $this->container->get('security.context');
+        $context = $this->getContainer()->get('security.context');
         $context->setToken($token);
 
         $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
