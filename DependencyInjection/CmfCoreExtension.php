@@ -20,11 +20,24 @@ class CmfCoreExtension extends Extension
         $container->setParameter($this->getAlias() . '.document_manager_name', $config['document_manager_name']);
 
         if ($config['publish_workflow']['enabled']) {
-            $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
+            $checker = $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
+        } else {
+            $loader->load('no_publish_workflow.xml');
+            $checker = 'cmf_core.publish_workflow.checker.always';
         }
+        $container->setAlias('cmf_core.publish_workflow.checker', $checker);
     }
 
-    public function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
+    /**
+     * @param $config
+     * @param XmlFileLoader $loader
+     * @param ContainerBuilder $container
+     *
+     * @return string the name of the workflow checker service to alias
+     *
+     * @throws InvalidConfigurationException
+     */
+    private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
         $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
         $loader->load('publish_workflow.xml');
@@ -39,6 +52,8 @@ class CmfCoreExtension extends Extension
             $container->removeDefinition($this->getAlias() . '.admin_extension.publish_workflow.publishable');
             $container->removeDefinition($this->getAlias() . '.admin_extension.publish_workflow.time_period');
         }
+
+        return $config['checker_service'];
     }
 
     /**
