@@ -23,7 +23,7 @@
             <argument>true</argument>
         </service>
 
-        <service id="cmf_core.publish_workflow.checker" class="%cmf_core.publish_workflow.checker_class%">
+        <service id="cmf_core.publish_workflow.checker.default" class="%cmf_core.publish_workflow.checker_class%">
             <argument type="service" id="service_container"/>
             <argument type="service" id="cmf_core.publish_workflow.access_decision_manager"/>
             <argument>%cmf_core.publish_workflow.view_non_published_role%</argument>
