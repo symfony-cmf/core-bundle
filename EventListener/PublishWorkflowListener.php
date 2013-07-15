@@ -29,25 +29,26 @@ class PublishWorkflowListener implements EventSubscriberInterface
      *
      * @var string
      */
-    private $attribute;
+    private $publishWorkflowPermission;
 
     /**
      * @param PublishWorkflowChecker $publishWorkflowChecker
      * @param string                 $attribute              the attribute name to check
      */
-    public function __construct(PublishWorkflowChecker $publishWorkflowChecker, $attribute = 'VIEW')
+    public function __construct(PublishWorkflowChecker $publishWorkflowChecker, $attribute = PublishWorkflowChecker::VIEW_ATTRIBUTE)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
-        $this->attribute = $attribute;
+        $this->publishWorkflowPermission = $attribute;
     }
 
-    public function getAttribute()
+    public function getPublishWorkflowPermission()
     {
-        return $this->attribute;
+        return $this->publishWorkflowPermission;
     }
-    public function setAttribute($attribute)
+
+    public function setPublishWorkflowPermission($attribute)
     {
-        $this->attribute = $attribute;
+        $this->publishWorkflowPermission = $attribute;
     }
 
     /**
@@ -60,12 +61,12 @@ class PublishWorkflowListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $route = $request->attributes->get(DynamicRouter::ROUTE_KEY);
-        if ($route && !$this->publishWorkflowChecker->isGranted($this->getAttribute(), $route)) {
+        if ($route && !$this->publishWorkflowChecker->isGranted($this->getPublishWorkflowPermission(), $route)) {
             throw new NotFoundHttpException('Route not found at: ' . $request->getPathInfo());
         }
 
         $content = $request->attributes->get(DynamicRouter::CONTENT_KEY);
-        if ($content && !$this->publishWorkflowChecker->isGranted($this->getAttribute(), $content)) {
+        if ($content && !$this->publishWorkflowChecker->isGranted($this->getPublishWorkflowPermission(), $content)) {
             throw new NotFoundHttpException('Content not found for: ' . $request->getPathInfo());
         }
     }
