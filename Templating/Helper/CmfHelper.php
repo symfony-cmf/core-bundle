@@ -280,6 +280,9 @@ class CmfHelper extends Helper
                 $children = array_slice($children, $key);
             }
         } else {
+            if (is_string($parent)) {
+                $parent = $this->getDm()->find(null, $parent);
+            }
             $children = $this->getDm()->getChildren($parent, $filter);
         }
 
