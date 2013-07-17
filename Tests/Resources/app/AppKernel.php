@@ -13,7 +13,7 @@ class AppKernel extends TestKernel
 
         $this->addBundles(array(
             new \Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
-            new \Sonata\AdminBundle\SonataAdminBundle(),
+            new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
         ));
     }
 
