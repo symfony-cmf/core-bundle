@@ -4,9 +4,10 @@ namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\FileLocator;
 
 class CmfCoreExtension extends Extension
 {
@@ -26,6 +27,29 @@ class CmfCoreExtension extends Extension
             $checker = 'cmf_core.publish_workflow.checker.always';
         }
         $container->setAlias('cmf_core.publish_workflow.checker', $checker);
+
+        $this->setupFormTypes($container, $loader);
+    }
+
+    /**
+     * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there
+     *
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @param LoaderInterface $loader
+     */
+    public function setupFormTypes(ContainerBuilder $container, LoaderInterface $loader)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['CmfRoutingBundle'])) {
+            $loader->load('form_type.xml');
+
+            // if there is twig, register our form type with twig
+            if ($container->hasParameter('twig.form.resources')) {
+                $resources = $container->getParameter('twig.form.resources');
+                $container->setParameter('twig.form.resources', array_merge($resources, array('CmfCoreBundle:Form:checkbox_url_label_form_type.html.twig')));
+            }
+        }
     }
 
     /**
