@@ -1,0 +1,5 @@
+home:
+    pattern: /
+
+hello:
+    pattern: /hello/{name}
