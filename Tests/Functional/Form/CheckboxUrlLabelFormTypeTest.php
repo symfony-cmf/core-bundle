@@ -20,22 +20,27 @@ class LoadRouteData implements FixtureInterface
     {
         $root = $manager->find(null, '/');
 
+        $test = new Generic;
+        $test->setNodename('test');
+        $test->setParent($root);
+        $manager->persist($test);
+
         $content = new Generic;
         $content->setNodename('content');
-        $content->setParent($root);
+        $content->setParent($test);
         $manager->persist($content);
 
         $aContent = new Content();
-        $aContent->id = '/content/a';
+        $aContent->id = '/test/content/a';
         $manager->persist($aContent);
 
         $bContent = new Content();
-        $bContent->id = '/content/b';
+        $bContent->id = '/test/content/b';
         $manager->persist($bContent);
 
         $cms = new Generic;
         $cms->setNodename('cms');
-        $cms->setParent($root);
+        $cms->setParent($test);
         $manager->persist($cms);
 
         $routes = new Generic;
@@ -61,7 +66,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 {
     public function setUp()
     {
-        $this->getDbManager('phpcr')->loadFixtures(array('\Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form\LoadRouteData'));
+        $this->db('PHPCR')->loadFixtures(array('\Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form\LoadRouteData'));
     }
 
     public function testFormTwigTemplate()
@@ -72,18 +77,13 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
         $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name', 'form')
             ->add('terms', 'cmf_core_checkbox_url_label', array(
                 'label' => '%a% and %b%',
-                'content_ids' => array('%a%' => '/content/a', '%b%' => '/content/b')
+                'content_ids' => array('%a%' => '/test/content/a', '%b%' => '/test/content/b')
             ))
             ->getForm()
             ->createView();
 
         $template = $renderer->renderBlock($view, 'form', array());
         $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b")]');
-    }
-
-    public function tearDown()
-    {
-        $this->getDbManager('phpcr')->purge();
     }
 
     protected function assertMatchesXpath($html, $expression, $count = 1)
