@@ -12,8 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Form type for rendering a checkbox with a label that can contain links to pages
  *
- * Usage: supply an array with content_ids with the form type options. The form type will generate the
- * urls using the router and replace the array keys from the content_ids array with the urls in the form types label
+ * Usage: supply an array with routes information with the form type options. The form type will generate the
+ * urls using the router and replace the array keys from the routes array with the urls in the form types label
  *
  * A typical use case is a checkbox the user needs to check to accept terms that are on a different page that has a
  * dynamic route.
