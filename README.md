@@ -1,4 +1,4 @@
-# Symfony Cmf Core Bundle
+# Symfony Cmf Core Bundle [![Build Status](https://travis-ci.org/symfony-cmf/CoreBundle.png?branch=master)](https://travis-ci.org/symfony-cmf/CoreBundle)
 
 This is part of the Symfony Cmf: <https://github.com/symfony-cmf/symfony-cmf>
 
