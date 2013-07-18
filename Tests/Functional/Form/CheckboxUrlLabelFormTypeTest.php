@@ -82,7 +82,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             ->getForm()
             ->createView();
 
-        $template = $renderer->renderBlock($view, 'form', array());
+        $template = $renderer->searchAndRenderBlock($view, 'widget', array());
         $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b")]');
     }
 
