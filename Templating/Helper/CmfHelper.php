@@ -122,8 +122,13 @@ class CmfHelper extends Helper
     private function getDocument($document, $ignoreRole = false, $class = null)
     {
         if (is_string($document)) {
-            $document = $this->getDm()->find(null, $document);
+            try {
+                $document = $this->getDm()->find(null, $document);
+            } catch (MissingTranslationException $e) {
+                return null;
+            }
         }
+
         if (null !== $ignoreRole && null === $this->publishWorkflowChecker) {
             throw new InvalidConfigurationException('You can not fetch only published documents when the publishWorkflowChecker is not set. Either enable the publish workflow or pass "ignoreRole = null" to skip publication checks.');
         }
@@ -259,31 +264,24 @@ class CmfHelper extends Helper
             return array();
         }
 
-        if ($limit || $offset) {
-            if (is_object($parent)) {
-                $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
+        if (is_object($parent)) {
+            $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
+        }
+        $node = $this->getDm()->getPhpcrSession()->getNode($parent);
+        $children = (array) $node->getNodeNames();
+        foreach ($children as $key => $child) {
+            // filter before fetching data already to save some traffic
+            if (strpos($child, 'phpcr_locale:') === 0) {
+                unset($children[$key]);
             }
-            $node = $this->getDm()->getPhpcrSession()->getNode($parent);
-            $children = (array) $node->getNodeNames();
-            foreach ($children as $key => $child) {
-                // filter before fetching data already to save some traffic
-                if (strpos($child, 'phpcr_locale:') === 0) {
-                    unset($children[$key]);
-                }
-                $children[$key] = "$parent/$child";
+            $children[$key] = "$parent/$child";
+        }
+        if ($offset) {
+            $key = array_search($offset, $children);
+            if (false === $key) {
+                return array();
             }
-            if ($offset) {
-                $key = array_search($offset, $children);
-                if (false === $key) {
-                    return array();
-                }
-                $children = array_slice($children, $key);
-            }
-        } else {
-            if (is_string($parent)) {
-                $parent = $this->getDm()->find(null, $parent);
-            }
-            $children = $this->getDm()->getChildren($parent, $filter);
+            $children = array_slice($children, $key);
         }
 
         $result = array();
@@ -392,11 +390,7 @@ class CmfHelper extends Helper
                 continue;
             }
 
-            try {
-                $child = $this->getDocument(ltrim($path, '/')."/$name", $ignoreRole, $class);
-            } catch (MissingTranslationException $e) {
-                continue;
-            }
+            $child = $this->getDocument(ltrim($path, '/')."/$name", $ignoreRole, $class);
 
             if ($child) {
                 return $child;
