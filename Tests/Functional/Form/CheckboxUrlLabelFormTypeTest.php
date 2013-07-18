@@ -13,7 +13,9 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-
+/**
+ * Fixtures class for test data
+ */
 class LoadRouteData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
@@ -82,7 +84,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             ->getForm()
             ->createView();
 
-        $template = $renderer->renderBlock($view, 'form', array());
+        $template = $renderer->searchAndRenderBlock($view, 'widget', array());
         $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b")]');
     }
 
