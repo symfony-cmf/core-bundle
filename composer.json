@@ -19,6 +19,7 @@
     "require-dev": {
         "symfony-cmf/routing-bundle": "~1.1-dev",
         "symfony-cmf/testing": "~1.0-dev",
+        "symfony/form": "~2.3",
         "sonata-project/admin-bundle": "2.2.*"
     },
     "suggest": {
