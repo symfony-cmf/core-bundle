@@ -30,8 +30,10 @@ class CmfHelperHierarchyTest extends BaseTestCase
         /** @var $session SessionInterface */
         $session = $managerRegistry->getConnection();
         $root = $session->getRootNode();
-        if ($root->hasNode('a')) {
-            $session->removeItem('/a');
+
+        // remove all nodes from '/'
+        foreach ($root->getNodes() as $node) {
+            $session->removeItem($node->getPath());
         }
 
         /*
