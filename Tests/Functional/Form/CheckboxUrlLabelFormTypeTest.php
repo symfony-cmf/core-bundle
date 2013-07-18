@@ -13,7 +13,9 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-
+/**
+ * Fixtures class for test data
+ */
 class LoadRouteData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
