@@ -5,7 +5,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 use Symfony\Cmf\Component\Routing\RouteAwareInterface;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\Content;
 
@@ -78,14 +78,18 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 
         $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name', 'form')
             ->add('terms', 'cmf_core_checkbox_url_label', array(
-                'label' => '%a% and %b%',
-                'content_ids' => array('%a%' => '/test/content/a', '%b%' => '/test/content/b')
+                'label' => '%a% and %b% and %c%',
+                'routes' => array(
+                    '%a%' => array('parameters' =>array('content_id' => '/test/content/a')),
+                    '%b%' => array('parameters' =>array('content_id' => '/test/content/b')),
+                    '%c%' => array('name' => 'hello', 'parameters' => array('name' => 'world'), 'referenceType' => true),
+                )
             ))
             ->getForm()
             ->createView();
 
         $template = $renderer->searchAndRenderBlock($view, 'widget', array());
-        $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b")]');
+        $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b and http://localhost/hello/world")]');
     }
 
     protected function assertMatchesXpath($html, $expression, $count = 1)
