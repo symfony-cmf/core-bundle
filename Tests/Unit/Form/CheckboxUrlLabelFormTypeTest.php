@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Form;
 
 use Symfony\Component\Form\AbstractExtension;
+// compatibility with symfony 2.2 : use the deprecated version of this class
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
