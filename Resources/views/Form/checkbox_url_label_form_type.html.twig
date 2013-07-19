@@ -3,7 +3,7 @@
 {{ form_errors(form) }}
 <label class="checkbox">
     <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-    {{ label | trans(content_paths, translation_domain) | raw }}
+    {{ label | trans(paths, translation_domain) | raw }}
 </label>
 {% endspaceless %}
 {% endblock %}

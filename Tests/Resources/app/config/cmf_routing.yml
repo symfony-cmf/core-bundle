@@ -5,4 +5,5 @@ cmf_routing:
             router.default: 100
     dynamic:
         enabled: true
-        routing_repositoryroot: /test/cms/routes
+        phpcr_provider:
+            route_basepath: /test/cms/routes

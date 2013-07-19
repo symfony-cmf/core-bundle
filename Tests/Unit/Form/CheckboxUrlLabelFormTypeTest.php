@@ -20,7 +20,7 @@ class Router implements RouterInterface
 
     public function generate($name, $parameters = array(), $absolute = false)
     {
-        return '/test'.$parameters['content_id'];
+        return '/test/'.$name;
     }
 }
 
@@ -39,12 +39,12 @@ class CheckboxUrlLabelFormTypeTest extends TypeTestCase
     public function testContentPathsAreSet()
     {
         $checkboxUrlLabelForm = $this->factory->create('cmf_core_checkbox_url_label', null, array(
-            'content_ids' => array('a' => '/content/a', 'b' => '/content/b')
+            'routes' => array('a' => array('name' => 'a'), 'b' => array('name' => 'b'))
         ));
         $view = $checkboxUrlLabelForm->createView();
 
-        $this->assertSame('/test/content/a', $view->vars['content_paths']['a']);
-        $this->assertSame('/test/content/b', $view->vars['content_paths']['b']);
+        $this->assertSame('/test/a', $view->vars['paths']['a']);
+        $this->assertSame('/test/b', $view->vars['paths']['b']);
     }
 
     protected function getExtensions()
