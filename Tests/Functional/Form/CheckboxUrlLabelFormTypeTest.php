@@ -5,7 +5,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 use Symfony\Cmf\Component\Routing\RouteAwareInterface;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\Content;
 
