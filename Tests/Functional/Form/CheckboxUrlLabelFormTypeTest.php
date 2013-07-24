@@ -80,8 +80,8 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             ->add('terms', 'cmf_core_checkbox_url_label', array(
                 'label' => '%a% and %b% and %c%',
                 'routes' => array(
-                    '%a%' => array('parameters' =>array('content_id' => '/test/content/a')),
-                    '%b%' => array('parameters' =>array('content_id' => '/test/content/b')),
+                    '%a%' => array('parameters' => array('content_id' => '/test/content/a')),
+                    '%b%' => array('parameters' => array('content_id' => '/test/content/b')),
                     '%c%' => array('name' => 'hello', 'parameters' => array('name' => 'world'), 'referenceType' => true),
                 )
             ))
