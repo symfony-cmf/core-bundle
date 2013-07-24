@@ -13,7 +13,7 @@ class Content implements RouteAwareInterface
     /** @PHPCRODM\Id */
     public $id;
 
-    /** @PHPCRODM\Referrers(referringDocument="Symfony\Cmf\Bundle\RoutingBundle\Document\Route", referencedBy="routeContent") */
+    /** @PHPCRODM\Referrers(referringDocument="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route", referencedBy="routeContent") */
     public $routes;
 
     public function getId()
