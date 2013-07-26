@@ -53,12 +53,12 @@ class LoadRouteData implements FixtureInterface
         $aRoute = new Route();
         $aRoute->setName('a');
         $aRoute->setParent($routes);
-        $aRoute->setRouteContent($aContent);
+        $aRoute->setContent($aContent);
         $manager->persist($aRoute);
         $bRoute = new Route();
         $bRoute->setName('b');
         $bRoute->setParent($routes);
-        $bRoute->setRouteContent($bContent);
+        $bRoute->setContent($bContent);
         $manager->persist($bRoute);
         $manager->flush();
     }
