@@ -15,6 +15,10 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('document_manager_name')->defaultValue('default')->end()
+                ->arrayNode('locales')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')->end()
+                ->end()
                 ->arrayNode('publish_workflow')
                     ->addDefaultsIfNotSet()
                     ->children()
