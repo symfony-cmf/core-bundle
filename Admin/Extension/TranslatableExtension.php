@@ -41,6 +41,7 @@ class TranslatableExtension extends AdminExtension
         $formMapper
             ->with('form.group_general')
             ->add('locale', 'choice', array(
+                'translation_domain' => 'CmfCoreBundle',
                 'choices' => array_combine($this->locales, $this->locales),
                 'empty_value' => '',
             ))
