@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Model;
+namespace Symfony\Cmf\Bundle\CoreBundle\Translatable;
 
 /**
  * An interface for (potentially) translatable models.

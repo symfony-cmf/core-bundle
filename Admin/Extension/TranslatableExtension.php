@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Cmf\Bundle\CoreBundle\Model\TranslatableInterface;
+use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

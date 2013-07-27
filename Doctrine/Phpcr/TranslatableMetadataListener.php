@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
-use Symfony\Cmf\Bundle\CoreBundle\Model\TranslatableInterface;
+use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 
 /**
  * Metadata listener to remove mapping information that makes fields being
@@ -26,7 +26,7 @@ class TranslatableMetadataListener implements EventSubscriber
         /** @var $meta ClassMetadata */
         $meta = $eventArgs->getClassMetadata();
 
-        if ($meta->getReflectionClass()->implementsInterface('Symfony\Cmf\Bundle\CoreBundle\Model\TranslatableInterface')) {
+        if ($meta->getReflectionClass()->implementsInterface('Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface')) {
             foreach($meta->translatableFields as $field) {
                 unset($meta->mappings[$field]['translated']);
             }
