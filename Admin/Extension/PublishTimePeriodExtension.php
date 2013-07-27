@@ -20,7 +20,7 @@ class PublishTimePeriodExtension extends AdminExtension
         );
 
         $formMapper->with('form.group_publish_workflow', array(
-            'translation_domain' => 'CmfCoreBundle'
+            'translation_domain' => 'CmfCoreBundle',
             ))
             ->add('publish_start_date', 'date', $dateOptions, array(
                 'help' => 'form.help_publish_start_date',

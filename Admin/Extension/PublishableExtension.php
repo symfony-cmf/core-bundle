@@ -15,7 +15,7 @@ class PublishableExtension extends AdminExtension
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->with('form.group_publish_workflow', array(
-            'translation_domain' => 'CmfCoreBundle'
+            'translation_domain' => 'CmfCoreBundle',
             ))
             ->add('publishable', 'checkbox', array(
                 'required' => false,
