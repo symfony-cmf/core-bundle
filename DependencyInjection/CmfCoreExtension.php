@@ -28,6 +28,13 @@ class CmfCoreExtension extends Extension
         }
         $container->setAlias('cmf_core.publish_workflow.checker', $checker);
 
+        if (isset($config['multilang'])) {
+            $container->setParameter($this->getAlias() . '.multilang.locales', $config['multilang']['locales']);
+            $loader->load('translatable.xml');
+        } else {
+            $loader->load('translatable-disabled.xml');
+        }
+
         $this->setupFormTypes($container, $loader);
     }
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* **2013-07-26**: The CoreBundle now supports translatable models. For
+  phpcr-odm you need to configure the locales or a metadata listener will
+  convert the properties to not translated.
+
 * **2013-06-20**: [PublishWorkflow] The PublishWorkflowChecker now implements
   SecurityContextInterface and the individual checks are moved to voters.
   Use the service cmf_core.publish_workflow.checker and call
