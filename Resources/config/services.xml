@@ -5,6 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="cmf_core.manager_name">default</parameter>
         <parameter key="cmf_core.twig_extension_class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension</parameter>
         <parameter key="cmf_core.templating.helper_class">Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper</parameter>
         <parameter key="cmf_core.listener.request_aware_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
@@ -20,7 +21,7 @@
         <service id="cmf_core.templating.helper" class="%cmf_core.templating.helper_class%">
             <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
             <argument type="service" id="doctrine_phpcr" on-invalid="ignore"/>
-            <argument>%cmf_core.document_manager_name%</argument>
+            <argument>%cmf_core.manager_name%</argument>
         </service>
 
         <service id="cmf_core.listener.request_aware" class="%cmf_core.listener.request_aware_class%">

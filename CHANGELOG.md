@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2013-07-29**: [DependencyInjection] Implemented PrependExtensionInterface
+* **2013-07-29**: [DependencyInjection] Renamed config item `document_manager_name` to `persistence.phpcr.manager_name`
+
 * **2013-07-26**: The CoreBundle now supports translatable models. For
   phpcr-odm you need to configure the locales or a metadata listener will
   convert the properties to not translated.
