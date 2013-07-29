@@ -62,6 +62,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                     case 'cmf_blog':
                         $prependConfig = array(
                             'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
+                            'blog_basepath' => $persistenceConfig['basepath'].'/content',
                         );
                         break;
                     case 'cmf_content':
