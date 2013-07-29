@@ -5,5 +5,7 @@ cmf_routing:
             router.default: 100
     dynamic:
         enabled: true
-        phpcr_provider:
-            route_basepath: /test/cms/routes
+        persistence:
+            phpcr:
+                enabled: true
+                route_basepath: /test/cms/routes

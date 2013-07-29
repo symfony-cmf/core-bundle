@@ -8,7 +8,7 @@ php:
 env:
   - SYMFONY_VERSION=2.2.*
   - SYMFONY_VERSION=2.3.*
-#  - SYMFONY_VERSION=dev-master
+  - SYMFONY_VERSION=dev-master
 
 before_script:
   - composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
@@ -19,3 +19,7 @@ script: phpunit --coverage-text
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
   email: "symfony-cmf-devs@googlegroups.com"
+
+matrix:
+  allow_failures:
+    - env: SYMFONY_VERSION=dev-master
