@@ -433,6 +433,8 @@ class CmfHelper extends Helper
                 return $result;
             }
         }
+
+        return null;
     }
 
     /**
@@ -619,7 +621,7 @@ class CmfHelper extends Helper
     /**
      * Gets the previous document.
      *
-     * @param string|object      $path       document instance or path from which to search
+     * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param Boolean            $ignoreRole if to ignore the role
@@ -639,7 +641,7 @@ class CmfHelper extends Helper
     /**
      * Gets the next document.
      *
-     * @param string|object      $path       document instance or path from which to search
+     * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param Boolean            $ignoreRole if to ignore the role
@@ -659,7 +661,7 @@ class CmfHelper extends Helper
     /**
      * Gets the previous linkable document.
      *
-     * @param string|object      $path       document instance or path from which to search
+     * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param Boolean            $ignoreRole if to ignore the role
@@ -674,7 +676,7 @@ class CmfHelper extends Helper
     /**
      * Gets the next linkable document.
      *
-     * @param string|object      $path       document instance or path from which to search
+     * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param Boolean            $ignoreRole if to ignore the role

@@ -4,8 +4,6 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow;
 
 use PHPCR\SessionInterface;
 
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;

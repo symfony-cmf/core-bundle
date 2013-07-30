@@ -2,7 +2,6 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
 
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
 use PHPCR\SessionInterface;

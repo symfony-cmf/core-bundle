@@ -160,7 +160,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     /**
      * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there
      *
-     * @param array $config
      * @param ContainerBuilder $container
      * @param LoaderInterface $loader
      */

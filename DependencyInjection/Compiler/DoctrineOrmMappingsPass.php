@@ -71,7 +71,7 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string   $enabledParameter  Service container parameter that must be present to
+     * @param boolean|string $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      */

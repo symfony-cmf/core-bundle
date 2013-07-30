@@ -70,7 +70,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
      *      We cannot inject the security context directly as this would lead
      *      to a circular reference.
      * @param AccessDecisionManagerInterface $accessDecisionManager
-     * @param string $bypassingRole A role that is allowed to bypass the
+     * @param boolean|string $bypassingRole A role that is allowed to bypass the
      *      published check if we ask for the VIEW attribute  .
      */
     public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
