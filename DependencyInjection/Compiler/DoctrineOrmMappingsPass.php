@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
  * Forward compatibility class to work with Symfony < 2.3 and/or
  * Doctrine ORM bundle < 1.2.1
  *
- * @author David Buchmann <david@liip.ch>
+ * @author David Buchmann <mail@davidbu.ch>
  */
 class DoctrineOrmMappingsPass implements CompilerPassInterface
 {
@@ -51,6 +51,13 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return string
+     *
+     * @throws ParameterNotFoundException
+     */
     protected function getChainDriverServiceName(ContainerBuilder $container)
     {
         foreach ($this->managerParameters as $param) {

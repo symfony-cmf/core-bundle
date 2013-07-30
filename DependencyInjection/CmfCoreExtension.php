@@ -13,9 +13,10 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 class CmfCoreExtension extends Extension implements PrependExtensionInterface
 {
     /**
-     * Allow an extension to prepend the extension configurations.
+     * Prepend persistence, multilang and other common configuration to all cmf
+     * bundles.
      *
-     * @param ContainerBuilder $container
+     * {@inheritDoc}
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -135,6 +136,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
@@ -167,7 +171,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there
      *
      * @param ContainerBuilder $container
-     * @param LoaderInterface $loader
+     * @param LoaderInterface  $loader
      */
     public function setupFormTypes(ContainerBuilder $container, LoaderInterface $loader)
     {
@@ -184,8 +188,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * Load and configure the publish workflow services.
+     *
      * @param $config
-     * @param XmlFileLoader $loader
+     * @param XmlFileLoader    $loader
      * @param ContainerBuilder $container
      *
      * @return string the name of the workflow checker service to alias
@@ -212,15 +218,16 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
+     * {@inheritDoc}
      */
     public function getXsdValidationBasePath()
     {
         return __DIR__.'/../Resources/config/schema';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getNamespace()
     {
         return 'http://cmf.symfony.com/schema/dic/core';

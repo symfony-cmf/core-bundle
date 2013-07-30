@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -46,7 +45,7 @@ class PublishableVoter implements VoterInterface
         }
 
         $decision = self::ACCESS_GRANTED;
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             if (! $this->supportsAttribute($attribute)) {
                 // there was an unsupported attribute in the request.
                 // now we only abstain or deny if we find a supported attribute

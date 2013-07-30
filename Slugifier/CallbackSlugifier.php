@@ -12,9 +12,9 @@ class CallbackSlugifier implements SlugifierInterface
     protected $callback;
 
     /**
-     * See http://php.net/manual/en/language.types.callable.php
+     * @see http://php.net/manual/en/language.types.callable.php
      *
-     * @param mixed Php callback
+     * @param mixed $callback
      */
     public function __construct($callback)
     {
@@ -29,4 +29,3 @@ class CallbackSlugifier implements SlugifierInterface
         return call_user_func($this->callback, $string);
     }
 }
-

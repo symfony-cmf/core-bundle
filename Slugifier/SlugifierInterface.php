@@ -18,4 +18,3 @@ interface SlugifierInterface
      */
     public function slugify($string);
 }
-

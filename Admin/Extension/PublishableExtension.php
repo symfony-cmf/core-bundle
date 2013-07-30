@@ -12,6 +12,9 @@ use Sonata\AdminBundle\Form\FormMapper;
  */
 class PublishableExtension extends AdminExtension
 {
+    /**
+     * {@inheritDoc}
+     */
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->with('form.group_publish_workflow', array(

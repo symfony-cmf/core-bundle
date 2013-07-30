@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddPublishedVotersPass implements CompilerPassInterface
 {
     /**
+     * Register all cmf_published_voter services.
+     *
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)

@@ -17,7 +17,6 @@ class CmfExtensionTest extends \PHPUnit_Framework_TestCase
         $this->env->addExtension($this->cmfExtension);
     }
 
-
     public function testFunctions()
     {
         $functions = $this->cmfExtension->getFunctions();

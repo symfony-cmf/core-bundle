@@ -6,8 +6,6 @@ use Symfony\Component\Form\AbstractExtension;
 // compatibility with symfony 2.2 : use the deprecated version of this class
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 

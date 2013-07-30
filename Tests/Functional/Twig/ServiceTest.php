@@ -13,4 +13,3 @@ class ServiceTest extends BaseTestCase
         $this->assertNotEmpty($ext);
     }
 }
-

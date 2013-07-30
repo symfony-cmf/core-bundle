@@ -41,11 +41,17 @@ class PublishWorkflowListener implements EventSubscriberInterface
         $this->publishWorkflowPermission = $attribute;
     }
 
+    /**
+     * @return string
+     */
     public function getPublishWorkflowPermission()
     {
         return $this->publishWorkflowPermission;
     }
 
+    /**
+     * @param string $attribute specify what permission to check, typically VIEW or VIEW_ANONYMOUS
+     */
     public function setPublishWorkflowPermission($attribute)
     {
         $this->publishWorkflowPermission = $attribute;
@@ -76,7 +82,7 @@ class PublishWorkflowListener implements EventSubscriberInterface
      *
      * @return array
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::REQUEST => array(array('onKernelRequest', 1)),

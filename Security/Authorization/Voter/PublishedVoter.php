@@ -2,7 +2,6 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -57,7 +56,7 @@ class PublishedVoter implements VoterInterface
         if (!$this->supportsClass(get_class($object))) {
             return self::ACCESS_ABSTAIN;
         }
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             if (! $this->supportsAttribute($attribute)) {
                 return self::ACCESS_ABSTAIN;
             }

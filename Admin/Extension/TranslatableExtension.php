@@ -7,7 +7,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Admin extension to add publish workflow time period fields.
@@ -22,13 +21,16 @@ class TranslatableExtension extends AdminExtension
     protected $locales;
 
     /**
-     * @param array  $locales
+     * @param array $locales
      */
     public function __construct($locales)
     {
         $this->locales = $locales;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -36,6 +38,9 @@ class TranslatableExtension extends AdminExtension
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -49,6 +54,11 @@ class TranslatableExtension extends AdminExtension
         ;
     }
 
+    /**
+     * Sanity check and default locale to request locale.
+     *
+     * {@inheritDoc}
+     */
     public function alterNewInstance(AdminInterface $admin, $object)
     {
         if (!$object instanceof TranslatableInterface) {

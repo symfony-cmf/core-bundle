@@ -10,25 +10,36 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Form type for rendering a checkbox with a label that can contain links to pages
+ * Form type for rendering a checkbox with a label that can contain links to
+ * pages.
  *
- * Usage: supply an array with routes information with the form type options. The form type will generate the
- * urls using the router and replace the array keys from the routes array with the urls in the form types label
+ * Usage: supply an array with routes information with the form type options.
+ * The form type will generate the urls using the router and replace the array
+ * keys from the routes array with the urls in the form types label.
  *
- * A typical use case is a checkbox the user needs to check to accept terms that are on a different page that has a
- * dynamic route.
+ * A typical use case is a checkbox the user needs to check to accept terms
+ * that are on a different page that has a dynamic route.
  *
  * @author Uwe Jäger <uwej711@googlemail.com>
  */
 class CheckboxUrlLabelFormType extends AbstractType
 {
+    /**
+     * @var RouterInterface
+     */
     protected $router;
 
+    /**
+     * @param RouterInterface $router
+     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $routes = $options['routes'];
@@ -43,6 +54,9 @@ class CheckboxUrlLabelFormType extends AbstractType
         parent::buildView($view, $form, $options);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -51,15 +65,16 @@ class CheckboxUrlLabelFormType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritDoc}
      */
     public function getName()
     {
         return 'cmf_core_checkbox_url_label';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getParent()
     {
         return 'checkbox';

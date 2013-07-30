@@ -7,8 +7,6 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The publish workflow decides if a content is allowed to be shown. Contrary
@@ -70,8 +68,9 @@ class PublishWorkflowChecker implements SecurityContextInterface
      *      We cannot inject the security context directly as this would lead
      *      to a circular reference.
      * @param AccessDecisionManagerInterface $accessDecisionManager
-     * @param boolean|string $bypassingRole A role that is allowed to bypass the
-     *      published check if we ask for the VIEW attribute  .
+     * @param boolean|string                 $bypassingRole         A role that
+     *      is allowed to bypass the published check if we ask for the VIEW
+     *      attribute.
      */
     public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {

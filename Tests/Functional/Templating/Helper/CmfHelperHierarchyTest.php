@@ -2,8 +2,6 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
-
 use PHPCR\SessionInterface;
 
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
@@ -18,9 +16,9 @@ class CmfHelperHierarchyTest extends BaseTestCase
     private $pwc;
 
     /**
-     * @var CmfExtension
+     * @var CmfHelper
      */
-    private $extension;
+    private $helper;
 
     public function setUp()
     {
@@ -68,18 +66,18 @@ class CmfHelperHierarchyTest extends BaseTestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->extension = new CmfHelper($this->pwc, $managerRegistry, 'default');
+        $this->helper = new CmfHelper($this->pwc, $managerRegistry, 'default');
     }
 
     public function testGetDescendants()
     {
-        $this->assertEquals(array(), $this->extension->getDescendants(null));
+        $this->assertEquals(array(), $this->helper->getDescendants(null));
 
         $expected = array('/a/b', '/a/b/c', '/a/b/d', '/a/b/e', '/a/f', '/a/f/g', '/a/f/g/h', '/a/i');
-        $this->assertEquals($expected, $this->extension->getDescendants('/a'));
+        $this->assertEquals($expected, $this->helper->getDescendants('/a'));
 
         $expected = array('/a/b', '/a/f', '/a/i');
-        $this->assertEquals($expected, $this->extension->getDescendants('/a', 1));
+        $this->assertEquals($expected, $this->helper->getDescendants('/a', 1));
     }
 
     /**
@@ -87,7 +85,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
      */
     public function testGetPrev($expected, $path, $anchor = null, $depth = null, $class = 'Doctrine\ODM\PHPCR\Document\Generic')
     {
-        $prev = $this->extension->getPrev($path, $anchor, $depth);
+        $prev = $this->helper->getPrev($path, $anchor, $depth);
         if (null === $expected) {
             $this->assertNull($prev);
         } else {
@@ -126,7 +124,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
      */
     public function testGetNext($expected, $path, $anchor = null, $depth = null, $class = 'Doctrine\ODM\PHPCR\Document\Generic')
     {
-        $next = $this->extension->getNext($path, $anchor, $depth);
+        $next = $this->helper->getNext($path, $anchor, $depth);
         if (null === $expected) {
             $this->assertNull($next);
         } else {
@@ -166,7 +164,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
      */
     public function testGetPrevLinkable($expected, $path, $anchor = null, $depth = null)
     {
-        $prev = $this->extension->getPrevLinkable($path, $anchor, $depth);
+        $prev = $this->helper->getPrevLinkable($path, $anchor, $depth);
         if (null === $expected) {
             $this->assertNull($prev);
         } else {
@@ -191,7 +189,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
      */
     public function testGetNextLinkable($expected, $path, $anchor = null, $depth = null)
     {
-        $next = $this->extension->getNextLinkable($path, $anchor, $depth);
+        $next = $this->helper->getNextLinkable($path, $anchor, $depth);
         if (null === $expected) {
             $this->assertNull($next);
         } else {

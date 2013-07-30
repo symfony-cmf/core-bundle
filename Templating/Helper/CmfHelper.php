@@ -3,15 +3,13 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
 use PHPCR\Util\PathHelper;
-
-use Symfony\Component\Templating\Helper\Helper;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
+use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 
 /**
  * Provides CMF helper functions.
@@ -34,8 +32,8 @@ class CmfHelper extends Helper
      * Instantiates the content controller.
      *
      * @param SecurityContextInterface $publishWorkflowChecker
-     * @param ManagerRegistry $registry
-     * @param string $objectManagerName
+     * @param ManagerRegistry          $registry
+     * @param string                   $objectManagerName
      */
     public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $objectManagerName = null)
     {
@@ -66,7 +64,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param object $document
+     * @param  object         $document
      * @return boolean|string node name or false if the document is not in the unit of work
      */
     public function getNodeName($document)
@@ -75,7 +73,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param object $document
+     * @param  object         $document
      * @return boolean|string node name or false if the document is not in the unit of work
      */
     public function getParentPath($document)
@@ -84,7 +82,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param object $document
+     * @param  object         $document
      * @return boolean|string path or false if the document is not in the unit of work
      */
     public function getPath($document)
@@ -145,11 +143,11 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param array          $paths       list of paths
-     * @param int|Boolean    $limit       int limit or false
-     * @param string|Boolean $offset      string node name to which to skip to or false
-     * @param Boolean|null   $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string    $class       class name to filter on
+     * @param array          $paths      list of paths
+     * @param int|Boolean    $limit      int limit or false
+     * @param string|Boolean $offset     string node name to which to skip to or false
+     * @param Boolean|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * @param null|string    $class      class name to filter on
      *
      * @return array
      */
@@ -204,8 +202,8 @@ class CmfHelper extends Helper
     /**
      * Get the locales of the document
      *
-     * @param string|object $document         Document instance or path
-     * @param Boolean       $includeFallbacks
+     * @param  string|object $document         Document instance or path
+     * @param  Boolean       $includeFallbacks
      * @return array
      */
     public function getLocalesFor($document, $includeFallbacks = false)
@@ -249,12 +247,12 @@ class CmfHelper extends Helper
     /**
      * Gets child documents.
      *
-     * @param string|object  $parent      parent path/document
-     * @param int|Boolean    $limit       int limit or false
-     * @param string|Boolean $offset      string node name to which to skip to or false
-     * @param null|string    $filter      child filter
-     * @param Boolean|null   $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string    $class       class name to filter on
+     * @param string|object  $parent     parent path/document
+     * @param int|Boolean    $limit      int limit or false
+     * @param string|Boolean $offset     string node name to which to skip to or false
+     * @param null|string    $filter     child filter
+     * @param Boolean|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * @param null|string    $class      class name to filter on
      *
      * @return array
      */
@@ -312,11 +310,11 @@ class CmfHelper extends Helper
     /**
      * Gets linkable child documents.
      *
-     * @param string|object  $parent      parent path/document
-     * @param int|Boolean    $limit       int limit or false
-     * @param string|Boolean $offset      string node name to which to skip to or false
-     * @param null|string    $filter      child filter
-     * @param Boolean|null   $ignoreRole  if the role should be ignored or null if publish workflow should be ignored
+     * @param string|object  $parent     parent path/document
+     * @param int|Boolean    $limit      int limit or false
+     * @param string|Boolean $offset     string node name to which to skip to or false
+     * @param null|string    $filter     child filter
+     * @param Boolean|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
      *
      * @return array
      */
@@ -376,10 +374,10 @@ class CmfHelper extends Helper
     /**
      * Check children for a possible following document
      *
-     * @param array        $childNames
-     * @param string       $path
-     * @param Boolean      $ignoreRole
-     * @param null|string  $class
+     * @param array       $childNames
+     * @param string      $path
+     * @param Boolean     $ignoreRole
+     * @param null|string $class
      *
      * @return null|object
      */
@@ -615,6 +613,7 @@ class CmfHelper extends Helper
 
         $key = array_search($node->getName(), $childNames);
         $childNames = array_slice($childNames, $key + 1);
+
         return $this->checkChildren($childNames, $parentNode->getPath(), $ignoreRole, $class);
     }
 

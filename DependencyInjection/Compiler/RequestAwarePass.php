@@ -17,9 +17,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class RequestAwarePass implements CompilerPassInterface
 {
     /**
-     * Adds services tagged with cmf_request_aware to the RequestAwareListener
-     *
-     * @param ContainerBuilder $container
+     * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
@@ -29,6 +27,12 @@ class RequestAwarePass implements CompilerPassInterface
             $this->makeSynchronized($container);
         }
     }
+
+    /**
+     * Configure the request synchronizer for symfony 2.2
+     *
+     * @param ContainerBuilder $container
+     */
     private function configureSynchronizer(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('cmf_core.listener.request_aware')) {
@@ -42,6 +46,11 @@ class RequestAwarePass implements CompilerPassInterface
         }
     }
 
+    /**
+     * Make the tagged services synchronized for symfony 2.3 and later.
+     *
+     * @param ContainerBuilder $container
+     */
     private function makeSynchronized(ContainerBuilder $container)
     {
         $services = $container->findTaggedServiceIds('cmf_request_aware');

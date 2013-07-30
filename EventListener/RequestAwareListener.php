@@ -3,7 +3,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -22,7 +22,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class RequestAwareListener implements EventSubscriberInterface
 {
+    /**
+     * List of services that must have a setRequest method.
+     *
+     * @var array
+     */
     private $services = array();
+    /**
+     * @var Request[]
+     */
     private $requestStack = array();
 
     public function onKernelRequest(GetResponseEvent $event)

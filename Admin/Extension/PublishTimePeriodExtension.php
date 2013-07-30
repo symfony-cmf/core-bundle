@@ -12,6 +12,9 @@ use Sonata\AdminBundle\Form\FormMapper;
  */
 class PublishTimePeriodExtension extends AdminExtension
 {
+    /**
+     * {@inheritDoc}
+     */
     public function configureFormFields(FormMapper $formMapper)
     {
         $dateOptions = array(
