@@ -5,26 +5,26 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_core.manager_name">default</parameter>
-        <parameter key="cmf_core.twig_extension_class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension</parameter>
-        <parameter key="cmf_core.templating.helper_class">Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper</parameter>
-        <parameter key="cmf_core.listener.request_aware_class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
+        <parameter key="cmf_core.manager_name">null</parameter>
+        <parameter key="cmf_core.twig_extension.class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension</parameter>
+        <parameter key="cmf_core.templating.helper.class">Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper</parameter>
+        <parameter key="cmf_core.listener.request_aware.class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
     </parameters>
 
     <services>
 
-        <service id="cmf_core.twig.children_extension" class="%cmf_core.twig_extension_class%">
+        <service id="cmf_core.twig.children_extension" class="%cmf_core.twig_extension.class%">
             <argument type="service" id="cmf_core.templating.helper"/>
             <tag name="twig.extension"/>
         </service>
 
-        <service id="cmf_core.templating.helper" class="%cmf_core.templating.helper_class%">
+        <service id="cmf_core.templating.helper" class="%cmf_core.templating.helper.class%">
             <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
             <argument type="service" id="doctrine_phpcr" on-invalid="ignore"/>
             <argument>%cmf_core.manager_name%</argument>
         </service>
 
-        <service id="cmf_core.listener.request_aware" class="%cmf_core.listener.request_aware_class%">
+        <service id="cmf_core.listener.request_aware" class="%cmf_core.listener.request_aware.class%">
             <tag name="kernel.event_subscriber"/>
         </service>
 

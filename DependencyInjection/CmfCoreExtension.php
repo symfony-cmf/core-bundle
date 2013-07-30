@@ -75,6 +75,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
+                                    // the ContentBundle does not use the manager directly
                                 )
                             )
                         );
@@ -146,11 +147,11 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
+        if (!empty($config['phpcr']['enabled'])) {
+            $container->setParameter($this->getAlias() . '.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
+        }
         if ($config['publish_workflow']['enabled']) {
             $checker = $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
-            if (!empty($config['phpcr']['enabled'])) {
-                $container->setParameter($this->getAlias() . '.manager_name', $config['persistence']['phpcr']['manager_name']);
-            }
         } else {
             $loader->load('no_publish_workflow.xml');
             $checker = 'cmf_core.publish_workflow.checker.always';

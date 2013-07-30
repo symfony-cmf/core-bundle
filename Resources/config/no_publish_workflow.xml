@@ -5,12 +5,12 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_core.publish_workflow.checker_class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\AlwaysPublishedWorkflowChecker</parameter>
+        <parameter key="cmf_core.publish_workflow.checker.class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\AlwaysPublishedWorkflowChecker</parameter>
     </parameters>
 
     <services>
 
-        <service id="cmf_core.publish_workflow.checker.always" class="%cmf_core.publish_workflow.checker_class%"/>
+        <service id="cmf_core.publish_workflow.checker.always" class="%cmf_core.publish_workflow.checker.class%"/>
 
     </services>
 </container>
