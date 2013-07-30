@@ -22,12 +22,12 @@
         <source>form.label_locale</source>
         <target>Locale</target>
       </trans-unit>
-      <trans-unit id="help_publish_start_date">
-        <source>help_publish_start_date</source>
+      <trans-unit id="form.help_publish_start_date">
+        <source>form.help_publish_start_date</source>
         <target>Only publish on or after this date, leave empty to immediately publish</target>
       </trans-unit>
-      <trans-unit id="help_publish_end_date">
-        <source>help_publish_end_date</source>
+      <trans-unit id="form.help_publish_end_date">
+        <source>form.help_publish_end_date</source>
         <target>Only publish before this date, leave empty to not end publishing</target>
       </trans-unit>
       <trans-unit id="list.label_locales">
