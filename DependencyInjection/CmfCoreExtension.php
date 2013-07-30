@@ -33,7 +33,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         break;
                     case 'cmf_content':
                     case 'cmf_menu':
-                    case 'cmf_simple_cms':
+#                    case 'cmf_simple_cms':
                         $container->prependExtensionConfig($name, $prependConfig);
                         break;
                 }
@@ -51,6 +51,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                 $prependConfig = array();
 
                 switch ($name) {
+/*
                     case 'cmf_block':
                         $prependConfig = array(
                             'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
@@ -65,6 +66,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'blog_basepath' => $persistenceConfig['basepath'].'/content',
                         );
                         break;
+*/
                     case 'cmf_content':
                         $prependConfig = array(
                             'persistence' => array(
@@ -76,6 +78,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             )
                         );
                         break;
+/*
                     case 'cmf_create':
                         $prependConfig = array(
                             'phpcr_odm' => true,
@@ -84,6 +87,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             ),
                         );
                         break;
+*/
                     case 'cmf_menu':
                         $prependConfig = array(
                             'persistence' => array(
@@ -113,6 +117,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             )
                         );
                         break;
+/*
                     case 'cmf_simple_cms':
                         $prependConfig = array(
                             'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
@@ -120,6 +125,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'manager_name' => $persistenceConfig['manager_name'],
                         );
                         break;
+*/
                 }
 
                 if ($prependConfig) {
