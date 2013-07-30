@@ -35,7 +35,7 @@ class CmfExtension extends \Twig_Extension
             new \Twig_SimpleFunction('cmf_document_locales', array($this->cmfHelper, 'getLocalesFor')),
         );
 
-        if (interface_exists('Symfony\Cmf\Component\Routing\RouteAwareInterface')) {
+        if (interface_exists('Symfony\Cmf\Component\Routing\RouteReferrersInterface')) {
             $functions = array_merge($functions, array(
                 new \Twig_SimpleFunction('cmf_prev_linkable', array($this->cmfHelper, 'getPrevLinkable')),
                 new \Twig_SimpleFunction('cmf_next_linkable', array($this->cmfHelper, 'getNextLinkable')),

@@ -2,13 +2,13 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document;
 
-use Symfony\Cmf\Component\Routing\RouteAwareInterface;
+use Symfony\Cmf\Component\Routing\RouteReferrersInterface;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 
 /**
  * @PHPCRODM\Document(referenceable=true)
  */
-class Content implements RouteAwareInterface
+class Content implements RouteReferrersInterface
 {
     /** @PHPCRODM\Id */
     public $id;
