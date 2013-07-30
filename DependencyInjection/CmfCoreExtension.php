@@ -153,7 +153,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         if ($config['publish_workflow']['enabled']) {
             $checker = $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
         } else {
-            $loader->load('no_publish_workflow.xml');
+            $loader->load('no-publish-workflow.xml');
             $checker = 'cmf_core.publish_workflow.checker.always';
         }
         $container->setAlias('cmf_core.publish_workflow.checker', $checker);
@@ -178,7 +178,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     {
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['CmfRoutingBundle'])) {
-            $loader->load('form_type.xml');
+            $loader->load('form-type.xml');
 
             // if there is twig, register our form type with twig
             if ($container->hasParameter('twig.form.resources')) {
@@ -202,7 +202,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
         $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
-        $loader->load('publish_workflow.xml');
+        $loader->load('publish-workflow.xml');
 
         if (!$config['request_listener']) {
             $container->removeDefinition($this->getAlias() . '.publish_workflow.request_listener');
