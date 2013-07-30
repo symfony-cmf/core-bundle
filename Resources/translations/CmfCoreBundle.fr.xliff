@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="CmfCoreBundle.en.xliff">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="CmfCoreBundle.en.xliff">
     <body>
       <trans-unit id="form.group_publish_workflow">
         <source>form.group_publish_workflow</source>
-        <target>Publish Workflow</target>
+        <target>Publication</target>
       </trans-unit>
       <trans-unit id="form.label_publishable">
         <source>form.label_publishable</source>
-        <target>Publishable</target>
+        <target>Peut être publié</target>
       </trans-unit>
       <trans-unit id="form.label_publish_start_date">
         <source>form.label_publish_start_date</source>
-        <target>Publish from</target>
+        <target>Publier dés</target>
       </trans-unit>
       <trans-unit id="form.label_publish_end_date">
         <source>form.label_publish_end_date</source>
-        <target>Publish until</target>
+        <target>Publier jusque à</target>
       </trans-unit>
       <trans-unit id="form.label_locale">
         <source>form.label_locale</source>
-        <target>Locale</target>
+        <target>Langue</target>
       </trans-unit>
       <trans-unit id="help_publish_start_date">
         <source>help_publish_start_date</source>
-        <target>Only publish on or after this date, leave empty to immediately publish</target>
+        <target>Seulement publier après cette date. Laissez vide pour publier immediatement</target>
       </trans-unit>
       <trans-unit id="help_publish_end_date">
         <source>help_publish_end_date</source>
-        <target>Only publish before this date, leave empty to not end publishing</target>
+        <target>Ne pas publier avant cette date. Laissez vide pour ne pas arreter de publier</target>
       </trans-unit>
       <trans-unit id="list.label_locales">
         <source>list.label_locales</source>
-        <target>Locales</target>
+        <target>Langues</target>
       </trans-unit>
     </body>
   </file>
