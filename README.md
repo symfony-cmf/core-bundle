@@ -42,12 +42,3 @@ for a guide to running the tests.
 
 Thanks to
 [everyone who has contributed](https://github.com/symfony-cmf/CoreBundle/contributors) already.
-
-
-## Contributing
-
-Pull requests are welcome. Please see our [CONTRIBUTING](https://github.com/symfony-cmf/symfony-cmf/blob/master/CONTRIBUTING.md) guide.
-
-Unit and/or functional tests exist for this bundle. See the [Testing documentation](http://symfony.com/doc/master/cmf/components/testing.html) for a guide to running the tests.
-
-Thanks to [everyone who has contributed](https://github.com/symfony-cmf/FooBundle/contributors) already.
