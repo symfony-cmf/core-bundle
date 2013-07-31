@@ -320,7 +320,7 @@ class CmfHelper extends Helper
      */
     public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false)
     {
-        return $this->getChildren($parent, $limit, $offset, $filter, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersInterface');
+        return $this->getChildren($parent, $limit, $offset, $filter, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
     }
 
     /**
@@ -669,7 +669,7 @@ class CmfHelper extends Helper
      */
     public function getPrevLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
     {
-        return $this->getPrev($current, $anchor, $depth, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersInterface');
+        return $this->getPrev($current, $anchor, $depth, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
     }
 
     /**
@@ -684,6 +684,6 @@ class CmfHelper extends Helper
      */
     public function getNextLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
     {
-        return $this->getNext($current, $anchor, $depth, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersInterface');
+        return $this->getNext($current, $anchor, $depth, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
     }
 }
