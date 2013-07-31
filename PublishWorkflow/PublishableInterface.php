@@ -3,20 +3,14 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
 /**
- * Interface for a binary publishable flag.
- *
- * If the flag is false, the content is not published, if it is true it is
- * published if no other voter objects.
+ * Interface to expose editable publishable flag.
  */
-interface PublishableInterface
+interface PublishableInterface extends PublishableReadInterface
 {
     /**
-     * Whether this content is publishable at all.
+     * Set the boolean flag whether this content is publishable or not.
      *
-     * A false value indicates that the content is not published. True means it
-     * is allowed to show this content.
-     *
-     * @return boolean
+     * @param boolean $publishable
      */
-    public function isPublishable();
+    public function setPublishable($publishable);
 }

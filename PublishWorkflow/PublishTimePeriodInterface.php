@@ -3,30 +3,29 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
 /**
- * Interface for time period based publish checking.
- *
- * Both start and end date are optional, with null being interpreted as always
- * started resp. never ending.
+ * Interface to expose editable time period publishing information.
  */
-interface PublishTimePeriodInterface
+interface PublishTimePeriodInterface extends PublishTimePeriodReadInterface
 {
     /**
-     * Return the date from which the content should be published.
+     * Set the date from which the content should
+     * be considered publishable.
      *
-     * A NULL value is interpreted as a date in the past, meaning the content
-     * is publishable unless publish end date is set and in the past.
+     * Setting a NULL value asserts that the content
+     * has always been publishable.
      *
-     * @return \DateTime|null
+     * @param \DateTime|null $publishDate
      */
-    public function getPublishStartDate();
+    public function setPublishStartDate(\DateTime $publishDate = null);
 
     /**
-     * Return the date at which the content should stop being published.
+     * Set the date at which the content should
+     * stop being published.
      *
-     * A NULL value is interpreted as saying that the document will
-     * never end being publishable.
+     * Setting a NULL value asserts that the
+     * content will always be publishable.
      *
-     * @return \DateTime|null
+     * @param \DateTime|null $publishDate
      */
-    public function getPublishEndDate();
+    public function setPublishEndDate(\DateTime $publishDate = null);
 }
