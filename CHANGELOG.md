@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.0.0-RC1
+---------
+
 * **2013-07-29**: [DependencyInjection] Implemented PrependExtensionInterface
 * **2013-07-29**: [DependencyInjection] Renamed config item `document_manager_name` to `persistence.phpcr.manager_name`
 

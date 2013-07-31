@@ -17,8 +17,8 @@
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
-        "symfony-cmf/routing-bundle": "~1.1-dev",
-        "symfony-cmf/testing": "~1.0-dev",
+        "symfony-cmf/routing-bundle": "~1.1.0-RC1",
+        "symfony-cmf/testing": "1.0.*",
         "sonata-project/admin-bundle": "~2.2"
     },
     "suggest": {
