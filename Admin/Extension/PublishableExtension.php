@@ -6,7 +6,8 @@ use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * Admin extension to add publish workflow publishable field.
+ * Admin extension to add a publish workflow publishable field for models
+ * implementing PublishableInterface.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */

@@ -6,10 +6,10 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 
 /**
- * Workflow voter for the PublishTimePeriodInterface.
+ * Workflow voter for the PublishTimePeriodReadInterface.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
@@ -52,13 +52,13 @@ class PublishTimePeriodVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface');
+        return is_subclass_of($class, 'Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface');
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param PublishTimePeriodInterface $object
+     * @param PublishTimePeriodReadInterface $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
