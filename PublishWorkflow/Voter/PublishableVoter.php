@@ -6,10 +6,10 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 
 /**
- * Workflow voter for the PublishableInterface.
+ * Workflow voter for the PublishableReadInterface.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
@@ -30,13 +30,13 @@ class PublishableVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface');
+        return is_subclass_of($class, 'Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param PublishableInterface $object
+     * @param PublishableReadInterface $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {

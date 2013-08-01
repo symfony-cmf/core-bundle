@@ -6,7 +6,8 @@ use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * Admin extension to add publish workflow time period fields.
+ * Admin extension to add publish workflow time period fields for models
+ * implementing PublishTimePeriodInterface.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */

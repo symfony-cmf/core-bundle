@@ -73,7 +73,7 @@ class PublishableTest extends \PHPUnit_Framework_Testcase
     public function testPublishWorkflowChecker($expected, $isPublishable, $attributes)
     {
         $attributes = (array) $attributes;
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue($isPublishable))
