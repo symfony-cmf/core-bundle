@@ -2,8 +2,8 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow;
 
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -32,7 +32,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testPublishable()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(true))
@@ -96,4 +96,4 @@ class PublishWorkflowTest extends BaseTestCase
     }
 }
 
-abstract class PublishModel implements PublishableInterface, PublishTimePeriodInterface {}
+abstract class PublishModel implements PublishableReadInterface, PublishTimePeriodReadInterface {}

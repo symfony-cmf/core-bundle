@@ -95,7 +95,7 @@ class PublishTimePeriodVoterTest extends \PHPUnit_Framework_Testcase
     public function testPublishWorkflowChecker($expected, $startDate, $endDate, $attributes = PublishWorkflowChecker::VIEW_ATTRIBUTE, $currentTime = false)
     {
         $attributes = (array) $attributes;
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface');
+        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface');
 
         $doc->expects($this->any())
             ->method('getPublishStartDate')
