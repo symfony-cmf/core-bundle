@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Forward compatibility class to work with Symfony < 2.3 and/or
@@ -21,13 +22,25 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
     private $enabledParameter;
     private $managerParameters;
 
-    public function __construct($driver, $namespaces, array $managerParameters, $driverPattern, $enabledParameter = false)
+    /**
+     * Usually, you should not need to directly instantiate this class but use
+     * one of the factory methods.
+     *
+     * @param Definition|Reference $driver            the driver to use
+     * @param array                $namespaces        list of namespaces this driver should handle.
+     * @param string[]             $managerParameters ordered list of container parameters that may
+     *      provide the name of the manager to register the mappings for. The first non-empty name
+     *      is used, the others skipped.
+     * @param bool                 $enabledParameter  if specified, the compiler pass only executes
+     *      if this parameter exists in the service container.
+     */
+    public function __construct($driver, $namespaces, array $managerParameters, $enabledParameter = false)
     {
         $managerParameters[] = 'doctrine.default_entity_manager';
         $this->driver = $driver;
         $this->namespaces = $namespaces;
-        $this->driverPattern = $driverPattern;
         $this->enabledParameter = $enabledParameter;
+        $this->driverPattern = 'doctrine.orm.%s_metadata_driver';
         $this->managerParameters = $managerParameters;
     }
 
@@ -72,6 +85,7 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
         throw new ParameterNotFoundException('None of the managerParameters resulted in a valid name');
     }
     /**
+     * Create a mapping with the bundle namespace aware SymfonyFileLocator.
      *
      * @param array    $mappings          Hashmap of directory path to namespace
      * @param string[] $managerParameters List of parameters that could tell which object manager name
@@ -88,6 +102,6 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
 
-        return new DoctrineOrmMappingsPass($driver, $mappings, $managerParameters, 'doctrine.orm.%s_metadata_driver', $enabledParameter);
+        return new DoctrineOrmMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
     }
 }
