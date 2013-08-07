@@ -52,22 +52,27 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                 $prependConfig = array();
 
                 switch ($name) {
-/*
                     case 'cmf_block':
                         $prependConfig = array(
-                            'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
-                            'content_basepath' => $persistenceConfig['basepath'].'/content',
-                            'block_basepath' => $persistenceConfig['basepath'].'/content',
-                            'manager_name' => $persistenceConfig['manager_name'],
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
+                                    'content_basepath' => $persistenceConfig['basepath'].'/content',
+                                    'block_basepath' => $persistenceConfig['basepath'].'/content',
+                                    'manager_name' => $persistenceConfig['manager_name'],
+                                )
+                            )
                         );
                         break;
+                    /*
                     case 'cmf_blog':
                         $prependConfig = array(
                             'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                             'blog_basepath' => $persistenceConfig['basepath'].'/content',
                         );
                         break;
-*/
+                    */
                     case 'cmf_content':
                         $prependConfig = array(
                             'persistence' => array(
@@ -75,7 +80,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
-                                    // the ContentBundle does not use the manager directly
                                 )
                             )
                         );
