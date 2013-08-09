@@ -20,6 +20,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
+        $bundles = $container->getParameter('kernel.bundles');
+
         // process the configuration of SymfonyCmfCoreExtension
         $configs = $container->getExtensionConfig($this->getAlias());
         $parameterBag = $container->getParameterBag();
@@ -122,6 +124,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 )
                             )
                         );
+
+                        if (isset($bundles['CmfContentBundle'])) {
+                            $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
+                        }
                         break;
 /*
                     case 'cmf_simple_cms':
