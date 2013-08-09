@@ -32,11 +32,11 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                     case 'cmf_routing':
                         $container->prependExtensionConfig($name, array('dynamic' => $prependConfig['multilang']));
                         break;
-                    case 'cmf_content':
-                    case 'cmf_menu':
-#                    case 'cmf_simple_cms':
+/*
+                    case 'cmf_simple_cms':
                         $container->prependExtensionConfig($name, $prependConfig);
                         break;
+*/
                 }
             }
         }
