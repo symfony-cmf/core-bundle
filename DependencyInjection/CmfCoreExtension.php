@@ -34,11 +34,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                     case 'cmf_routing':
                         $container->prependExtensionConfig($name, array('dynamic' => $prependConfig['multilang']));
                         break;
-/*
-                    case 'cmf_simple_cms':
-                        $container->prependExtensionConfig($name, $prependConfig);
-                        break;
-*/
                 }
             }
         }
@@ -129,15 +124,18 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
                         break;
-/*
                     case 'cmf_simple_cms':
                         $prependConfig = array(
-                            'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
-                            'basepath' => $persistenceConfig['basepath'].'/simple',
-                            'manager_name' => $persistenceConfig['manager_name'],
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
+                                    'basepath' => $persistenceConfig['basepath'].'/simple',
+                                    'manager_name' => $persistenceConfig['manager_name'],
+                                )
+                            )
                         );
                         break;
-*/
                 }
 
                 if ($prependConfig) {
