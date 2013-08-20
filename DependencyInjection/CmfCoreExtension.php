@@ -62,14 +62,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             )
                         );
                         break;
-                    /*
-                    case 'cmf_blog':
-                        $prependConfig = array(
-                            'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
-                            'blog_basepath' => $persistenceConfig['basepath'].'/content',
-                        );
-                        break;
-                    */
                     case 'cmf_content':
                         $prependConfig = array(
                             'persistence' => array(
@@ -81,16 +73,29 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             )
                         );
                         break;
-/*
                     case 'cmf_create':
                         $prependConfig = array(
-                            'phpcr_odm' => true,
-                            'image' => array(
-                                'static_basepath' => $persistenceConfig['basepath'].'/content/static',
-                            ),
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'image' => array(
+                                        'basepath' => $persistenceConfig['basepath'].'/media',
+                                    )
+                                )
+                            )
                         );
                         break;
-*/
+                    case 'cmf_media':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'media_basepath' => $persistenceConfig['basepath'].'/media',
+                                    'manager_name' => $persistenceConfig['manager_name'],
+                                )
+                            )
+                        );
+                        break;
                     case 'cmf_menu':
                         $prependConfig = array(
                             'persistence' => array(
