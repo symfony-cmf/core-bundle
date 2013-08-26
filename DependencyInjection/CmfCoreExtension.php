@@ -160,8 +160,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        if (!empty($config['phpcr']['enabled'])) {
+        if (!empty($config['persistence']['phpcr']['enabled'])) {
             $container->setParameter($this->getAlias() . '.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
+            $container->setParameter($this->getAlias() . '.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
         }
         if ($config['publish_workflow']['enabled']) {
             $checker = $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
