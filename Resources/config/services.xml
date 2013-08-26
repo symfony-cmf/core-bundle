@@ -9,6 +9,8 @@
         <parameter key="cmf_core.twig_extension.class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension</parameter>
         <parameter key="cmf_core.templating.helper.class">Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper</parameter>
         <parameter key="cmf_core.listener.request_aware.class">Symfony\Cmf\Bundle\CoreBundle\EventListener\RequestAwareListener</parameter>
+
+        <parameter key="cmf_core.multilang.locales" type="collection"></parameter>
     </parameters>
 
     <services>
