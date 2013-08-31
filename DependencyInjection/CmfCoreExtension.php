@@ -20,29 +20,20 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
-        $bundles = $container->getParameter('kernel.bundles');
-
         // process the configuration of SymfonyCmfCoreExtension
         $configs = $container->getExtensionConfig($this->getAlias());
         $parameterBag = $container->getParameterBag();
         $configs = $parameterBag->resolveValue($configs);
         $config = $this->processConfiguration(new Configuration(), $configs);
-        if (isset($config['multilang']['locales'])) {
+
+        $extensions = $container->getExtensions();
+        if (isset($config['multilang']['locales']) && isset($extensions['cmf_routing'])) {
             $prependConfig = array('multilang' => $config['multilang']);
-            foreach ($container->getExtensions() as $name => $extension) {
-                switch ($name) {
-                    case 'cmf_routing':
-                        $container->prependExtensionConfig($name, array('dynamic' => $prependConfig['multilang']));
-                        break;
-                }
-            }
+            $container->prependExtensionConfig('cmf_routing', array('dynamic' => $prependConfig['multilang']));
         }
 
         if (isset($config['persistence']['phpcr'])) {
             $bundles = $container->getParameter('kernel.bundles');
-            if (!isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
-                $config['persistence']['phpcr']['use_sonata_admin'] = false;
-            }
             $persistenceConfig = $config['persistence']['phpcr'];
 
             foreach ($container->getExtensions() as $name => $extension) {
