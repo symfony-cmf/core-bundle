@@ -46,7 +46,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
-                                    'content_basepath' => $persistenceConfig['basepath'].'/content',
                                     'block_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                 )
