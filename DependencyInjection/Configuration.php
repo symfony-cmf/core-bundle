@@ -18,10 +18,12 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('persistence')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('phpcr')
+                            ->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('enabled')->defaultNull()->end()
+                                ->booleanNode('enabled')->defaultFalse()->end()
                                 ->scalarNode('basepath')->defaultValue('/cms')->end()
                                 ->scalarNode('manager_name')->defaultNull()->end()
                                 ->enumNode('use_sonata_admin')

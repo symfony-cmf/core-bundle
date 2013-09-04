@@ -37,7 +37,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             }
         }
 
-        if (isset($config['persistence']['phpcr'])) {
+        if ($config['persistence']['phpcr']) {
             $bundles = $container->getParameter('kernel.bundles');
             $persistenceConfig = $config['persistence']['phpcr'];
 
@@ -124,6 +124,17 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
                         break;
+                    case 'cmf_search':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'search_basepath' => $persistenceConfig['basepath'].'/content',
+                                    'manager_name' => $persistenceConfig['manager_name'],
+                                )
+                            )
+                        );
+                        break;
                     case 'cmf_simple_cms':
                         $prependConfig = array(
                             'persistence' => array(
@@ -132,6 +143,15 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'basepath' => $persistenceConfig['basepath'].'/simple',
                                     'manager_name' => $persistenceConfig['manager_name'],
+                                )
+                            )
+                        );
+                        break;
+                    case 'cmf_tree_browser':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
                                 )
                             )
                         );
@@ -155,7 +175,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        if (!empty($config['persistence']['phpcr']['enabled'])) {
+        if ($config['persistence']['phpcr']['enabled']) {
             $container->setParameter($this->getAlias() . '.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
             $container->setParameter($this->getAlias() . '.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
         }
