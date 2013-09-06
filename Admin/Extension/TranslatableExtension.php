@@ -66,7 +66,7 @@ class TranslatableExtension extends AdminExtension
         }
 
         if ($admin->hasRequest()) {
-            $currentLocale = $admin->getRequest()->attributes->get('_locale');
+            $currentLocale = $admin->getRequest()->getLocale();
 
             if (in_array($currentLocale, $this->locales)) {
                 $object->setLocale($currentLocale);
