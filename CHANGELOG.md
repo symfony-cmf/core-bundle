@@ -1,6 +1,13 @@
 Changelog
 =========
 
+
+1.0.0-RC5
+---------
+
+* **2013-09-04**: added prepend support for CmfSearchBundle and CmfTreeBrowserBundle
+  and various tweaks to the existing prepend support
+
 1.0.0-RC2
 ---------
 
