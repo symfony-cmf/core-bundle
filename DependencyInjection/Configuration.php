@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                             ->canBeEnabled()
                             ->children()
                                 ->scalarNode('basepath')->defaultValue('/cms')->end()
+                                ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                                 ->scalarNode('manager_name')->defaultNull()->end()
                                 ->enumNode('use_sonata_admin')
                                     ->values(array(true, false, 'auto'))

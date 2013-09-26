@@ -9,6 +9,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class CmfCoreExtension extends Extension implements PrependExtensionInterface
 {
@@ -135,6 +136,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                     'search_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
+                                    'manager_registry' => $persistenceConfig['manager_registry'],
                                 )
                             )
                         );
@@ -147,6 +149,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'basepath' => $persistenceConfig['basepath'].'/simple',
                                     'manager_name' => $persistenceConfig['manager_name'],
+                                    'manager_registry' => $persistenceConfig['manager_registry'],
                                 )
                             )
                         );
@@ -182,6 +185,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         if ($config['persistence']['phpcr']['enabled']) {
             $container->setParameter($this->getAlias() . '.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
             $container->setParameter($this->getAlias() . '.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
+
+            $templatingHelper = $container->getDefinition($this->getAlias() . '.templating.helper');
+            $templatingHelper->replaceArgument(1, new Reference($config['persistence']['phpcr']['manager_registry']));
         }
         if ($config['publish_workflow']['enabled']) {
             $checker = $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
