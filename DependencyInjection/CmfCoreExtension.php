@@ -190,12 +190,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $templatingHelper->replaceArgument(1, new Reference($config['persistence']['phpcr']['manager_registry']));
         }
         if ($config['publish_workflow']['enabled']) {
-            $checker = $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
+            $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
         } else {
             $loader->load('no-publish-workflow.xml');
-            $checker = 'cmf_core.publish_workflow.checker.always';
         }
-        $container->setAlias('cmf_core.publish_workflow.checker', $checker);
 
         if (isset($config['multilang'])) {
             $container->setParameter($this->getAlias() . '.multilang.locales', $config['multilang']['locales']);
@@ -235,8 +233,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      * @param XmlFileLoader    $loader
      * @param ContainerBuilder $container
      *
-     * @return string the name of the workflow checker service to alias
-     *
      * @throws InvalidConfigurationException
      */
     private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
@@ -255,7 +251,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $container->removeDefinition($this->getAlias() . '.admin_extension.publish_workflow.time_period');
         }
 
-        return $config['checker_service'];
+        $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);
     }
 
     /**
