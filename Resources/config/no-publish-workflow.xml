@@ -10,7 +10,7 @@
 
     <services>
 
-        <service id="cmf_core.publish_workflow.checker.always" class="%cmf_core.publish_workflow.checker.class%"/>
+        <service id="cmf_core.publish_workflow.checker" class="%cmf_core.publish_workflow.checker.class%"/>
 
     </services>
 </container>
