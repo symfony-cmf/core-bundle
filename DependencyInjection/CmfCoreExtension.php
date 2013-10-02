@@ -209,7 +209,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $container->setParameter($this->getAlias() . '.multilang.locales', $config['multilang']['locales']);
             $loader->load('translatable.xml');
         } else {
-            $container->setParameter($this->getAlias() . '.multilang.locales', array());
             $loader->load('translatable-disabled.xml');
         }
 

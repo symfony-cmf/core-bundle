@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="cmf_core.phpcr.translatable_metadata_listener.class">Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr\TranslatableMetadataListener</parameter>
+        <parameter key="cmf_core.phpcr.multilang.locales" type="collection" />
     </parameters>
 
     <services>
