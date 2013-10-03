@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.0-RC6
+---------
+
+* **2013-10-03**: added support for setting a global PHPCR ODM translation strategy
 
 1.0.0-RC5
 ---------
