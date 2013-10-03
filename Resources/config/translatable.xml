@@ -6,9 +6,15 @@
 
     <parameters>
         <parameter key="cmf_core.admin_extension.translatable.class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\TranslatableExtension</parameter>
+        <parameter key="cmf_core.persistence.phpcr.translatable_metadata_listener.class">Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr\TranslatableMetadataListener</parameter>
     </parameters>
 
     <services>
+
+        <service id="cmf_core.persistence.phpcr.translatable_metadata_listener" class="%cmf_core.persistence.phpcr.translatable_metadata_listener.class%">
+            <argument>%cmf_core.persistence.phpcr.translation_strategy%</argument>
+            <tag name="doctrine_phpcr.event_subscriber"/>
+        </service>
 
         <service id="cmf_core.admin_extension.translatable" class="%cmf_core.admin_extension.translatable.class%">
             <argument>%cmf_core.multilang.locales%</argument>

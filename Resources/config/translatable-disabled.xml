@@ -5,14 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_core.phpcr.translatable_metadata_listener.class">Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr\TranslatableMetadataListener</parameter>
+        <parameter key="cmf_core.persistence.phpcr.non_translatable_metadata_listener.class">Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr\NonTranslatableMetadataListener</parameter>
         <parameter key="cmf_core.phpcr.multilang.locales" type="collection" />
     </parameters>
 
     <services>
 
-        <service id="cmf_core.phpcr.translatable_metadata_listener" class="%cmf_core.phpcr.translatable_metadata_listener.class%">
-            <argument>false</argument>
+        <service id="cmf_core.persistence.phpcr.non_translatable_metadata_listener" class="%cmf_core.persistence.phpcr.non_translatable_metadata_listener.class%">
             <tag name="doctrine_phpcr.event_subscriber"/>
         </service>
 

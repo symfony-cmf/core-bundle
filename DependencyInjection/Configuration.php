@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                                     ->values(array(true, false, 'auto'))
                                     ->defaultValue('auto')
                                 ->end()
+                                ->scalarNode('translation_strategy')->defaultNull()->end()
                             ->end()
                         ->end()
                     ->end()

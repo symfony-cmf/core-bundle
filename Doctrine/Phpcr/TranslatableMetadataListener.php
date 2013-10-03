@@ -16,16 +16,27 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
-use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 
 /**
- * Metadata listener for when translations are disabled in PHPCR-ODM to remove
- * mapping information that makes fields being translated.
+ * Metadata listener for when the translations is globally defined
  *
- * @author David Buchmann <mail@davidbu.ch>
+ * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
 class TranslatableMetadataListener implements EventSubscriber
 {
+    /**
+     * @var string
+     */
+    private $translationStrategy;
+
+    /**
+     * @param string $translationStrategy
+     */
+    public function __construct($translationStrategy)
+    {
+        $this->translationStrategy = $translationStrategy;
+    }
+
     /**
      * @return array
      */
@@ -33,13 +44,11 @@ class TranslatableMetadataListener implements EventSubscriber
     {
         return array(
             'loadClassMetadata',
-            'postLoad',
         );
     }
 
     /**
-     * Handle the load class metadata event: remove translated attribute from
-     * fields and remove the locale mapping if present.
+     * Handle the load class metadata event: set the translation strategy
      *
      * @param LoadClassMetadataEventArgs $eventArgs
      */
@@ -49,28 +58,7 @@ class TranslatableMetadataListener implements EventSubscriber
         $meta = $eventArgs->getClassMetadata();
 
         if ($meta->getReflectionClass()->implementsInterface('Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface')) {
-            foreach ($meta->translatableFields as $field) {
-                unset($meta->mappings[$field]['translated']);
-            }
-            $meta->translatableFields = array();
-            if (null !== $meta->localeMapping) {
-                unset($meta->mappings[$meta->localeMapping]);
-                $meta->localeMapping = null;
-            }
-        }
-    }
-
-    /**
-     * We set the locale field to false so that other code can use the
-     * information that translations are deactivated.
-     *
-     * @param LifecycleEventArgs $eventArgs
-     */
-    public function postLoad(LifecycleEventArgs $eventArgs)
-    {
-        $object = $eventArgs->getObject();
-        if ($object instanceof TranslatableInterface) {
-            $object->setLocale(false);
+            $meta->setTranslator($this->translationStrategy);
         }
     }
 }

@@ -150,6 +150,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 )
                             )
                         );
+                        if (!empty($persistenceConfig['translation_strategy'])) {
+                            $prependConfig['persistence']['phpcr']['translation_strategy'] = $persistenceConfig['translation_strategy'];
+                        }
                         break;
                     case 'cmf_simple_cms':
                         $prependConfig = array(
@@ -208,6 +211,11 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         if (isset($config['multilang'])) {
             $container->setParameter($this->getAlias() . '.multilang.locales', $config['multilang']['locales']);
             $loader->load('translatable.xml');
+            if (!empty($config['persistence']['phpcr']['translation_strategy'])) {
+                $container->setParameter($this->getAlias() . '.persistence.phpcr.translation_strategy', $config['persistence']['phpcr']['translation_strategy']);
+            } else {
+                $container->removeDefinition('cmf_core.phpcr.translatable_metadata_listener');
+            }
         } else {
             $loader->load('translatable-disabled.xml');
         }
