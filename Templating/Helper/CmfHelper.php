@@ -281,6 +281,7 @@ class CmfHelper extends Helper
             // filter before fetching data already to save some traffic
             if (strpos($child, 'phpcr_locale:') === 0) {
                 unset($children[$key]);
+                continue;
             }
             $children[$key] = "$parent/$child";
         }
