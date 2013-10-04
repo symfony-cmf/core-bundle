@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="cmf_core.admin_extension.translatable.class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\TranslatableExtension</parameter>
+        <parameter key="cmf_core.persistence.phpcr.translation_strategy" />
     </parameters>
 
     <services>
