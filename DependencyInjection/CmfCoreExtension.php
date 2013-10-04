@@ -214,7 +214,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             if (!empty($config['persistence']['phpcr']['translation_strategy'])) {
                 $container->setParameter($this->getAlias() . '.persistence.phpcr.translation_strategy', $config['persistence']['phpcr']['translation_strategy']);
             } else {
-                $container->removeDefinition('cmf_core.phpcr.translatable_metadata_listener');
+                $container->removeDefinition('cmf_core.persistence.phpcr.translatable_metadata_listener');
             }
         } else {
             $loader->load('translatable-disabled.xml');
