@@ -33,7 +33,6 @@ class NonTranslatableMetadataListener implements EventSubscriber
     {
         return array(
             'loadClassMetadata',
-            'postLoad',
         );
     }
 
@@ -57,20 +56,6 @@ class NonTranslatableMetadataListener implements EventSubscriber
                 unset($meta->mappings[$meta->localeMapping]);
                 $meta->localeMapping = null;
             }
-        }
-    }
-
-    /**
-     * We set the locale field to false so that other code can use the
-     * information that translations are deactivated.
-     *
-     * @param LifecycleEventArgs $eventArgs
-     */
-    public function postLoad(LifecycleEventArgs $eventArgs)
-    {
-        $object = $eventArgs->getObject();
-        if ($object instanceof TranslatableInterface) {
-            $object->setLocale(false);
         }
     }
 }
