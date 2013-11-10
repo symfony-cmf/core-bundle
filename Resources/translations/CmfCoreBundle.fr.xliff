@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="form.help_publish_end_date">
         <source>form.help_publish_end_date</source>
-        <target>Ne pas publier avant cette date. Laissez vide pour ne pas arreter de publier</target>
+        <target>Publier jusqu'à cette date. Laissez vide pour ne pas arreter de publier</target>
       </trans-unit>
       <trans-unit id="list.label_locales">
         <source>list.label_locales</source>
