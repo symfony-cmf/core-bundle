@@ -22,7 +22,7 @@ translated content.
 
 For the install guide and reference, see:
 
-* [CoreBundle documentation](http://symfony.com/doc/master/cmf/bundles/core.html)
+* [CoreBundle documentation](http://symfony.com/doc/master/cmf/bundles/core/index.html)
 
 See also:
 
