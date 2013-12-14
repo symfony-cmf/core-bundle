@@ -220,6 +220,12 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $loader->load('translatable-disabled.xml');
         }
 
+        foreach ($config['sonata_admin']['extensions'] as $extensionName => $options) {
+            foreach ($options as $key => $value) {
+                $container->setParameter('cmf_core.sonata_admin.extension.' . $extensionName . '.' . $key, $value);
+            }
+        }
+
         $this->setupFormTypes($container, $loader);
     }
 

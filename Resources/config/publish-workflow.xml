@@ -51,11 +51,13 @@
 
         <!-- integration with sonata admin - removed by the DI class if sonata is not available -->
 
-        <service id="cmf_core.admin_extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable.class%">
+        <service id="cmf_core.sonata_admin.extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable.class%">
+            <argument>%cmf_core.sonata_admin.extension.publishable.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 
         <service id="cmf_core.admin_extension.publish_workflow.time_period" class="%cmf_core.admin_extension.publish_workflow.time_period.class%">
+            <argument>%cmf_core.sonata_admin.extension.publish_time.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 
