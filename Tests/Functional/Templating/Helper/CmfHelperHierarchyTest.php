@@ -32,43 +32,8 @@ class CmfHelperHierarchyTest extends BaseTestCase
 
     public function setUp()
     {
-        $container = $this->getContainer();
-        $managerRegistry = $container->get('doctrine_phpcr');
-        /** @var $session SessionInterface */
-        $session = $managerRegistry->getConnection();
-        $root = $session->getRootNode();
-
-        // remove all nodes from '/'
-        foreach ($root->getNodes() as $node) {
-            $session->removeItem($node->getPath());
-        }
-
-        /*
-         * /a
-         * /a/b
-         * /a/b/c
-         * /a/b/d
-         * /a/b/e
-         * /a/f
-         * /a/f/g
-         * /a/f/g/h
-         * /a/i
-         */
-        $a = $root->addNode('a');
-        $b = $a->addNode('b');
-        $c = $b->addNode('c');
-        $c->addMixin('phpcr:managed');
-        $c->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware');
-        $b->addNode('d');
-        $e = $b->addNode('e');
-        $e->addMixin('phpcr:managed');
-        $e->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware');
-        $f = $a->addNode('f');
-        $g = $f->addNode('g');
-        $g->addNode('h');
-        $a->addNode('i');
-
-        $session->save();
+        $dbManager = $this->db('PHPCR');
+        $dbManager->loadFixtures(array('Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData'));
 
         $this->pwc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->pwc->expects($this->any())
@@ -76,7 +41,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->helper = new CmfHelper($this->pwc, $managerRegistry, 'default');
+        $this->helper = new CmfHelper($this->pwc, $dbManager->getRegistry(), 'default');
     }
 
     public function testGetDescendants()
