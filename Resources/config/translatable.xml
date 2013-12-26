@@ -18,7 +18,7 @@
 
         <service id="cmf_core.admin_extension.translatable" class="%cmf_core.admin_extension.translatable.class%">
             <argument>%cmf_core.multilang.locales%</argument>
-            <argument>%cmf_core.sonata_admin.extension.form_group%</argument>
+            <argument>%cmf_core.sonata_admin.extension.translatable.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 
