@@ -24,11 +24,24 @@ use Sonata\AdminBundle\Form\FormMapper;
 class PublishableExtension extends AdminExtension
 {
     /**
+     * @var string
+     */
+    protected $formGroup;
+
+    /**
+     * @param string $formGroup - group to use for form mapper
+     */
+    public function __construct($formGroup = 'form.group_publish_workflow')
+    {
+        $this->formGroup = $formGroup;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->with('form.group_publish_workflow', array(
+        $formMapper->with($this->formGroup, array(
             'translation_domain' => 'CmfCoreBundle',
             ))
             ->add('publishable', 'checkbox', array(

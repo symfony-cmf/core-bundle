@@ -22,13 +22,14 @@ class PublishTimePeriodExtensionTest extends \PHPUnit_Framework_Testcase
             'Sonata\AdminBundle\Form\FormMapper'
         )->disableOriginalConstructor()->getMock();
 
-        $this->extension = new PublishTimePeriodExtension();
+        $this->extension = new PublishTimePeriodExtension('some_group');
     }
 
     public function testFormMapper()
     {
         $this->formMapper->expects($this->once())
             ->method('with')
+            ->with('some_group')
             ->will($this->returnSelf());
         $this->formMapper->expects($this->exactly(2))
             ->method('add')

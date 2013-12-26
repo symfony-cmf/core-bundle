@@ -26,16 +26,23 @@ use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 class TranslatableExtension extends AdminExtension
 {
     /**
+     * @var string
+     */
+    protected $formGroup;
+
+    /**
      * @var array
      */
     protected $locales;
 
     /**
      * @param array $locales
+     * @param string $formGroup - group to use for form mapper
      */
-    public function __construct($locales)
+    public function __construct($locales, $formGroup = 'form.group_general')
     {
         $this->locales = $locales;
+        $this->formGroup = $formGroup;
     }
 
     /**
@@ -54,7 +61,7 @@ class TranslatableExtension extends AdminExtension
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('form.group_general')
+            ->with($this->formGroup)
             ->add('locale', 'choice', array(
                 'translation_domain' => 'CmfCoreBundle',
                 'choices' => array_combine($this->locales, $this->locales),
@@ -82,6 +89,5 @@ class TranslatableExtension extends AdminExtension
                 $object->setLocale($currentLocale);
             }
         }
-
     }
 }
