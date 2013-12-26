@@ -1,1 +1,6 @@
 cmf_core:
+    publish_workflow:
+        enabled: true
+    multilang:
+        locales: [ gb ]
+
