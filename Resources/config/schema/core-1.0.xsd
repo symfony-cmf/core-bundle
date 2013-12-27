@@ -34,7 +34,7 @@
 
     <xsd:complexType name="multilang">
         <xsd:sequence>
-            <xsd:element name="locale" type="xsd:NMTOKEN"/>
+            <xsd:element name="locale" type="xsd:string" maxOccurs="unbounded"/>
         </xsd:sequence>
     </xsd:complexType>
 

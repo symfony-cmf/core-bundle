@@ -67,7 +67,6 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('sonata_admin')
                     ->addDefaultsIfNotSet()
-                    ->fixXmlConfig('extension')
                     ->children()
                         ->arrayNode('extensions')
                             ->addDefaultsIfNotSet()
