@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services">
+
+    <config xmlns="http://cmf.symfony.com/schema/dic/core">
+        <persistence>
+            <phpcr />
+        </persistence>
+
+        <multilang>
+            <locale>en</locale>
+            <locale>fr_FR</locale>
+        </multilang>
+
+        <publish-workflow checker-service="cmf_core.publish_workflow.checker.default"
+            view-non-published-role="ROLE_CAN_VIEW_NON_PUBLISHED"
+            request-listener="true"
+        />
+
+        <sonata-admin>
+            <extensions>
+                <publishable form-group="form.group_publish_workflow" />
+            </extensions>
+        </sonata-admin>
+    </config>
+</container>

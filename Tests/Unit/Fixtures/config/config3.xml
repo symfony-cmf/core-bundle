@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services">
+
+    <config xmlns="http://cmf.symfony.com/schema/dic/core">
+        <persistence>
+            <phpcr basepath="/cms"
+                manager-registry="doctrine_phpcr"
+                manager-name="default"
+                use-sonata-admin="auto"
+                translation-strategy="recursive"
+            />
+        </persistence>
+
+        <sonata-admin>
+            <extensions>
+                <publish-time form-group="form.group_general" />
+                <translatable form-group="form.group_general" />
+            </extensions>
+        </sonata-admin>
+    </config>
+</container>
