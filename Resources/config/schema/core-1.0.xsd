@@ -9,21 +9,65 @@
 
     <xsd:complexType name="config">
         <xsd:sequence>
+            <xsd:element name="persistence" type="persistence" minOccurs="0" />
+            <xsd:element name="multilang" type="multilang" minOccurs="0" />
             <xsd:element name="publish-workflow" type="publish-workflow" minOccurs="0" />
+            <xsd:element name="sonata-admin" type="sonata-admin" minOccurs="0" />
         </xsd:sequence>
         <xsd:attribute name="document-manager-name" type="xsd:string" />
     </xsd:complexType>
 
-    <xsd:complexType name="publish-workflow">
-        <xsd:attribute name="enabled" type="boolean" />
-        <xsd:attribute name="view-non-published-role" type="xsd:string" />
-        <xsd:attribute name="request-listener" type="boolean" />
+    <xsd:complexType name="persistence">
+        <xsd:sequence>
+            <xsd:element name="phpcr" type="phpcr" minOccurs="0"/>
+        </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:simpleType name="boolean">
+    <xsd:complexType name="phpcr">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="basepath" type="xsd:string" />
+        <xsd:attribute name="manager-registry" type="xsd:string" />
+        <xsd:attribute name="manager-name" type="xsd:string" />
+        <xsd:attribute name="use-sonata-admin" type="enable_auto" />
+        <xsd:attribute name="translation-strategy" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="multilang">
+        <xsd:sequence>
+            <xsd:element name="locale" type="xsd:string" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="publish-workflow">
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+        <xsd:attribute name="checker-service" type="xsd:string" />
+        <xsd:attribute name="view-non-published-role" type="xsd:string" />
+        <xsd:attribute name="request-listener" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="sonata-admin">
+        <xsd:sequence>
+            <xsd:element name="extensions" type="extensions" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="extensions">
+        <xsd:sequence>
+            <xsd:element name="publishable" type="sonata-extension" minOccurs="0"/>
+            <xsd:element name="publish-time" type="sonata-extension" minOccurs="0"/>
+            <xsd:element name="translatable" type="sonata-extension" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="sonata-extension">
+        <xsd:attribute name="form-group" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:simpleType name="enable_auto">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="true" />
             <xsd:enumeration value="false" />
+            <xsd:enumeration value="auto" />
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>
