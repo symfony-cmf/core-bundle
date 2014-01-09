@@ -56,6 +56,7 @@ class NonTranslatableMetadataListener implements EventSubscriber
                 unset($meta->mappings[$meta->localeMapping]);
                 $meta->localeMapping = null;
             }
+            $meta->translator = null;
         }
     }
 }
