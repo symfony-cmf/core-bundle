@@ -32,6 +32,7 @@ class CmfExtension extends \Twig_Extension
     {
         $functions = array(
             new \Twig_SimpleFunction('cmf_is_published', array($this->cmfHelper, 'isPublished')),
+            new \Twig_SimpleFunction('cmf_is_linkable', array($this->cmfHelper, 'isLinkable')),
             new \Twig_SimpleFunction('cmf_child', array($this->cmfHelper, 'getChild')),
             new \Twig_SimpleFunction('cmf_children', array($this->cmfHelper, 'getChildren')),
             new \Twig_SimpleFunction('cmf_prev', array($this->cmfHelper, 'getPrev')),

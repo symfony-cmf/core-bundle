@@ -245,6 +245,30 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $this->extension->isPublished(new \stdClass());
     }
 
+    public function testIsLinkable()
+    {
+        $this->assertFalse($this->extension->isLinkable(null));
+        $this->assertFalse($this->extension->isLinkable('a'));
+        $this->assertFalse($this->extension->isLinkable($this));
+
+        $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $content
+            ->expects($this->once())
+            ->method('getRoutes')
+            ->will($this->returnValue(array()))
+        ;
+        $this->assertFalse($this->extension->isLinkable($content));
+
+        $route = $this->getMock('Symfony\Component\Routing\Route');
+        $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $content
+            ->expects($this->once())
+            ->method('getRoutes')
+            ->will($this->returnValue(array($route)))
+        ;
+        $this->assertTrue($this->extension->isLinkable($content));
+    }
+
     public function testGetLocalesFor()
     {
         $this->assertEquals(array(), $this->extension->getLocalesFor(null));
