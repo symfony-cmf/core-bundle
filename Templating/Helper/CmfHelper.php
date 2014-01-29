@@ -14,7 +14,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
 use PHPCR\Util\PathHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\PHPCR\Exception\MissingTranslationException;
+use Doctrine\ODM\PHPCR\Translation\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
