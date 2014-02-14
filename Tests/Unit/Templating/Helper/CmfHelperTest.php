@@ -65,14 +65,19 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $document = new \stdClass();
 
-        $this->assertEquals(false, $this->extension->getNodeName($document));
+        $this->uow->expects($this->at(0))
+            ->method('getDocumentId')
+            ->with($document)
+            ->will($this->throwException(new \Exception()))
+        ;
 
-        $this->uow->expects($this->once())
+        $this->uow->expects($this->at(1))
             ->method('getDocumentId')
             ->with($document)
             ->will($this->returnValue('/foo/bar'))
         ;
 
+        $this->assertEquals(false, $this->extension->getNodeName($document));
         $this->assertEquals('bar', $this->extension->getNodeName($document));
     }
 
@@ -259,7 +264,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         ;
         $this->assertFalse($this->extension->isLinkable($content));
 
-        $route = $this->getMock('Symfony\Component\Routing\Route');
+        $route = $this->getMockBuilder('Symfony\Component\Routing\Route')->disableOriginalConstructor()->getMock();
         $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
         $content
             ->expects($this->once())

@@ -80,7 +80,12 @@ class CmfHelper extends Helper
      */
     public function getNodeName($document)
     {
-        return PathHelper::getNodeName($this->getPath($document));
+        $path = $this->getPath($document);
+        if (false === $path) {
+            return false;
+        }
+
+        return PathHelper::getNodeName($path);
     }
 
     /**
