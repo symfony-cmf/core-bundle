@@ -94,7 +94,12 @@ class CmfHelper extends Helper
      */
     public function getParentPath($document)
     {
-        return PathHelper::getParentPath($this->getPath($document));
+        $path = $this->getPath($document);
+        if (!$path) {
+            return false;
+        }
+
+        return PathHelper::getParentPath($path);
     }
 
     /**
