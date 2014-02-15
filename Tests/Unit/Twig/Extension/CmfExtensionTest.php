@@ -16,6 +16,17 @@ use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 
 class CmfExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    private $cmfHelper;
+    /**
+     * @var \Twig_Environment
+     */
+    private $env;
+
+    /**
+     * @var CmfExtension
+     */
+    private $cmfExtension;
+
     public function setUp()
     {
         $this->cmfHelper = $this->getMockBuilder(
@@ -30,6 +41,6 @@ class CmfExtensionTest extends \PHPUnit_Framework_TestCase
     public function testFunctions()
     {
         $functions = $this->cmfExtension->getFunctions();
-        $this->assertCount(15, $functions);
+        $this->assertCount(16, $functions);
     }
 }

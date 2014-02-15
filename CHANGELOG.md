@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* **2014-02-14**: Twig function cmf_linkable_children now uses cmf_linkable
+  which considers documents to be linkable if they are either route, or have
+  actually a route pointing to them. (Previously, just having the interface
+  for route referrers was enough, even if there was no route.)
+
 1.0.0-RC7
 ---------
 

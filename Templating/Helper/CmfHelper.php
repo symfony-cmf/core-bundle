@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
 use PHPCR\Util\PathHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\PHPCR\Translation\MissingTranslationException;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Translation\MissingTranslationException;
+use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -80,7 +81,7 @@ class CmfHelper extends Helper
     public function getNodeName($document)
     {
         $path = $this->getPath($document);
-        if (!$path) {
+        if (false === $path) {
             return false;
         }
 
@@ -270,9 +271,10 @@ class CmfHelper extends Helper
      * @param string|object  $parent     parent path/document
      * @param int|Boolean    $limit      int limit or false
      * @param string|Boolean $offset     string node name to which to skip to or false
-     * @param null|string    $filter     child filter
-     * @param Boolean|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string    $class      class name to filter on
+     * @param null|string    $filter     child name filter (optional)
+     * @param Boolean|null   $ignoreRole whether the role should be ignored or null if
+     *                                   publish workflow should be ignored (defaults to false)
+     * @param null|string    $class      class name to filter on (optional)
      *
      * @return array
      */
@@ -329,19 +331,56 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Gets linkable child documents.
+     * Gets linkable child documents of a document or repository id.
      *
-     * @param string|object  $parent     parent path/document
-     * @param int|Boolean    $limit      int limit or false
-     * @param string|Boolean $offset     string node name to which to skip to or false
-     * @param null|string    $filter     child filter
-     * @param Boolean|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * This has the same semantics as the isLinkable method.
+     *
+     * @param string|object  $parent     parent path/document.
+     * @param int|Boolean    $limit      limit or false for no limit.
+     * @param string|Boolean $offset     node name to which to skip to or false
+     *                                   to not skip any elements
+     * @param null|string    $filter     child name filter
+     * @param Boolean|null   $ignoreRole whether the role should be ignored or null if
+     *                                   publish workflow should be ignored (defaults to false)
+     * @param string|null    $class      class name to filter on.
      *
      * @return array
      */
-    public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false)
+    public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
     {
-        return $this->getChildren($parent, $limit, $offset, $filter, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $children = $this->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
+        foreach ($children as $key => $value) {
+            if (!$this->isLinkable($value)) {
+                unset($children[$key]);
+            }
+        }
+
+        return $children;
+    }
+
+    /**
+     * Check whether a document can be linked to, meaning the path() function
+     * should be usable.
+     *
+     * A document is linkable if it is either instance of Symfony\Component\Routing\Route
+     * or implements the RouteReferrersReadInterface and actually returns at
+     * least one route in getRoutes.
+     *
+     * This does not work for route names or other things some routers may
+     * support, only for objects.
+     *
+     * @param object $document
+     *
+     * @return boolean true if it is possible to generate a link to $document
+     */
+    public function isLinkable($document)
+    {
+        return
+            $document instanceof Route
+            || ($document instanceof RouteReferrersReadInterface
+                && count($document->getRoutes()) > 0
+            )
+        ;
     }
 
     /**
