@@ -201,6 +201,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
             $templatingHelper = $container->getDefinition($this->getAlias() . '.templating.helper');
             $templatingHelper->replaceArgument(1, new Reference($config['persistence']['phpcr']['manager_registry']));
+
+            if ($config['persistence']['phpcr']['use_sonata_admin']) {
+                $this->loadSonataPhpcrAdmin($config, $loader, $container);
+            }
         }
         if ($config['publish_workflow']['enabled']) {
             $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
@@ -227,6 +231,17 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         }
 
         $this->setupFormTypes($container, $loader);
+    }
+
+    public function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if ('auto' === $config['persistence']['phpcr']['use_sonata_admin'] && !isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
+            return;
+        }
+
+        $loader->load('admin-phpcr.xml');
     }
 
     /**
