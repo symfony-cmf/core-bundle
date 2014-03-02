@@ -91,6 +91,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         // setting.
                         if (!isset($extensions['cmf_media'])) {
                             $prependConfig['persistence']['phpcr']['image'] = array(
+                                'enabled' => false,
                                 'basepath' => $persistenceConfig['basepath'].'/media',
                             );
                         }
