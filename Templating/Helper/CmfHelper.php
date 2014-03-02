@@ -345,6 +345,8 @@ class CmfHelper extends Helper
      * @param string|null    $class      class name to filter on.
      *
      * @return array
+     *
+     * @see isLinkable
      */
     public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
     {
@@ -720,30 +722,54 @@ class CmfHelper extends Helper
     /**
      * Gets the previous linkable document.
      *
+     * This has the same semantics as the isLinkable method.
+     *
      * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param Boolean            $ignoreRole if to ignore the role
      *
      * @return null|object
+     *
+     * @see isLinkable
      */
     public function getPrevLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
     {
-        return $this->getPrev($current, $anchor, $depth, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        while ($candidate = $this->getPrev($current, $anchor, $depth, $ignoreRole)) {
+            if ($this->isLinkable($candidate)) {
+                return $candidate;
+            }
+
+            $current = $candidate;
+        }
+
+        return null;
     }
 
     /**
      * Gets the next linkable document.
      *
+     * This has the same semantics as the isLinkable method.
+     *
      * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param Boolean            $ignoreRole if to ignore the role
      *
      * @return null|object
+     *
+     * @see isLinkable
      */
     public function getNextLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
     {
-        return $this->getNext($current, $anchor, $depth, $ignoreRole, 'Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        while ($candidate = $this->getNext($current, $anchor, $depth, $ignoreRole)) {
+            if ($this->isLinkable($candidate)) {
+                return $candidate;
+            }
+
+            $current = $candidate;
+        }
+
+        return null;
     }
 }
