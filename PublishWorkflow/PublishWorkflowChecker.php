@@ -97,10 +97,8 @@ class PublishWorkflowChecker implements SecurityContextInterface
      */
     public function getToken()
     {
-        if (null === $this->token) {
-            $securityContext = $this->container->get('security.context');
-
-            return $securityContext->getToken();
+        if (null === $this->token && $this->container->has('security.context')) {
+            return $this->container->get('security.context')->getToken();
         }
 
         return $this->token;
@@ -135,21 +133,19 @@ class PublishWorkflowChecker implements SecurityContextInterface
             $attributes = array($attributes);
         }
 
-        $securityContext = $this->container->get('security.context');
-
-        if (null !== $securityContext->getToken()
-            && (count($attributes) === 1)
+        if ((count($attributes) === 1)
             && self::VIEW_ATTRIBUTE === reset($attributes)
-            && $securityContext->isGranted($this->bypassingRole)
+            && $this->container->has('security.context')
+            && null !== $this->container->get('security.context')->getToken()
+            && $this->container->get('security.context')->isGranted($this->bypassingRole)
         ) {
             return true;
         }
 
         $token = $this->getToken();
-        if (null === $token) {
-            // not logged in, surely we can not skip the check.
-            // create a dummy token to check for publication even if no
-            // firewall is present.
+
+        // not logged in, just check with a dummy token
+        if (!$token) {
             $token = new AnonymousToken('', '');
         }
 
