@@ -15,6 +15,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -54,13 +55,21 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
     public function setUp()
     {
         $this->role = 'IS_FOOBAR';
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->setMockClassName('Container')
+            ->getMock();
         $this->sc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->container
             ->expects($this->any())
             ->method('get')
             ->with('security.context')
             ->will($this->returnValue($this->sc))
+        ;
+        $this->container
+            ->expects($this->any())
+            ->method('has')
+            ->with('security.context')
+            ->will($this->returnValue(true))
         ;
         $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
         $this->adm = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
@@ -148,6 +157,31 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
         ;
 
         $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
+    }
+
+    public function testNoSecurityContext()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container
+            ->expects($this->any())
+            ->method('get')
+            ->with('security.context')
+            ->will($this->throwException(new ServiceNotFoundException('Service not defined')))
+        ;
+        $container
+            ->expects($this->any())
+            ->method('has')
+            ->with('security.context')
+            ->will($this->returnValue(false))
+        ;
+        $this->pwfc = new PublishWorkflowChecker($container, $this->adm, $this->role);
+
+        $this->adm->expects($this->once())
+            ->method('decide')
+            ->will($this->returnValue(false))
+        ;
+
+        $this->assertFalse($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
     }
 
     public function testSetToken()
