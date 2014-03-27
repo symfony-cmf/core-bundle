@@ -541,31 +541,34 @@ class CmfHelper extends Helper
             $childNames = array_reverse($childNames);
             $key = array_search($node->getName(), $childNames);
             $childNames = array_slice($childNames, $key + 1);
-        }
 
-        // traverse the previous siblings down the tree
-        $result = $this->traversePrevDepth($depth, PathHelper::getPathDepth($anchor), $childNames, $parentPath, $ignoreRole, $class);
-        if ($result) {
-            return $result;
-        }
+            if (!empty($childNames)) {
+                // traverse the previous siblings down the tree
+                $result = $this->traversePrevDepth($depth, PathHelper::getPathDepth($anchor), $childNames, $parentPath, $ignoreRole, $class);
+                if ($result) {
+                    return $result;
+                }
 
-        // check siblings
-        $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
-        if ($result) {
-            return $result;
+                // check siblings
+                $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
+                if ($result) {
+                    return $result;
+                }
+            }
         }
 
         // check parents
-        // TODO do we need to traverse towards the anchor?
         if (0 === strpos($parentPath, $anchor)) {
             $parent = $parent->getParent();
             $childNames = $parent->getNodeNames()->getArrayCopy();
             $key = array_search(PathHelper::getNodeName($parentPath), $childNames);
             $childNames = array_slice($childNames, 0, $key + 1);
             $childNames = array_reverse($childNames);
-            $result = $this->checkChildren($childNames, $parent->getPath(), $ignoreRole, $class);
-            if ($result) {
-                return $result;
+            if (!empty($childNames)) {
+                $result = $this->checkChildren($childNames, $parent->getPath(), $ignoreRole, $class);
+                if ($result) {
+                    return $result;
+                }
             }
         }
 
@@ -604,7 +607,6 @@ class CmfHelper extends Helper
         }
 
         // take the first eligible child if there are any
-        // TODO do we need to traverse away from the anchor up to the depth here?
         if (null === $depth || PathHelper::getPathDepth($path) - PathHelper::getPathDepth($anchor) < $depth) {
             $childNames = $node->getNodeNames()->getArrayCopy();
             $result = $this->checkChildren($childNames, $path, $ignoreRole, $class);
@@ -694,7 +696,7 @@ class CmfHelper extends Helper
     public function getPrev($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
     {
         if ($anchor) {
-            return $this->searchDepthPrev($current, $anchor, $depth, true, $ignoreRole, $class);
+            return $this->searchDepthPrev($current, $anchor, $depth, $ignoreRole, $class);
         }
 
         return $this->search($current, true, $ignoreRole, $class);
