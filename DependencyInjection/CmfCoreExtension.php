@@ -177,6 +177,17 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             )
                         );
                         break;
+                    case 'cmf_seo':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
+                                    'content_basepath' => $persistenceConfig['basepath'].'/content',
+                                )
+                            )
+                        );
+                        break;
                 }
 
                 if ($prependConfig) {
