@@ -91,7 +91,7 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('publish_time')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('form_group')->defaultValue('form.group_general')->end()
+                                        ->scalarNode('form_group')->defaultValue('form.group_publish_workflow')->end()
                                     ->end()
                                 ->end()
                                 ->arrayNode('translatable')
