@@ -121,6 +121,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         );
                         break;
                     case 'cmf_routing':
+                        $routePaths = array($persistenceConfig['basepath'].'/routes');
+                        if (isset($extensions['cmf_simple_cms'])) {
+                            $routePaths[] = $persistenceConfig['basepath'].'/simple';
+                        }
                         $prependConfig = array(
                             'dynamic' => array(
                                 'enabled' => true,
@@ -129,7 +133,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                         'enabled' => $persistenceConfig['enabled'],
                                         'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                         'content_basepath' => $persistenceConfig['basepath'].'/content',
-                                        'route_basepath' => $persistenceConfig['basepath'].'/routes',
+                                        'route_basepaths' => $routePaths,
                                         'manager_name' => $persistenceConfig['manager_name'],
                                     )
                                 )
