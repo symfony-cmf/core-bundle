@@ -31,7 +31,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
-        // process the configuration of SymfonyCmfCoreExtension
+        // process the configuration of CmfCoreExtension
         $configs = $container->getExtensionConfig($this->getAlias());
         $parameterBag = $container->getParameterBag();
         $configs = $parameterBag->resolveValue($configs);
@@ -182,10 +182,53 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
-                                    'content_basepath' => $persistenceConfig['basepath'].'/content',
+                                ),
+                            ),
+                            'sonata_admin_extension' => $persistenceConfig['use_sonata_admin'],
+                        );
+                        break;
+                }
+
+                if ($prependConfig) {
+                    $container->prependExtensionConfig($name, $prependConfig);
+                }
+            }
+        }
+
+        if ($config['persistence']['orm']) {
+            $bundles = $container->getParameter('kernel.bundles');
+            $persistenceConfig = $config['persistence']['orm'];
+
+            foreach ($container->getExtensions() as $name => $extension) {
+                $prependConfig = array();
+
+                switch ($name) {
+                    case 'cmf_routing':
+                        $prependConfig = array(
+                            'dynamic' => array(
+                                'enabled' => true,
+                                'persistence' => array(
+                                    'orm' => array(
+                                        'enabled' => $persistenceConfig['enabled'],
+                                        'manager_name' => $persistenceConfig['manager_name'],
+                                    )
                                 )
                             )
+                        );
+
+                        if (isset($bundles['CmfContentBundle'])) {
+                            $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
+                        }
+                        break;
+
+                    case 'cmf_seo':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'orm' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                ),
+                            ),
+                            'sonata_admin_extension' => $persistenceConfig['use_sonata_admin'],
                         );
                         break;
                 }
