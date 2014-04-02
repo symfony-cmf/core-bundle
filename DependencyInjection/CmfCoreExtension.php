@@ -43,9 +43,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             if (isset($extensions['cmf_routing'])) {
                 $container->prependExtensionConfig('cmf_routing', array('dynamic' => $prependConfig['multilang']));
             }
-            if (isset($extensions['cmf_simple_cms'])) {
-                $container->prependExtensionConfig('cmf_simple_cms', $prependConfig);
-            }
         }
 
         if ($config['persistence']['phpcr']) {
