@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.0-RC2
+---------
+
+* **2014-04-11**: drop Symfony 2.2 compatibility, also the "cmf_request_aware" tag
+    has been deprecated. please add the ``setRequest()`` call manually now:
+  ``<call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false"/></call>``
+
 1.1.0-RC1
 ---------
 
