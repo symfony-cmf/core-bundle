@@ -15,7 +15,7 @@ translated content.
 
 ## Requirements
 
-* Symfony 2.2.x
+* Symfony 2.3+
 
 
 ## Documentation
