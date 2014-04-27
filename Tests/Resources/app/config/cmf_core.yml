@@ -3,4 +3,3 @@ cmf_core:
         enabled: true
     multilang:
         locales: [ gb ]
-

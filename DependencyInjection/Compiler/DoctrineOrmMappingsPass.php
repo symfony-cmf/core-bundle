@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -36,13 +35,14 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
      * Usually, you should not need to directly instantiate this class but use
      * one of the factory methods.
      *
-     * @param Definition|Reference $driver            the driver to use
-     * @param array                $namespaces        list of namespaces this driver should handle.
-     * @param string[]             $managerParameters ordered list of container parameters that may
-     *      provide the name of the manager to register the mappings for. The first non-empty name
-     *      is used, the others skipped.
+     * @param Definition|Reference $driver            The driver to use.
+     * @param array                $namespaces        List of namespaces this driver should handle.
+     * @param string[]             $managerParameters Ordered list of container parameters that may
+     *                                                provide the name of the manager to register
+     *                                                the mappings for. The first non-empty name
+     *                                                is used, the others skipped.
      * @param bool                 $enabledParameter  if specified, the compiler pass only executes
-     *      if this parameter exists in the service container.
+     *                                                if this parameter exists in the service container.
      */
     public function __construct($driver, $namespaces, array $managerParameters, $enabledParameter = false)
     {
@@ -97,14 +97,14 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
     /**
      * Create a mapping with the bundle namespace aware SymfonyFileLocator.
      *
-     * @param array    $mappings          Hashmap of directory path to namespace
-     * @param string[] $managerParameters List of parameters that could tell which object manager name
-     *                                    your bundle uses. This compiler pass will automatically
-     *                                    append the parameter name for the default entity manager
-     *                                    to this list.
+     * @param array          $mappings          Hashmap of directory path to namespace
+     * @param string[]       $managerParameters List of parameters that could tell which object manager name
+     *                                          your bundle uses. This compiler pass will automatically
+     *                                          append the parameter name for the default entity manager
+     *                                          to this list.
      * @param boolean|string $enabledParameter  Service container parameter that must be present to
-     *                                    enable the mapping. Set to false to not do any check,
-     *                                    optional.
+     *                                          enable the mapping. Set to false to not do any check,
+     *                                          optional.
      */
     public static function createXmlMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false)
     {

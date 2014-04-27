@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Admin\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\ChildExtension;

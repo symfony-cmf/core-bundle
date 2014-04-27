@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
-
-use PHPCR\SessionInterface;
 
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;

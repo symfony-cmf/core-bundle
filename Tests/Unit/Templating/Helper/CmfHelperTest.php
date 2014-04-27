@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Templating\Helper;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;

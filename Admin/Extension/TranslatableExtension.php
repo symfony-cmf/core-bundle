@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Admin\Extension;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
@@ -36,8 +35,8 @@ class TranslatableExtension extends AdminExtension
     protected $locales;
 
     /**
-     * @param array $locales
-     * @param string $formGroup - group to use for form mapper
+     * @param array  $locales   Available locales to select.
+     * @param string $formGroup The group name to use for form mapper.
      */
     public function __construct($locales, $formGroup = 'form.group_general')
     {

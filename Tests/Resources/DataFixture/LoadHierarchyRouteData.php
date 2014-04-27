@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ODM\PHPCR\Document\Generic;
 
 /**
  * Fixtures class for test data.

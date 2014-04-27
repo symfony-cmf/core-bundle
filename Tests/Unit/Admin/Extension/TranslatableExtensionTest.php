@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Admin\Extension;
 
-use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishableExtension;
+use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\TranslatableExtension;
 
-class PublishableExtensionTest extends \PHPUnit_Framework_Testcase
+class TranslatableExtensionTest extends \PHPUnit_Framework_Testcase
 {
     public function setUp()
     {
@@ -22,7 +21,7 @@ class PublishableExtensionTest extends \PHPUnit_Framework_Testcase
             'Sonata\AdminBundle\Form\FormMapper'
         )->disableOriginalConstructor()->getMock();
 
-        $this->extension = new PublishableExtension('some_group');
+        $this->extension = new TranslatableExtension(array('fr', 'en'), 'some_group');
     }
 
     public function testFormMapper()

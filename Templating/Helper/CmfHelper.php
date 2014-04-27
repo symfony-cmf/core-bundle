@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
 use PHPCR\Util\PathHelper;
@@ -41,10 +40,9 @@ class CmfHelper extends Helper
     protected $publishWorkflowChecker;
 
     /**
-     * Instantiates the content controller.
-     *
      * @param SecurityContextInterface $publishWorkflowChecker
-     * @param ManagerRegistry          $registry
+     * @param ManagerRegistry          $registry               For loading PHPCR-ODM documents from
+     *                                                         Doctrine.
      * @param string                   $objectManagerName
      */
     public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $objectManagerName = null)
@@ -56,10 +54,13 @@ class CmfHelper extends Helper
         }
     }
 
+    /**
+     * @return DocumentManager
+     */
     protected function getDm()
     {
         if (!$this->dm) {
-            throw new \RuntimeException('Document Manager has not been initialized yet.');
+            throw new \RuntimeException('Doctrine is not available.');
         }
 
         return $this->dm;
@@ -77,6 +78,7 @@ class CmfHelper extends Helper
 
     /**
      * @param  object         $document
+     *
      * @return boolean|string node name or false if the document is not in the unit of work
      */
     public function getNodeName($document)
@@ -91,6 +93,7 @@ class CmfHelper extends Helper
 
     /**
      * @param  object         $document
+     *
      * @return boolean|string node name or false if the document is not in the unit of work
      */
     public function getParentPath($document)
@@ -105,6 +108,7 @@ class CmfHelper extends Helper
 
     /**
      * @param  object         $document
+     *
      * @return boolean|string path or false if the document is not in the unit of work
      */
     public function getPath($document)
@@ -120,6 +124,7 @@ class CmfHelper extends Helper
      * Finds a document by path.
      *
      * @param $path
+     *
      * @return null|object
      */
     public function find($path)
@@ -130,12 +135,12 @@ class CmfHelper extends Helper
     /**
      * Gets a document instance and validate if its eligible.
      *
-     * @param string|object $document the id of a document or the document
-     *      object itself
-     * @param boolean|null $ignoreRole whether the bypass role should be
-     *      ignored (leading to only show published content regardless of the
-     *      current user) or null to skip the published check completely.
-     * @param null|string $class class name to filter on
+     * @param string|object $document   the id of a document or the document
+     *                                  object itself
+     * @param boolean|null  $ignoreRole whether the bypass role should be
+     *                                  ignored (leading to only show published content regardless of the
+     *                                  current user) or null to skip the published check completely.
+     * @param null|string   $class      class name to filter on
      *
      * @return null|object
      */
@@ -226,6 +231,7 @@ class CmfHelper extends Helper
      *
      * @param  string|object $document         Document instance or path
      * @param  Boolean       $includeFallbacks
+     *
      * @return array
      */
     public function getLocalesFor($document, $includeFallbacks = false)
@@ -251,7 +257,9 @@ class CmfHelper extends Helper
      * @param string|object $parent parent path/document
      * @param string        $name
      *
-     * @return boolean|null|object child or null if the child cannot be found or false if the parent is not in the unit of work
+     * @return boolean|null|object child or null if the child cannot be found
+     *                             or false if the parent is not managed by
+     *                             the configured document manager.
      */
     public function getChild($parent, $name)
     {
@@ -269,12 +277,14 @@ class CmfHelper extends Helper
     /**
      * Gets child documents.
      *
-     * @param string|object  $parent     parent path/document
-     * @param int|Boolean    $limit      int limit or false
-     * @param string|Boolean $offset     string node name to which to skip to or false
+     * @param string|object  $parent     parent id or document.
+     * @param int|Boolean    $limit      maximum number of children to get or
+     *                                   false for no limit.
+     * @param string|Boolean $offset     node name to which to skip to or false
      * @param null|string    $filter     child name filter (optional)
-     * @param Boolean|null   $ignoreRole whether the role should be ignored or null if
-     *                                   publish workflow should be ignored (defaults to false)
+     * @param Boolean|null   $ignoreRole whether the role should be ignored or
+     *                                   null if publish workflow should be
+     *                                   ignored (defaults to false)
      * @param null|string    $class      class name to filter on (optional)
      *
      * @return array
@@ -341,8 +351,9 @@ class CmfHelper extends Helper
      * @param string|Boolean $offset     node name to which to skip to or false
      *                                   to not skip any elements
      * @param null|string    $filter     child name filter
-     * @param Boolean|null   $ignoreRole whether the role should be ignored or null if
-     *                                   publish workflow should be ignored (defaults to false)
+     * @param Boolean|null   $ignoreRole whether the role should be ignored or
+     *                                   null if publish workflow should be
+     *                                   ignored (defaults to false).
      * @param string|null    $class      class name to filter on.
      *
      * @return array
@@ -365,9 +376,10 @@ class CmfHelper extends Helper
      * Check whether a document can be linked to, meaning the path() function
      * should be usable.
      *
-     * A document is linkable if it is either instance of Symfony\Component\Routing\Route
-     * or implements the RouteReferrersReadInterface and actually returns at
-     * least one route in getRoutes.
+     * A document is linkable if it is either instance of
+     * Symfony\Component\Routing\Route or implements the
+     * RouteReferrersReadInterface and actually returns at least one route in
+     * getRoutes.
      *
      * This does not work for route names or other things some routers may
      * support, only for objects.
@@ -414,8 +426,9 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param string|object $parent parent path/document
-     * @param null|int      $depth  null denotes no limit, depth of 1 means direct children only etc.
+     * @param string|object $parent parent path/document.
+     * @param null|int      $depth  null denotes no limit, depth of 1 means
+     *                              direct children only.
      *
      * @return array
      */
@@ -435,7 +448,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Check children for a possible following document
+     * Check children for a possible following document.
      *
      * @param array       $childNames
      * @param string      $path
@@ -462,7 +475,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Traverse the depth to find previous documents
+     * Traverse the depth to find previous documents.
      *
      * @param null|integer $depth
      * @param integer      $anchorDepth
@@ -499,7 +512,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Search for a previous document
+     * Search for a previous document.
      *
      * @param string|object $path       document instance or path from which to search
      * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
@@ -576,7 +589,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Search for a next document
+     * Search for a next document.
      *
      * @param string|object $path       document instance or path from which to search
      * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
@@ -650,7 +663,7 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Search for a following document
+     * Search for a related document.
      *
      * @param string|object $path       document instance or path from which to search
      * @param Boolean       $reverse    if to traverse back
@@ -727,10 +740,15 @@ class CmfHelper extends Helper
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object      $current    document instance or path from which to search
-     * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param Boolean            $ignoreRole if to ignore the role
+     * @param string|object      $current    Document instance or path from
+     *                                       which to search.
+     * @param null|string|object $anchor     Document instance or path which
+     *                                       serves as an anchor from which to
+     *                                       flatten the hierarchy.
+     * @param null|integer       $depth      Depth up to which to traverse down
+     *                                       the tree when an anchor is
+     *                                       provided.
+     * @param Boolean            $ignoreRole Whether to ignore the role,
      *
      * @return null|object
      *
@@ -754,10 +772,15 @@ class CmfHelper extends Helper
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object      $current    document instance or path from which to search
-     * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param Boolean            $ignoreRole if to ignore the role
+     * @param string|object      $current    Document instance or path from
+     *                                       which to search.
+     * @param null|string|object $anchor     Document instance or path which
+     *                                       serves as an anchor from which to
+     *                                       flatten the hierarchy.
+     * @param null|integer       $depth      Depth up to which to traverse down
+     *                                       the tree when an anchor is
+     *                                       provided.
+     * @param Boolean            $ignoreRole Whether to ignore the role.
      *
      * @return null|object
      *

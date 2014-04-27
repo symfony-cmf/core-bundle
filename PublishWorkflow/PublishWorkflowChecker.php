@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -53,13 +52,16 @@ class PublishWorkflowChecker implements SecurityContextInterface
     const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
 
     /**
+     * We cannot inject the security context directly as this would lead to a
+     * circular dependency.
+     *
      * @var ContainerInterface
      */
     private $container;
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
-     *      VIEW attribute is used, or false to never bypass
+     *      VIEW attribute is used, or false to never bypass.
      */
     private $bypassingRole;
 
@@ -74,13 +76,12 @@ class PublishWorkflowChecker implements SecurityContextInterface
     private $token;
 
     /**
-     * @param ContainerInterface $container to get the security context from.
-     *      We cannot inject the security context directly as this would lead
-     *      to a circular reference.
-     * @param AccessDecisionManagerInterface $accessDecisionManager
-     * @param boolean|string                 $bypassingRole         A role that
-     *      is allowed to bypass the published check if we ask for the VIEW
-     *      attribute.
+     * @param ContainerInterface             $container             To get the security context from.
+     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
+     * @param boolean|string                 $bypassingRole         A role that is allowed to bypass
+     *                                                              the published check if we ask for
+     *                                                              the VIEW permission. Ignored on
+     *                                                              VIEW_ANONYMOUS.
      */
     public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {

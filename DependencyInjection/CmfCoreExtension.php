@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -38,7 +37,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $extensions = $container->getExtensions();
-        if (isset($config['multilang']['locales'])){
+        if (isset($config['multilang']['locales'])) {
             $prependConfig = array('multilang' => $config['multilang']);
             if (isset($extensions['cmf_routing'])) {
                 $container->prependExtensionConfig('cmf_routing', array('dynamic' => $prependConfig['multilang']));

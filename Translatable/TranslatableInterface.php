@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Translatable;
 
 /**
@@ -22,13 +21,13 @@ interface TranslatableInterface
 {
     /**
      * @return string|boolean The locale of this model or false if
-     *      translations are disabled in this project.
+     *                        translations are disabled in this project.
      */
     public function getLocale();
 
     /**
      * @param string|boolean $locale The local for this model, or false if
-     *      translations are disabled in this project.
+     *                               translations are disabled in this project.
      */
     public function setLocale($locale);
 }

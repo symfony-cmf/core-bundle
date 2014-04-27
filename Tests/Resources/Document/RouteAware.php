@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document;
 
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
