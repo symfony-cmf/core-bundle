@@ -50,7 +50,7 @@ class ChildExtensionTest extends \PHPUnit_Framework_Testcase
 
         $child = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface');
         $child->expects($this->once())
-            ->method('setParentDocument')
+            ->method('setParentObject')
             ->with($this->equalTo($parent));
 
         $extension = new ChildExtension();

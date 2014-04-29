@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Admin\Extension;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface;
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 
 /**
  * Admin extension to handle child models.
@@ -29,14 +30,26 @@ class ChildExtension extends AdminExtension
      */
     public function alterNewInstance(AdminInterface $admin, $object)
     {
-        if (!$object instanceof ChildInterface) {
-            throw new \InvalidArgumentException('Expected ChildInterface, got ' . get_class($object));
+        if (!$admin->hasRequest()
+            || !$parentId = $admin->getRequest()->get('parent')
+        ) {
+            return;
         }
 
-        if ($admin->hasRequest() && $parentId = $admin->getRequest()->get('parent')) {
-            if ($parent = $admin->getModelManager()->find(null, $parentId)) {
+        $parent = $admin->getModelManager()->find(null, $parentId);
+        if (!$parent) {
+            return;
+        }
+
+        switch($object) {
+            case $object instanceof HierarchyInterface:
                 $object->setParentDocument($parent);
-            }
+                break;
+            case $object instanceof ChildInterface:
+                $object->setParentObject($parent);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Class %s is not supported', get_class($object)));
         }
     }
 }
