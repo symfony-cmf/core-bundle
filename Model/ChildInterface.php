@@ -12,17 +12,20 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Model;
 
 /**
- * An interface for models with a parent document.
+ * An interface for models with a parent object.
+ *
+ * Note that PHPCR-ODM documents will most likely use the HierarchyInterface
+ * of PHPCR-ODM instead.
  */
 interface ChildInterface
 {
     /**
      * @param $parent object
      */
-    public function setParentDocument($parent);
+    public function setParentObject($parent);
 
     /**
      * @return object
      */
-    public function getParentDocument();
+    public function getParentObject();
 }
