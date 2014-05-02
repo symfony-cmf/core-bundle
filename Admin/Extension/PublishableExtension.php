@@ -45,7 +45,6 @@ class PublishableExtension extends AdminExtension
             ))
             ->add('publishable', 'checkbox', array(
                 'required' => false,
-            ), array(
             ))
             ->end();
     }

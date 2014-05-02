@@ -50,7 +50,10 @@ class TranslatableExtension extends AdminExtension
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('locales', 'choice', array('template' => 'SonataDoctrinePHPCRAdminBundle:CRUD:locales.html.twig'))
+            ->add('locales', 'choice', array(
+                'template' => 'SonataDoctrinePHPCRAdminBundle:CRUD:locales.html.twig',
+                'translation_domain' => 'CmfCoreBundle',
+            ))
         ;
     }
 
@@ -61,11 +64,11 @@ class TranslatableExtension extends AdminExtension
     {
         $formMapper
             ->with($this->formGroup)
+            // do not set a translation_domain for this group or group_general will be translated by our domain.
             ->add('locale', 'choice', array(
-                'translation_domain' => 'CmfCoreBundle',
                 'choices' => array_combine($this->locales, $this->locales),
                 'empty_value' => '',
-            ))
+            ), array('translation_domain' => 'CmfCoreBundle'))
             ->end()
         ;
     }
