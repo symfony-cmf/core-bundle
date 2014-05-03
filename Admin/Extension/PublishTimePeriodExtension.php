@@ -45,14 +45,14 @@ class PublishTimePeriodExtension extends AdminExtension
             'required' => false,
         );
 
-        $formMapper->with($this->formGroup, array(
-            'translation_domain' => 'CmfCoreBundle',
-            ))
+        $formMapper->with($this->formGroup)
             ->add('publish_start_date', 'date', $dateOptions, array(
                 'help' => 'form.help_publish_start_date',
+                'translation_domain' => 'CmfCoreBundle',
             ))
             ->add('publish_end_date', 'date', $dateOptions, array(
                 'help' => 'form.help_publish_end_date',
+                'translation_domain' => 'CmfCoreBundle',
             ))
             ->end();
     }
