@@ -184,7 +184,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                 ),
                             ),
-                            'sonata_admin_extension' => $persistenceConfig['use_sonata_admin'],
+                            'sonata_admin' => array(
+                                'enabled' => $persistenceConfig['use_sonata_admin'],
+                            ),
                         );
                         break;
                 }
@@ -228,7 +230,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                 ),
                             ),
-                            'sonata_admin_extension' => $persistenceConfig['use_sonata_admin'],
+                            'sonata_admin' => array(
+                                'enabled' => $persistenceConfig['use_sonata_admin'],
+                            ),
                         );
                         break;
                 }
