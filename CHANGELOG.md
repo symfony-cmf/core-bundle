@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.1.0
+-----
+
+* **2014-05-08** [Multilang]: When using phpcr-odm but not configuring
+  cmf_core.multilang.locales, the metadata listener now makes all documents
+  non-translated. It no longer checks whether the document implements
+  `TranslatableInterface`.
+
 1.1.0-RC2
 ---------
 
