@@ -45,16 +45,18 @@ class NonTranslatableMetadataListener implements EventSubscriber
         /** @var $meta ClassMetadata */
         $meta = $eventArgs->getClassMetadata();
 
-        if ($meta->getReflectionClass()->implementsInterface('Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface')) {
-            foreach ($meta->translatableFields as $field) {
-                unset($meta->mappings[$field]['translated']);
-            }
-            $meta->translatableFields = array();
-            if (null !== $meta->localeMapping) {
-                unset($meta->mappings[$meta->localeMapping]);
-                $meta->localeMapping = null;
-            }
-            $meta->translator = null;
+        if (!$meta->translator) {
+            return;
         }
+
+        foreach ($meta->translatableFields as $field) {
+            unset($meta->mappings[$field]['translated']);
+        }
+        $meta->translatableFields = array();
+        if (null !== $meta->localeMapping) {
+            unset($meta->mappings[$meta->localeMapping]);
+            $meta->localeMapping = null;
+        }
+        $meta->translator = null;
     }
 }
