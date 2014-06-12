@@ -30,12 +30,11 @@
         "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener, 1.0.*",
         "sonata-project/admin-bundle": "To be able to enable the publish_workflow_listener extension, ~2.2"
     },
-    "autoload":{
-        "psr-0":{
-            "Symfony\\Cmf\\Bundle\\CoreBundle": ""
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\CoreBundle\\": ""
         }
     },
-    "target-dir": "Symfony/Cmf/Bundle/CoreBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.2-dev"
