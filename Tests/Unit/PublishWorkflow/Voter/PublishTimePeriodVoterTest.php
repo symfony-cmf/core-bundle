@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class PublishTimePeriodVoterTest extends \PHPUnit_Framework_Testcase
+class PublishTimePeriodVoterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PublishTimePeriodVoter

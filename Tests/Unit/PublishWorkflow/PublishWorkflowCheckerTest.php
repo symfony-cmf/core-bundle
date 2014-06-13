@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class PublishWorkflowCheckerTest extends \PHPUnit_Framework_Testcase
+class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PublishWorkflowChecker
