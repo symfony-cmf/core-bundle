@@ -13,7 +13,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Admin\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishTimePeriodExtension;
 
-class PublishTimePeriodExtensionTest extends \PHPUnit_Framework_Testcase
+class PublishTimePeriodExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
