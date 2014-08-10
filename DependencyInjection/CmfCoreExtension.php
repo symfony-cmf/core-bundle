@@ -140,6 +140,15 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
                         break;
+                    case 'cmf_routing_auto':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'route_basepath' => $persistenceConfig['basepath'].'/routes',
+                                ),
+                            ),
+                        );
+                        break;
                     case 'cmf_search':
                         $prependConfig = array(
                             'persistence' => array(
