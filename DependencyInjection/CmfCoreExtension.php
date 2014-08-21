@@ -144,6 +144,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         $prependConfig = array(
                             'persistence' => array(
                                 'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
                                     'route_basepath' => $persistenceConfig['basepath'].'/routes',
                                 ),
                             ),
