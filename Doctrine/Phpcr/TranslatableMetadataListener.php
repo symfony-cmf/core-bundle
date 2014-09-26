@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 
 /**
- * Metadata listener for when the translations is globally defined
+ * Metadata listener for when the translations are globally defined
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */

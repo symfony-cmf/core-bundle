@@ -1,10 +1,10 @@
 language: php
 
 php:
-    - 5.3
-    - 5.4
-    - 5.5
-    - hhvm
+  - 5.3
+  - 5.4
+  - 5.5
+  - hhvm
 
 env:
   - SYMFONY_VERSION=2.5.*
@@ -21,7 +21,7 @@ matrix:
     - php: 5.5
       env: SYMFONY_VERSION=dev-master
 
-before_script:
+before_install:
   - composer self-update
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
 
