@@ -44,7 +44,7 @@ Changelog
 ---------
 
 * **2013-08-04**: [Doctrine ORM] Fix doctrine orm compiler pass to match
-  signature of the one in the doctrine brigde.
+  signature of the one in the doctrine bridge.
 
 * **2013-08-01**: [PublishWorkflow] Adjusted interfaces to naming conventions.
   PublishableInterface is now read and write, PublishableReadInterface for read

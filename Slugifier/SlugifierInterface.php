@@ -19,7 +19,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Slugifier;
 interface SlugifierInterface
 {
     /**
-     * Return a slugified (or urlized) reperesentation of a given string
+     * Return a slugified (or urlized) representation of a given string
      *
      * @param string
      *

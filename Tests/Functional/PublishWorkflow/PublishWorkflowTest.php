@@ -29,11 +29,6 @@ class PublishWorkflowTest extends BaseTestCase
      */
     private $pwc;
 
-    /**
-     * @var CmfExtension
-     */
-    private $extension;
-
     public function setUp()
     {
         $this->pwc = $this->getContainer()->get('cmf_core.publish_workflow.checker');
