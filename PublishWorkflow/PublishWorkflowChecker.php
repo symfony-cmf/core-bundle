@@ -146,7 +146,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
         $token = $this->getToken();
 
         // not logged in, just check with a dummy token
-        if (!$token) {
+        if (null === $token) {
             $token = new AnonymousToken('', '');
         }
 
