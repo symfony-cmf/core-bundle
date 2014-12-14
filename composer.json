@@ -11,7 +11,7 @@
             "homepage": "https://github.com/symfony-cmf/CoreBundle/contributors"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.3",
         "symfony/framework-bundle": "~2.3"
