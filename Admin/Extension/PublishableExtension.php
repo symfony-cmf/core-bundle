@@ -40,12 +40,13 @@ class PublishableExtension extends AdminExtension
      */
     public function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->with($this->formGroup, array(
-            'translation_domain' => 'CmfCoreBundle',
+        $formMapper
+            ->with($this->formGroup, array(
+                'translation_domain' => 'CmfCoreBundle',
             ))
-            ->add('publishable', 'checkbox', array(
-                'required' => false,
-            ))
+                ->add('publishable', 'checkbox', array(
+                    'required' => false,
+                ))
             ->end();
     }
 }
