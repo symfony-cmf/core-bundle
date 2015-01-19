@@ -25,13 +25,19 @@ class PublishableExtension extends AdminExtension
     /**
      * @var string
      */
+    protected $formTab;
+
+    /**
+     * @var string
+     */
     protected $formGroup;
 
     /**
-     * @param string $formGroup - group to use for form mapper
+     * @param string $formTab The tab to put the new publishable field
      */
-    public function __construct($formGroup = 'form.group_publish_workflow')
+    public function __construct($formGroup = 'form.group_publish_workflow', $formTab = 'form.tab_publish')
     {
+        $this->formTab = $formTab;
         $this->formGroup = $formGroup;
     }
 
@@ -40,13 +46,27 @@ class PublishableExtension extends AdminExtension
      */
     public function configureFormFields(FormMapper $formMapper)
     {
+        if ($formMapper->hasOpenTab()) {
+            $formMapper->end();
+        }
+
         $formMapper
-            ->with($this->formGroup, array(
-                'translation_domain' => 'CmfCoreBundle',
+            ->tab($this->formTab, array_merge(
+                'form.tab_publish' === $this->formTab
+                    ? array('translation_domain' => 'CmfCoreBundle')
+                    : array()
             ))
-                ->add('publishable', 'checkbox', array(
-                    'required' => false,
-                ))
+                ->with($this->formGroup, 'form.group_publish_workflow' === $this->formGroup
+                    ? array('translation_domain' => 'CmfCoreBundle')
+                    : array()
+                )
+                    ->add('publishable', 'checkbox', array(
+                        'required' => false,
+                    ), array(
+                        'translation_domain' => 'CmfCoreBundle',
+                        'help' => 'form.help_publishable'
+                    ))
+                ->end()
             ->end();
     }
 }

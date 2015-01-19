@@ -21,15 +21,25 @@ class PublishableExtensionTest extends \PHPUnit_Framework_TestCase
             'Sonata\AdminBundle\Form\FormMapper'
         )->disableOriginalConstructor()->getMock();
 
-        $this->extension = new PublishableExtension('some_group');
+        $this->extension = new PublishableExtension('other_group', 'some_tab');
     }
 
     public function testFormMapper()
     {
+        $this->formMapper->expects($this->any())
+            ->method('end')
+            ->will($this->returnSelf());
+
+        $this->formMapper->expects($this->once())
+            ->method('tab')
+            ->with('some_tab')
+            ->will($this->returnSelf());
+
         $this->formMapper->expects($this->once())
             ->method('with')
-            ->with('some_group')
+            ->with('other_group')
             ->will($this->returnSelf());
+
         $this->formMapper->expects($this->exactly(1))
             ->method('add')
             ->will($this->returnSelf());
