@@ -8,6 +8,7 @@
     </parameters>
 
     <services>
+        <!-- This service can't be set to private, but has to be considered as such -->
         <service id="cmf_core.form.type.checkbox_url_label" class="%cmf_core.form.type.checkbox_url_label.class%">
             <tag name="form.type" alias="cmf_core_checkbox_url_label" />
             <argument type="service" id="router" />

@@ -11,7 +11,7 @@
 
     <services>
 
-        <service id="cmf_core.persistence.phpcr.non_translatable_metadata_listener" class="%cmf_core.persistence.phpcr.non_translatable_metadata_listener.class%">
+        <service id="cmf_core.persistence.phpcr.non_translatable_metadata_listener" class="%cmf_core.persistence.phpcr.non_translatable_metadata_listener.class%" public="false">
             <tag name="doctrine_phpcr.event_subscriber"/>
         </service>
 
