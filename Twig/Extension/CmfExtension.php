@@ -30,30 +30,110 @@ class CmfExtension extends \Twig_Extension
     public function getFunctions()
     {
         $functions = array(
-            new \Twig_SimpleFunction('cmf_is_published', array($this->cmfHelper, 'isPublished')),
-            new \Twig_SimpleFunction('cmf_is_linkable', array($this->cmfHelper, 'isLinkable')),
-            new \Twig_SimpleFunction('cmf_child', array($this->cmfHelper, 'getChild')),
-            new \Twig_SimpleFunction('cmf_children', array($this->cmfHelper, 'getChildren')),
-            new \Twig_SimpleFunction('cmf_prev', array($this->cmfHelper, 'getPrev')),
-            new \Twig_SimpleFunction('cmf_next', array($this->cmfHelper, 'getNext')),
-            new \Twig_SimpleFunction('cmf_find', array($this->cmfHelper, 'find')),
-            new \Twig_SimpleFunction('cmf_find_many', array($this->cmfHelper, 'findMany')),
-            new \Twig_SimpleFunction('cmf_descendants', array($this->cmfHelper, 'getDescendants')),
-            new \Twig_SimpleFunction('cmf_nodename', array($this->cmfHelper, 'getNodeName')),
-            new \Twig_SimpleFunction('cmf_parent_path', array($this->cmfHelper, 'getParentPath')),
-            new \Twig_SimpleFunction('cmf_path', array($this->cmfHelper, 'getPath')),
-            new \Twig_SimpleFunction('cmf_document_locales', array($this->cmfHelper, 'getLocalesFor')),
+            new \Twig_SimpleFunction('cmf_is_published', array($this, 'isPublished')),
+            new \Twig_SimpleFunction('cmf_child', array($this, 'getChild')),
+            new \Twig_SimpleFunction('cmf_children', array($this, 'getChildren')),
+            new \Twig_SimpleFunction('cmf_prev', array($this, 'getPrev')),
+            new \Twig_SimpleFunction('cmf_next', array($this, 'getNext')),
+            new \Twig_SimpleFunction('cmf_find', array($this, 'find')),
+            new \Twig_SimpleFunction('cmf_find_many', array($this, 'findMany')),
+            new \Twig_SimpleFunction('cmf_descendants', array($this, 'getDescendants')),
+            new \Twig_SimpleFunction('cmf_nodename', array($this, 'getNodeName')),
+            new \Twig_SimpleFunction('cmf_parent_path', array($this, 'getParentPath')),
+            new \Twig_SimpleFunction('cmf_path', array($this, 'getPath')),
+            new \Twig_SimpleFunction('cmf_document_locales', array($this, 'getLocalesFor')),
         );
 
         if (interface_exists('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface')) {
             $functions = array_merge($functions, array(
-                new \Twig_SimpleFunction('cmf_prev_linkable', array($this->cmfHelper, 'getPrevLinkable')),
-                new \Twig_SimpleFunction('cmf_next_linkable', array($this->cmfHelper, 'getNextLinkable')),
-                new \Twig_SimpleFunction('cmf_linkable_children', array($this->cmfHelper, 'getLinkableChildren')),
+                new \Twig_SimpleFunction('cmf_is_linkable', array($this, 'isLinkable')),
+                new \Twig_SimpleFunction('cmf_prev_linkable', array($this, 'getPrevLinkable')),
+                new \Twig_SimpleFunction('cmf_next_linkable', array($this, 'getNextLinkable')),
+                new \Twig_SimpleFunction('cmf_linkable_children', array($this, 'getLinkableChildren')),
             ));
         }
 
         return $functions;
+    }
+
+    public function isPublished($document)
+    {
+        return $this->helper->isPublished($document);
+    }
+
+    public function isLinkable($document)
+    {
+        return $this->helper->isLinkable($document);
+    }
+
+    public function getChild($parent, $name)
+    {
+        return $this->helper->getChild($parent, $name);
+    }
+
+    public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
+    {
+        return $this->helper->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
+    }
+
+    public function getPrev($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
+    {
+        return $this->helper->getPrev($current, $anchor, $depth, $ignoreRole, $class);
+    }
+
+    public function getNext($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
+    {
+        return $this->helper->getNext($current, $anchor, $depth, $ignoreRole, $class);
+    }
+
+    public function find($path)
+    {
+        return $this->helper->find($path);
+    }
+
+    public function findMany($paths = array(), $limit = false, $offset = false, $ignoreRole = false, $class = null)
+    {
+        return $this->helper->findMany($paths, $limit, $offset, $ignoreRole, $class);
+    }
+
+    public function getDescendants($parent, $depth = null)
+    {
+        return $this->helper->getDescendants($parent, $depth);
+    }
+
+    public function getNodeName($document)
+    {
+        return $this->helper->getNodeName($document);
+    }
+
+    public function getParentPath($document)
+    {
+        return $this->helper->getParentPath($document);
+    }
+
+    public function getPath($document)
+    {
+        return $this->helper->getPath($document);
+    }
+
+    public function getLocalesFor($document, $includeFallbacks = false)
+    {
+        return $this->helper->getLocalesFor($document, $includeFallbacks);
+    }
+
+    public function getPrevLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
+    {
+        return $this->helper->getPrevLinkable($current, $anchor, $depth, $ignoreRole);
+    }
+
+    public function getNextLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
+    {
+        return $this->helper->getNextLinkable($current, $anchor, $depth, $ignoreRole);
+    }
+
+    public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
+    {
+        return $this->helper->getLinkableChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
     }
 
     public function getName()
