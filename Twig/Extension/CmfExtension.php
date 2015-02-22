@@ -15,11 +15,11 @@ use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 
 class CmfExtension extends \Twig_Extension
 {
-    protected $cmfHelper;
+    protected $helper;
 
-    public function __construct(CmfHelper $cmfHelper)
+    public function __construct(CmfHelper $helper)
     {
-        $this->cmfHelper = $cmfHelper;
+        $this->helper = $helper;
     }
 
     /**
