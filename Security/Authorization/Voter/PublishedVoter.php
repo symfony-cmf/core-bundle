@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 
 /**
- * This is a security voter registered with the Symfony security.context that
+ * This is a security voter registered with the Symfony security system that
  * brings the publish workflow into standard Symfony security.
  *
  * @author David Buchmann <mail@davidbu.ch>

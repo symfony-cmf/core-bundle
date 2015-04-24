@@ -93,13 +93,18 @@ class PublishWorkflowChecker implements SecurityContextInterface
     /**
      * {@inheritDoc}
      *
-     * Defaults to the token from the default security context, but can be
+     * Defaults to the token from the default token storage, but can be
      * overwritten locally.
      */
     public function getToken()
     {
-        if (null === $this->token && $this->container->has('security.context')) {
-            return $this->container->get('security.context')->getToken();
+        if (null === $this->token) {
+            if ($this->container->has('security.token_storage')) {
+                return $this->container->get('security.token_storage')->getToken();
+            } elseif ($this->container->has('security.context')) {
+                // to be BC with Symfony 2.3
+                return $this->container->get('security.context')->getToken();
+            }
         }
 
         return $this->token;
@@ -134,11 +139,21 @@ class PublishWorkflowChecker implements SecurityContextInterface
             $attributes = array($attributes);
         }
 
+        $tokenStorage = null;
+        $authorizationChecker = null;
+        if ($this->container->has('security.token_storage')) {
+            $tokenStorage = $this->container->get('security.token_storage');
+            $authorizationChecker = $this->container->get('security.authorization_checker');
+        } elseif ($this->container->has('security.context')) {
+            // to be BC with Symfony <2.6
+            $authoriationChecker = $tokenStorage = $this->container->get('security.context');
+        }
+
         if ((count($attributes) === 1)
             && self::VIEW_ATTRIBUTE === reset($attributes)
-            && $this->container->has('security.context')
-            && null !== $this->container->get('security.context')->getToken()
-            && $this->container->get('security.context')->isGranted($this->bypassingRole)
+            && null !== $tokenStorage
+            && null !== $tokenStorage->getToken()
+            && $authorizationChecker->isGranted($this->bypassingRole)
         ) {
             return true;
         }
