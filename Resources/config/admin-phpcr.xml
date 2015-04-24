@@ -10,7 +10,7 @@
 
     <services>
 
-        <service id="cmf_core.admin_extension.child" class="%cmf_core.admin_extension.child.class%">
+        <service id="cmf_core.admin_extension.child" class="%cmf_core.admin_extension.child.class%" public="false">
             <tag name="sonata.admin.extension"/>
         </service>
 

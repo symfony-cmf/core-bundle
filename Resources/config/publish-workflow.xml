@@ -29,14 +29,15 @@
             <argument>%cmf_core.publish_workflow.view_non_published_role%</argument>
         </service>
 
-        <service id="cmf_core.security.publishable_voter" class="%cmf_core.security.publishable_voter.class%">
+        <service id="cmf_core.security.publishable_voter" class="%cmf_core.security.publishable_voter.class%" public="false">
             <tag name="cmf_published_voter" priority="10"/>
         </service>
 
-        <service id="cmf_core.security.publish_time_period_voter" class="%cmf_core.security.publish_time_period_voter.class%">
+        <service id="cmf_core.security.publish_time_period_voter" class="%cmf_core.security.publish_time_period_voter.class%" public="false">
             <tag name="cmf_published_voter" priority="20"/>
         </service>
 
+        <!-- This service can't be set to private, but has to be considered as such -->
         <service id="cmf_core.publish_workflow.request_listener" class="%cmf_core.publish_workflow.request_listener.class%">
             <argument type="service" id="cmf_core.publish_workflow.checker"/>
             <tag name="kernel.event_subscriber"/>
@@ -44,19 +45,19 @@
 
         <!-- integration with core security service -->
 
-        <service id="cmf_core.security.published_voter" class="%cmf_core.security.publishable_voter.class%">
+        <service id="cmf_core.security.published_voter" class="%cmf_core.security.publishable_voter.class%" public="false">
             <argument type="service" id="service_container" on-invalid="ignore"/>
             <tag name="security.voter"/>
         </service>
 
         <!-- integration with sonata admin - removed by the DI class if sonata is not available -->
 
-        <service id="cmf_core.admin_extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable.class%">
+        <service id="cmf_core.admin_extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable.class%" public="false">
             <argument>%cmf_core.sonata_admin.extension.publishable.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 
-        <service id="cmf_core.admin_extension.publish_workflow.time_period" class="%cmf_core.admin_extension.publish_workflow.time_period.class%">
+        <service id="cmf_core.admin_extension.publish_workflow.time_period" class="%cmf_core.admin_extension.publish_workflow.time_period.class%" public="false">
             <argument>%cmf_core.sonata_admin.extension.publish_time.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>

@@ -12,15 +12,16 @@
 
     <services>
 
-        <service id="cmf_core.twig.children_extension" class="%cmf_core.twig_extension.class%">
+        <service id="cmf_core.twig.children_extension" class="%cmf_core.twig_extension.class%" public="false">
             <argument type="service" id="cmf_core.templating.helper"/>
             <tag name="twig.extension"/>
         </service>
 
-        <service id="cmf_core.templating.helper" class="%cmf_core.templating.helper.class%">
+        <service id="cmf_core.templating.helper" class="%cmf_core.templating.helper.class%" public="false">
             <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
             <argument type="service" id="doctrine_phpcr" on-invalid="ignore"/>
             <argument>%cmf_core.persistence.phpcr.manager_name%</argument>
+            <tag name="templating.helper" alias="cmf"/>
         </service>
 
     </services>

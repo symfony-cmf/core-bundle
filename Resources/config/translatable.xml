@@ -11,12 +11,12 @@
 
     <services>
 
-        <service id="cmf_core.persistence.phpcr.translatable_metadata_listener" class="%cmf_core.persistence.phpcr.translatable_metadata_listener.class%">
+        <service id="cmf_core.persistence.phpcr.translatable_metadata_listener" class="%cmf_core.persistence.phpcr.translatable_metadata_listener.class%" public="false">
             <argument>%cmf_core.persistence.phpcr.translation_strategy%</argument>
             <tag name="doctrine_phpcr.event_subscriber"/>
         </service>
 
-        <service id="cmf_core.admin_extension.translatable" class="%cmf_core.admin_extension.translatable.class%">
+        <service id="cmf_core.admin_extension.translatable" class="%cmf_core.admin_extension.translatable.class%" public="false">
             <argument>%cmf_core.multilang.locales%</argument>
             <argument>%cmf_core.sonata_admin.extension.translatable.form_group%</argument>
             <tag name="sonata.admin.extension"/>
