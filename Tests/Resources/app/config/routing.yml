@@ -1,5 +1,5 @@
 home:
-    pattern: /
+    path: /
 
 hello:
-    pattern: /hello/{name}
+    path: /hello/{name}

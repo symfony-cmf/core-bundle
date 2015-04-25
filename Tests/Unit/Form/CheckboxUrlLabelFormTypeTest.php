@@ -12,7 +12,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Form;
 
 use Symfony\Component\Form\AbstractExtension;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
