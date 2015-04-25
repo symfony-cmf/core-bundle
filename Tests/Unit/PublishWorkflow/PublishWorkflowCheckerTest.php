@@ -54,27 +54,23 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->role = 'IS_FOOBAR';
-        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
-            ->setMockClassName('Container')
-            ->getMock();
-        $this->sc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->container
-            ->expects($this->any())
-            ->method('get')
-            ->with('security.context')
-            ->will($this->returnValue($this->sc))
-        ;
-        $this->container
-            ->expects($this->any())
-            ->method('has')
-            ->with('security.context')
-            ->will($this->returnValue(true))
-        ;
-        $this->doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
-        $this->adm = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+        $this->container = \Mockery::mock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->sc = \Mockery::mock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->doc = \Mockery::mock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
+        $this->adm = \Mockery::mock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
         $this->stdClass = new \stdClass;
-
         $this->pwfc = new PublishWorkflowChecker($this->container, $this->adm, $this->role);
+
+        $this->container->shouldReceive('get')->with('security.context')->andReturn($this->sc);
+
+        // assuming Symfony <2.6
+        $this->container->shouldReceive('has')->with('security.context')->andReturn(true);
+        $this->container->shouldReceive('has')->with('security.token_storage')->andReturn(false);
+    }
+
+    protected function tearDown()
+    {
+        \Mockery::close();
     }
 
     /**
@@ -83,18 +79,12 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
     public function testIsGranted()
     {
         $token = new AnonymousToken('', '');
-        $this->sc->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token))
-        ;
-        $this->sc->expects($this->never())
-            ->method('isGranted')
-        ;
-        $this->adm->expects($this->once())
-            ->method('decide')
+        $this->sc->shouldReceive('getToken')->andReturn($token);
+        $this->sc->shouldNotReceive('isGranted');
+        $this->adm
+            ->shouldReceive('decide')->once()
             ->with($token, array(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE), $this->doc)
-            ->will($this->returnValue(true))
-        ;
+            ->andReturn(true);
 
         $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $this->doc));
     }
@@ -102,20 +92,12 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
     public function testNotHasBypassRole()
     {
         $token = new AnonymousToken('', '');
-        $this->sc->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token))
-        ;
-        $this->sc->expects($this->once())
-            ->method('isGranted')
-            ->with($this->role)
-            ->will($this->returnValue(false))
-        ;
-        $this->adm->expects($this->once())
-            ->method('decide')
+        $this->sc->shouldReceive('getToken')->andReturn($token);
+        $this->sc->shouldReceive('isGranted')->once()->with($this->role)->andReturn(false);
+        $this->adm
+            ->shouldReceive('decide')->once()
             ->with($token, array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->doc)
-            ->will($this->returnValue(true))
-        ;
+            ->andReturn(true);
 
         $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
     }
@@ -123,64 +105,37 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
     public function testHasBypassRole()
     {
         $token = new AnonymousToken('', '');
-        $this->sc->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token))
-        ;
-        $this->sc->expects($this->once())
-            ->method('isGranted')
-            ->with($this->role)
-            ->will($this->returnValue(true))
-        ;
-        $this->adm->expects($this->never())
-            ->method('decide')
-        ;
+        $this->sc->shouldReceive('getToken')->andReturn($token);
+        $this->sc->shouldReceive('isGranted')->once()->with($this->role)->andReturn(true);
+        $this->adm->shouldNotReceive('decide');
 
         $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
     }
 
     public function testNoFirewall()
     {
-        $token = new AnonymousToken('', '');
-        $this->sc->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue(null))
-        ;
-        $this->sc->expects($this->never())
-            ->method('isGranted')
-        ;
-        $this->adm->expects($this->once())
-            ->method('decide')
-            ->with($token, array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->doc)
-            ->will($this->returnValue(true))
-        ;
+        $this->sc->shouldReceive('getToken')->andReturnNull();
+        $this->sc->shouldNotReceive('isGranted');
+        $this->adm
+            ->shouldReceive('decide')->once()
+            ->with(\Mockery::type('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken'), array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->doc)
+            ->andReturn(true);
 
         $this->assertTrue($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
     }
 
     public function testNoSecurityContext()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container
-            ->expects($this->any())
-            ->method('get')
-            ->with('security.context')
-            ->will($this->throwException(new ServiceNotFoundException('Service not defined')))
-        ;
-        $container
-            ->expects($this->any())
-            ->method('has')
-            ->with('security.context')
-            ->will($this->returnValue(false))
-        ;
-        $this->pwfc = new PublishWorkflowChecker($container, $this->adm, $this->role);
+        $container = \Mockery::mock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->shouldReceive('get')->with('security.context')
+            ->andThrow(new ServiceNotFoundException('Service not defined'));
+        $container->shouldReceive('has')->andReturn(false);
 
-        $this->adm->expects($this->once())
-            ->method('decide')
-            ->will($this->returnValue(false))
-        ;
+        $pwfc = new PublishWorkflowChecker($container, $this->adm, $this->role);
 
-        $this->assertFalse($this->pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
+        $this->adm->shouldReceive('decide')->once()->andReturn(false);
+
+        $this->assertFalse($pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
     }
 
     public function testSetToken()
@@ -190,14 +145,34 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($token, $this->pwfc->getToken());
     }
 
+    public function testTokenStorageAndAuthenticationManager()
+    {
+        if (!class_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage')) {
+            $this->markTestSkipped('This test requires Symfony >2.6');
+        }
+
+        $token = new AnonymousToken('x', 'y');
+        $ts = \Mockery::mock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInteface');
+        $ac = \Mockery::mock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+
+        $container = \Mockery::mock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->shouldReceive('get')->with('security.token_storage')->andReturn($ts);
+        $container->shouldReceive('get')->with('security.authorization_checker')->andReturn($ac);
+        $container->shouldReceive('has')->with('security.token_storage')->andReturn(true);
+
+        $ts->shouldReceive('getToken')->andReturn($token);
+        $ac->shouldReceive('isGranted')->with($this->role)->andReturn(true);
+
+        $pwfc = new PublishWorkflowChecker($container, $this->adm, $this->role);
+
+        $this->assertTrue($pwfc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->doc));
+    }
+
     public function testSupportsClass()
     {
         $class = 'Test\Class';
-        $this->adm->expects($this->once())
-            ->method('supportsClass')
-            ->with($class)
-            ->will($this->returnValue(true))
-        ;
+        $this->adm->shouldReceive('supportsClass')->once()->with($class)->andReturn(true);
+
         $this->assertTrue($this->pwfc->supportsClass($class));
     }
 }

@@ -139,14 +139,13 @@ class PublishWorkflowChecker implements SecurityContextInterface
             $attributes = array($attributes);
         }
 
-        $tokenStorage = null;
-        $authorizationChecker = null;
+        $tokenStorage = $authorizationChecker = null;
         if ($this->container->has('security.token_storage')) {
             $tokenStorage = $this->container->get('security.token_storage');
             $authorizationChecker = $this->container->get('security.authorization_checker');
         } elseif ($this->container->has('security.context')) {
             // to be BC with Symfony <2.6
-            $authoriationChecker = $tokenStorage = $this->container->get('security.context');
+            $authorizationChecker = $tokenStorage = $this->container->get('security.context');
         }
 
         if ((count($attributes) === 1)

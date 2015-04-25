@@ -17,6 +17,8 @@
         "symfony/framework-bundle": "~2.3"
     },
     "require-dev": {
+        "symfony/security-bundle": "~2.1",
+        "mockery/mockery": "0.9.*",
         "symfony-cmf/routing-bundle": "~1.2",
         "symfony-cmf/testing": "~1.1",
         "sonata-project/admin-bundle": "~2.2",
