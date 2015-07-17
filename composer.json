@@ -19,7 +19,7 @@
     "require-dev": {
         "symfony/security-bundle": "~2.1",
         "mockery/mockery": "~0.9.4",
-        "symfony-cmf/routing-bundle": "~1.2,>=1.2.0",
+        "symfony-cmf/routing-bundle": "~1.2,>=1.2.0-RC3",
         "symfony-cmf/testing": "~1.2,>=1.2.6",
         "sonata-project/admin-bundle": "~2.2",
         "doctrine/dbal": "2.5.*"
