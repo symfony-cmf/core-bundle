@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="it" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="form.group_publish_workflow">
+        <source>form.group_publish_workflow</source>
+        <target>Workflow pubblicazione</target>
+      </trans-unit>
+      <trans-unit id="form.label_publishable">
+        <source>form.label_publishable</source>
+        <target>Pubblicabile</target>
+      </trans-unit>
+      <trans-unit id="form.label_publish_start_date">
+        <source>form.label_publish_start_date</source>
+        <target>Pubblica dal</target>
+      </trans-unit>
+      <trans-unit id="form.label_publish_end_date">
+        <source>form.label_publish_end_date</source>
+        <target>Pubblica fino al</target>
+      </trans-unit>
+      <trans-unit id="form.label_locale">
+        <source>form.label_locale</source>
+        <target>Lingua</target>
+      </trans-unit>
+      <trans-unit id="form.help_publish_start_date">
+        <source>form.help_publish_start_date</source>
+        <target>Pubblica solo a partire da questa data, lascia vuoto per pubblicare immediatamente</target>
+      </trans-unit>
+      <trans-unit id="form.help_publish_end_date">
+        <source>form.help_publish_end_date</source>
+        <target>Pubblica solo fino a questa data, lascia vuoto per mantenere pubblicato indefinitamente</target>
+      </trans-unit>
+      <trans-unit id="list.label_locales">
+        <source>list.label_locales</source>
+        <target>Localizzazioni</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
