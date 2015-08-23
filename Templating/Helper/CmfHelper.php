@@ -30,6 +30,16 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 class CmfHelper extends Helper
 {
     /**
+     * @var ManagerRegistry
+     */
+    private $doctrineRegistry;
+
+    /**
+     * @var string
+     */
+    private $doctrineManagerName;
+
+    /**
      * @var DocumentManager
      */
     protected $dm;
@@ -40,18 +50,35 @@ class CmfHelper extends Helper
     protected $publishWorkflowChecker;
 
     /**
+     * The $registry constructor argument is deprecated in favor of
+     * setDcotrineRegistry in order to avoid circular dependencies when a
+     * doctrine event listener needs twig injected.
+     *
      * @param SecurityContextInterface $publishWorkflowChecker
      * @param ManagerRegistry          $registry               For loading PHPCR-ODM documents from
      *                                                         Doctrine.
-     * @param string                   $objectManagerName
+     * @param string                   $managerName
      */
-    public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $objectManagerName = null)
+    public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $managerName = null)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
+        $this->setDoctrineRegistry($registry, $managerName);
+    }
 
-        if ($registry && $registry instanceof ManagerRegistry) {
-            $this->dm = $registry->getManager($objectManagerName);
+    /**
+     * Set the doctrine manager registry to fetch the object manager from.
+     *
+     * @param ManagerRegistry $registry
+     * @param string|null     $managerName Manager name if not the default
+     */
+    public function setDoctrineRegistry($registry, $managerName = null)
+    {
+        if ($this->doctrineRegistry) {
+            throw new \LogicException('Do not call this setter repeatedly or after using constructor injection');
         }
+
+        $this->doctrineRegistry = $registry;
+        $this->doctrineManagerName = $managerName;
     }
 
     /**
@@ -60,7 +87,11 @@ class CmfHelper extends Helper
     protected function getDm()
     {
         if (!$this->dm) {
-            throw new \RuntimeException('Doctrine is not available.');
+            if (!$this->doctrineRegistry) {
+                throw new \RuntimeException('Doctrine is not available.');
+            }
+
+            $this->dm = $this->doctrineRegistry->getManager($this->doctrineManagerName);
         }
 
         return $this->dm;
