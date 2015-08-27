@@ -269,7 +269,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $container->setParameter($this->getAlias() . '.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
 
             $templatingHelper = $container->getDefinition($this->getAlias() . '.templating.helper');
-            $templatingHelper->replaceArgument(1, new Reference($config['persistence']['phpcr']['manager_registry']));
+            $templatingHelper->addMethodCall('setDoctrineRegistry', array(
+                new Reference($config['persistence']['phpcr']['manager_registry']),
+                '%cmf_core.persistence.phpcr.manager_name%'
+            ));
 
             if ($config['persistence']['phpcr']['use_sonata_admin']) {
                 $this->loadSonataPhpcrAdmin($config, $loader, $container);
