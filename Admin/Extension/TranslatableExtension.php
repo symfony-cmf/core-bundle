@@ -30,6 +30,11 @@ class TranslatableExtension extends AdminExtension
     protected $formGroup;
 
     /**
+     * @var string
+     */
+    protected $formTab;
+
+    /**
      * @var array
      */
     protected $locales;
@@ -38,10 +43,11 @@ class TranslatableExtension extends AdminExtension
      * @param array  $locales   Available locales to select.
      * @param string $formGroup The group name to use for form mapper.
      */
-    public function __construct($locales, $formGroup = 'form.group_general')
+    public function __construct($locales, $formGroup = 'form.group_general', $formTab = 'form.tab_general')
     {
         $this->locales = $locales;
         $this->formGroup = $formGroup;
+        $this->formTab = $formTab;
     }
 
     /**
@@ -62,13 +68,20 @@ class TranslatableExtension extends AdminExtension
      */
     public function configureFormFields(FormMapper $formMapper)
     {
+        if ($formMapper->hasOpenTab()) {
+            $formMapper->end();
+        }
+
         $formMapper
-            ->with($this->formGroup)
-            // do not set a translation_domain for this group or group_general will be translated by our domain.
-            ->add('locale', 'choice', array(
-                'choices' => array_combine($this->locales, $this->locales),
-                'empty_value' => '',
-            ), array('translation_domain' => 'CmfCoreBundle'))
+            ->tab($this->formTab)
+                ->with($this->formGroup)
+                    // do not set a translation_domain for this group or group_general
+                    // will be translated by our domain.
+                    ->add('locale', 'choice', array(
+                        'choices' => array_combine($this->locales, $this->locales),
+                        'empty_value' => '',
+                    ), array('translation_domain' => 'CmfCoreBundle'))
+                ->end()
             ->end()
         ;
     }

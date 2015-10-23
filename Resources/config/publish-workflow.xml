@@ -54,11 +54,13 @@
 
         <service id="cmf_core.admin_extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable.class%" public="false">
             <argument>%cmf_core.sonata_admin.extension.publishable.form_group%</argument>
+            <argument>%cmf_core.sonata_admin.extension.publishable.form_tab%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 
         <service id="cmf_core.admin_extension.publish_workflow.time_period" class="%cmf_core.admin_extension.publish_workflow.time_period.class%" public="false">
             <argument>%cmf_core.sonata_admin.extension.publish_time.form_group%</argument>
+            <argument>%cmf_core.sonata_admin.extension.publish_time.form_tab%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 

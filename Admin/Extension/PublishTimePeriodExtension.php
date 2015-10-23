@@ -28,11 +28,17 @@ class PublishTimePeriodExtension extends AdminExtension
     protected $formGroup;
 
     /**
+     * @var string
+     */
+    protected $formTab;
+
+    /**
      * @param string $formGroup - group to use for form mapper
      */
-    public function __construct($formGroup = 'form.group_publish_workflow')
+    public function __construct($formGroup = 'form.group_publish_workflow', $formTab = 'form.tab_publish')
     {
         $this->formGroup = $formGroup;
+        $this->formTab = $formTab;
     }
 
     /**
@@ -45,15 +51,27 @@ class PublishTimePeriodExtension extends AdminExtension
             'required' => false,
         );
 
-        $formMapper->with($this->formGroup, array(
-            'translation_domain' => 'CmfCoreBundle',
+        if ($formMapper->hasOpenTab()) {
+            $formMapper->end();
+        }
+
+        $formMapper
+            ->tab($this->formTab, array_merge(
+                'form.tab_publish' === $this->formTab
+                    ? array('translation_domain' => 'CmfCoreBundle')
+                    : array()
             ))
-            ->add('publish_start_date', 'date', $dateOptions, array(
-                'help' => 'form.help_publish_start_date',
-            ))
-            ->add('publish_end_date', 'date', $dateOptions, array(
-                'help' => 'form.help_publish_end_date',
-            ))
+                ->with($this->formGroup, 'form.group_publish_workflow' === $this->formGroup
+                    ? array('translation_domain' => 'CmfCoreBundle')
+                    : array()
+                )
+                    ->add('publish_start_date', 'date', $dateOptions, array(
+                        'help' => 'form.help_publish_start_date',
+                    ), array('translation_domain' => 'CmfCoreBundle'))
+                    ->add('publish_end_date', 'date', $dateOptions, array(
+                        'help' => 'form.help_publish_end_date',
+                    ), array('translation_domain' => 'CmfCoreBundle'))
+                ->end()
             ->end();
     }
 }
