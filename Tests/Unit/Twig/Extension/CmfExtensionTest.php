@@ -33,7 +33,7 @@ class CmfExtensionTest extends \PHPUnit_Framework_TestCase
         )->disableOriginalConstructor()->getMock();
 
         $this->cmfExtension = new CmfExtension($this->cmfHelper);
-        $this->env = new \Twig_Environment();
+        $this->env = new \Twig_Environment(new \Twig_Loader_Array(array()));
         $this->env->addExtension($this->cmfExtension);
     }
 

@@ -65,7 +65,7 @@ class TranslatableExtension extends AdminExtension
         $formMapper
             ->with($this->formGroup)
             // do not set a translation_domain for this group or group_general will be translated by our domain.
-            ->add('locale', 'choice', array(
+            ->add('locale', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
                 'choices' => array_combine($this->locales, $this->locales),
                 'empty_value' => '',
             ), array('translation_domain' => 'CmfCoreBundle'))
