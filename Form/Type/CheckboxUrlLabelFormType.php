@@ -84,6 +84,14 @@ class CheckboxUrlLabelFormType extends AbstractType
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
         return 'cmf_core_checkbox_url_label';
     }
 
@@ -92,7 +100,7 @@ class CheckboxUrlLabelFormType extends AbstractType
      */
     public function getParent()
     {
-        return 'checkbox';
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox';
     }
 
 }

@@ -40,6 +40,7 @@ class PublishTimePeriodExtension extends AdminExtension
      */
     public function configureFormFields(FormMapper $formMapper)
     {
+        $dateType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\DateType' : 'date';
         $dateOptions = array(
             'empty_value' => '',
             'required' => false,
@@ -48,10 +49,10 @@ class PublishTimePeriodExtension extends AdminExtension
         $formMapper->with($this->formGroup, array(
             'translation_domain' => 'CmfCoreBundle',
             ))
-            ->add('publish_start_date', 'date', $dateOptions, array(
+            ->add('publish_start_date', $dateType, $dateOptions, array(
                 'help' => 'form.help_publish_start_date',
             ))
-            ->add('publish_end_date', 'date', $dateOptions, array(
+            ->add('publish_end_date', $dateType, $dateOptions, array(
                 'help' => 'form.help_publish_end_date',
             ))
             ->end();

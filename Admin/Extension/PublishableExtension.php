@@ -43,7 +43,7 @@ class PublishableExtension extends AdminExtension
         $formMapper->with($this->formGroup, array(
             'translation_domain' => 'CmfCoreBundle',
             ))
-            ->add('publishable', 'checkbox', array(
+            ->add('publishable', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox', array(
                 'required' => false,
             ))
             ->end();
