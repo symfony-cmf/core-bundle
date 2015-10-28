@@ -8,7 +8,10 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION=2.5.*
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
+  matrix:
+    - SYMFONY_VERSION=2.5.*
 
 matrix:
   include:
@@ -20,6 +23,7 @@ matrix:
       env: SYMFONY_VERSION=2.6.*
 
 before_install:
+  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - composer self-update
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
 
