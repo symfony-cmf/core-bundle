@@ -118,9 +118,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         break;
                     case 'cmf_routing':
                         $routePaths = array($persistenceConfig['basepath'].'/routes');
-                        if (isset($extensions['cmf_simple_cms'])) {
-                            $routePaths[] = $persistenceConfig['basepath'].'/simple';
-                        }
                         $prependConfig = array(
                             'dynamic' => array(
                                 'enabled' => true,
