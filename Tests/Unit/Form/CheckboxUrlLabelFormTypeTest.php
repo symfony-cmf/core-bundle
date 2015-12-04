@@ -11,7 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Form;
 
-use Symfony\Component\Form\AbstractExtension;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Component\Routing\RequestContext;
@@ -41,21 +41,11 @@ class Router implements RouterInterface
     }
 }
 
-class CmfCoreExtension extends AbstractExtension
-{
-    protected function loadTypes()
-    {
-        return array(
-            new CheckboxUrlLabelFormType(new Router()),
-        );
-    }
-}
-
 class CheckboxUrlLabelFormTypeTest extends TypeTestCase
 {
     public function testContentPathsAreSet()
     {
-        $checkboxUrlLabelForm = $this->factory->create('cmf_core_checkbox_url_label', null, array(
+        $checkboxUrlLabelForm = $this->factory->create(CheckboxUrlLabelFormType::class, null, array(
             'routes' => array('a' => array('name' => 'a'), 'b' => array('name' => 'b')),
         ));
         $view = $checkboxUrlLabelForm->createView();
@@ -66,6 +56,10 @@ class CheckboxUrlLabelFormTypeTest extends TypeTestCase
 
     protected function getExtensions()
     {
-        return array_merge(parent::getExtensions(), array(new CmfCoreExtension()));
+        return array_merge(parent::getExtensions(), array(
+            new PreloadedExtension(array(
+                CheckboxUrlLabelFormType::class => new CheckboxUrlLabelFormType(new Router()),
+            ), array()),
+        ));
     }
 }

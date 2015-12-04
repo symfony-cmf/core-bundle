@@ -25,6 +25,8 @@ class PublishableVoter implements VoterInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @deprecated To be removed when Symfony 2 support is dropped
      */
     public function supportsAttribute($attribute)
     {
@@ -35,10 +37,12 @@ class PublishableVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated To be removed when Symfony 2 support is dropped
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
+        return is_subclass_of($class, PublishableReadInterface::class);
     }
 
     /**
@@ -61,6 +65,7 @@ class PublishableVoter implements VoterInterface
                 $decision = self::ACCESS_ABSTAIN;
                 continue;
             }
+
             if (!$object->isPublishable()) {
                 return self::ACCESS_DENIED;
             }

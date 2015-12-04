@@ -47,6 +47,8 @@ class PublishTimePeriodVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated To be removed when Symfony 2 support is dropped
      */
     public function supportsAttribute($attribute)
     {
@@ -57,10 +59,12 @@ class PublishTimePeriodVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated To be removed when Symfony 2 support is dropped
      */
     public function supportsClass($class)
     {
-        return is_subclass_of($class, 'Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface');
+        return is_subclass_of($class, PublishTimePeriodReadInterface::class);
     }
 
     /**
@@ -87,8 +91,9 @@ class PublishTimePeriodVoter implements VoterInterface
                 continue;
             }
 
-            if ((null !== $startDate && $this->currentTime < $startDate) ||
-                (null !== $endDate && $this->currentTime > $endDate)
+            if (
+                (null !== $startDate && $this->currentTime < $startDate)
+                || (null !== $endDate && $this->currentTime > $endDate)
             ) {
                 return self::ACCESS_DENIED;
             }

@@ -16,7 +16,6 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
@@ -25,11 +24,11 @@ class PublishWorkflowTest extends BaseTestCase
     /**
      * @var SecurityContextInterface
      */
-    private $pwc;
+    private $publishWorkflowChecker;
 
     public function setUp()
     {
-        $this->pwc = $this->getContainer()->get('cmf_core.publish_workflow.checker');
+        $this->publishWorkflowChecker = $this->getContainer()->get('cmf_core.publish_workflow.checker');
     }
 
     public function testPublishable()
@@ -40,8 +39,8 @@ class PublishWorkflowTest extends BaseTestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->assertTrue($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
-        $this->assertTrue($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
+        $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
+        $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
     }
 
     public function testPublishPeriod()
@@ -56,8 +55,8 @@ class PublishWorkflowTest extends BaseTestCase
             ->will($this->returnValue(new \DateTime('01/01/1980')))
         ;
 
-        $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
-        $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
+        $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
+        $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
     }
 
     public function testIgnoreRoleHas()
@@ -71,11 +70,11 @@ class PublishWorkflowTest extends BaseTestCase
             new Role('ROLE_CAN_VIEW_NON_PUBLISHED'),
         );
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
-        $context = $this->getContainer()->get('security.context');
-        $context->setToken($token);
+        $tokenStorage = $this->getContainer()->get('security.token_storage');
+        $tokenStorage->setToken($token);
 
-        $this->assertTrue($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
-        $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
+        $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
+        $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
     }
 
     public function testIgnoreRoleNotHas()
@@ -89,12 +88,11 @@ class PublishWorkflowTest extends BaseTestCase
             new Role('OTHER_ROLE'),
         );
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
-        /** @var $context SecurityContext */
-        $context = $this->getContainer()->get('security.context');
-        $context->setToken($token);
+        $tokenStorage = $this->getContainer()->get('security.token_storage');
+        $tokenStorage->setToken($token);
 
-        $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
-        $this->assertFalse($this->pwc->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
+        $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
+        $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
     }
 }
 

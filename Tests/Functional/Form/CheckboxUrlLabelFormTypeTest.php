@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 
 class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 {
@@ -26,8 +27,8 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
         $this->getContainer()->get('twig')->initRuntime();
         $renderer = $this->getContainer()->get('twig')->getExtension('form')->renderer;
 
-        $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name', 'form')
-            ->add('terms', 'cmf_core_checkbox_url_label', array(
+        $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name')
+            ->add('terms', CheckboxUrlLabelFormType::class, array(
                 'label' => '%a% and %b% and %c%',
                 'routes' => array(
                     '%a%' => array('parameters' => array('content_id' => '/test/content/a')),

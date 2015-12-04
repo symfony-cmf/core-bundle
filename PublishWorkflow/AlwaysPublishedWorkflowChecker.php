@@ -11,8 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * A placeholder service to provide instead of the normal publish workflow
@@ -24,20 +23,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class AlwaysPublishedWorkflowChecker implements SecurityContextInterface
+class AlwaysPublishedWorkflowChecker implements AuthorizationCheckerInterface
 {
-    public function getToken()
-    {
-        return;
-    }
-
-    /**
-     * Ignored.
-     */
-    public function setToken(TokenInterface $token = null)
-    {
-    }
-
     /**
      * {@inheritdoc}
      */

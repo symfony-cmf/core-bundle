@@ -11,13 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * The publish workflow decides if a content is allowed to be shown. Contrary
@@ -35,7 +33,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class PublishWorkflowChecker implements SecurityContextInterface
+class PublishWorkflowChecker implements AuthorizationCheckerInterface
 {
     /**
      * This attribute means the user is allowed to see this content, either
@@ -54,18 +52,20 @@ class PublishWorkflowChecker implements SecurityContextInterface
     const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
 
     /**
-     * We cannot inject the security context directly as this would lead to a
-     * circular dependency.
-     *
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var bool|string Role allowed to bypass the published check if the
      *                  VIEW attribute is used, or false to never bypass.
      */
     private $bypassingRole;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
 
     /**
      * @var AccessDecisionManagerInterface
@@ -78,55 +78,20 @@ class PublishWorkflowChecker implements SecurityContextInterface
     private $token;
 
     /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage = false;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker = false;
-
-    /**
-     * @param ContainerInterface             $container             To get the security context from.
+     * @param TokenStorageInterface          $tokenStorage
+     * @param AuthorizationCheckerInterface  $authorizationChecker
      * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
      * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
      *                                                              the VIEW permission. Ignored on
      *                                                              VIEW_ANONYMOUS.
      */
-    public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {
-        $this->container = $container;
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
         $this->accessDecisionManager = $accessDecisionManager;
         $this->bypassingRole = $bypassingRole;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Defaults to the token from the default token storage, but can be
-     * overwritten locally.
-     */
-    public function getToken()
-    {
-        if (null !== $this->token) {
-            return $this->token;
-        }
-
-        if (null === $this->getTokenStorage()) {
-            return;
-        }
-
-        return $this->getTokenStorage()->getToken();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setToken(TokenInterface $token = null)
-    {
-        $this->token = $token;
     }
 
     /**
@@ -152,14 +117,13 @@ class PublishWorkflowChecker implements SecurityContextInterface
 
         if (1 === count($attributes)
             && self::VIEW_ATTRIBUTE === reset($attributes)
-            && null !== $this->getTokenStorage()
-            && null !== $this->getTokenStorage()->getToken()
-            && $this->getAuthorizationChecker()->isGranted($this->bypassingRole)
+            && null !== $this->tokenStorage->getToken()
+            && $this->authorizationChecker->isGranted($this->bypassingRole)
         ) {
             return true;
         }
 
-        $token = $this->getToken();
+        $token = $this->tokenStorage->getToken();
 
         // not logged in, just check with a dummy token
         if (null === $token) {

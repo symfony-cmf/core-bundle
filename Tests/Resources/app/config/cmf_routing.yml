@@ -8,4 +8,4 @@ cmf_routing:
         persistence:
             phpcr:
                 enabled: true
-                route_basepath: /test/cms/routes
+                route_basepaths: [/test/cms/routes]
