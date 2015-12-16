@@ -58,7 +58,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
         $this->sc = \Mockery::mock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->doc = \Mockery::mock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
         $this->adm = \Mockery::mock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
-        $this->stdClass = new \stdClass;
+        $this->stdClass = new \stdClass();
         $this->pwfc = new PublishWorkflowChecker($this->container, $this->adm, $this->role);
 
         $this->container->shouldReceive('get')->with('security.context')->andReturn($this->sc);
@@ -74,7 +74,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Calling
+     * Calling.
      */
     public function testIsGranted()
     {

@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,6 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
-use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 
 /**
  * Metadata listener for when translations are disabled in PHPCR-ODM to remove

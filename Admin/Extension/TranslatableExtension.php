@@ -45,7 +45,7 @@ class TranslatableExtension extends AdminExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureListFields(ListMapper $listMapper)
     {
@@ -58,7 +58,7 @@ class TranslatableExtension extends AdminExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureFormFields(FormMapper $formMapper)
     {
@@ -76,12 +76,12 @@ class TranslatableExtension extends AdminExtension
     /**
      * Sanity check and default locale to request locale.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function alterNewInstance(AdminInterface $admin, $object)
     {
         if (!$object instanceof TranslatableInterface) {
-            throw new \InvalidArgumentException('Expected TranslatableInterface, got ' . get_class($object));
+            throw new \InvalidArgumentException('Expected TranslatableInterface, got '.get_class($object));
         }
 
         if ($admin->hasRequest()) {

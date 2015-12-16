@@ -121,7 +121,6 @@ class PublishTimePeriodVoterTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expected, $this->voter->vote($this->token, $doc, $attributes));
-
     }
 
     public function testUnsupportedClass()

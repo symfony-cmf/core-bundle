@@ -36,7 +36,7 @@ class PublishableExtension extends AdminExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureFormFields(FormMapper $formMapper)
     {

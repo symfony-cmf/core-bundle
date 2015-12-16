@@ -36,7 +36,7 @@ class PublishTimePeriodExtension extends AdminExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureFormFields(FormMapper $formMapper)
     {

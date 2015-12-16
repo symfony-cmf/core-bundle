@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  * If VIEW_ANONYMOUS is used, the publication check is never bypassed.
  *
  * @author David Buchmann <mail@davidbu.ch>
-*/
+ */
 class PublishWorkflowChecker implements SecurityContextInterface
 {
     /**
@@ -61,7 +61,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
-     *      VIEW attribute is used, or false to never bypass.
+     *                  VIEW attribute is used, or false to never bypass.
      */
     private $bypassingRole;
 
@@ -78,7 +78,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
     /**
      * @param ContainerInterface             $container             To get the security context from.
      * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
-     * @param boolean|string                 $bypassingRole         A role that is allowed to bypass
+     * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
      *                                                              the VIEW permission. Ignored on
      *                                                              VIEW_ANONYMOUS.
@@ -91,7 +91,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Defaults to the token from the default token storage, but can be
      * overwritten locally.
@@ -111,7 +111,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setToken(TokenInterface $token = null)
     {
@@ -123,7 +123,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
      *
      * @param string $class A class name
      *
-     * @return boolean true if this decision manager can process the class
+     * @return bool true if this decision manager can process the class
      */
     public function supportsClass($class)
     {
@@ -131,7 +131,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isGranted($attributes, $object = null)
     {

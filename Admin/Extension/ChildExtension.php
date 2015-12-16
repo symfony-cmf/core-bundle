@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,9 +24,9 @@ use Doctrine\ODM\PHPCR\HierarchyInterface;
 class ChildExtension extends AdminExtension
 {
     /**
-     * Set a default parent if defined in the request
+     * Set a default parent if defined in the request.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function alterNewInstance(AdminInterface $admin, $object)
     {
@@ -41,7 +41,7 @@ class ChildExtension extends AdminExtension
             return;
         }
 
-        switch($object) {
+        switch ($object) {
             case $object instanceof HierarchyInterface:
                 $object->setParentDocument($parent);
                 break;
