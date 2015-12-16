@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Slugifier;
 
 /**
- * Slugifier service which uses a callback
+ * Slugifier service which uses a callback.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
@@ -31,7 +31,7 @@ class CallbackSlugifier implements SlugifierInterface
     }
 
     /**
-     * {inheritDoc}
+     * {inheritDoc}.
      */
     public function slugify($string)
     {

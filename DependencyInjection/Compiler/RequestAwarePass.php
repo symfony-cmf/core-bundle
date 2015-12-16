@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class RequestAwarePass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
@@ -36,7 +36,7 @@ class RequestAwarePass implements CompilerPassInterface
             $definition = $container->getDefinition($id);
             $definition
                 ->addMethodCall('setRequest', array(
-                    new Reference('request', ContainerInterface::NULL_ON_INVALID_REFERENCE, false)
+                    new Reference('request', ContainerInterface::NULL_ON_INVALID_REFERENCE, false),
                 ))
             ;
         }

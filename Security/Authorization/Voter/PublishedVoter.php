@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 
 /**
@@ -66,7 +65,7 @@ class PublishedVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
         foreach ($attributes as $attribute) {
-            if (! $this->supportsAttribute($attribute)) {
+            if (!$this->supportsAttribute($attribute)) {
                 return self::ACCESS_ABSTAIN;
             }
         }

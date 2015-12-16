@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Forward compatibility class to work with Symfony < 2.3 and/or
- * Doctrine ORM bundle < 1.2.1
+ * Doctrine ORM bundle < 1.2.1.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
@@ -61,7 +61,7 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (! $this->enabledParameter
+        if (!$this->enabledParameter
             || !$container->hasParameter($this->enabledParameter)
         ) {
             return;
@@ -94,17 +94,18 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
 
         throw new ParameterNotFoundException('None of the managerParameters resulted in a valid name');
     }
+
     /**
      * Create a mapping with the bundle namespace aware SymfonyFileLocator.
      *
-     * @param array          $mappings          Hashmap of directory path to namespace
-     * @param string[]       $managerParameters List of parameters that could tell which object manager name
-     *                                          your bundle uses. This compiler pass will automatically
-     *                                          append the parameter name for the default entity manager
-     *                                          to this list.
-     * @param boolean|string $enabledParameter  Service container parameter that must be present to
-     *                                          enable the mapping. Set to false to not do any check,
-     *                                          optional.
+     * @param array       $mappings          Hashmap of directory path to namespace
+     * @param string[]    $managerParameters List of parameters that could tell which object manager name
+     *                                       your bundle uses. This compiler pass will automatically
+     *                                       append the parameter name for the default entity manager
+     *                                       to this list.
+     * @param bool|string $enabledParameter  Service container parameter that must be present to
+     *                                       enable the mapping. Set to false to not do any check,
+     *                                       optional.
      */
     public static function createXmlMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false)
     {
@@ -112,6 +113,6 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
 
-        return new DoctrineOrmMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
+        return new self($driver, $mappings, $managerParameters, $enabledParameter);
     }
 }

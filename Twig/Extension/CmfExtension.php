@@ -23,7 +23,7 @@ class CmfExtension extends \Twig_Extension
     }
 
     /**
-     * Get list of available functions
+     * Get list of available functions.
      *
      * @return array
      */

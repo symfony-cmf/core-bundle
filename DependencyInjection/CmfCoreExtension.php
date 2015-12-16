@@ -26,7 +26,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      * Prepend persistence, multilang and other common configuration to all cmf
      * bundles.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -60,8 +60,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'block_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         break;
                     case 'cmf_content':
@@ -71,8 +71,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                     'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
-                                )
-                            )
+                                ),
+                            ),
                         );
                         break;
                     case 'cmf_create':
@@ -80,8 +80,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         // if cmf_media is there, it will prepend the image path to its media_basepath
                         // setting.
@@ -99,8 +99,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'enabled' => $persistenceConfig['enabled'],
                                     'media_basepath' => $persistenceConfig['basepath'].'/media',
                                     'manager_name' => $persistenceConfig['manager_name'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         break;
                     case 'cmf_menu':
@@ -112,8 +112,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
                                     'menu_basepath' => $persistenceConfig['basepath'].'/menu',
                                     'manager_name' => $persistenceConfig['manager_name'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         break;
                     case 'cmf_routing':
@@ -128,9 +128,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                         'content_basepath' => $persistenceConfig['basepath'].'/content',
                                         'route_basepaths' => $routePaths,
                                         'manager_name' => $persistenceConfig['manager_name'],
-                                    )
-                                )
-                            )
+                                    ),
+                                ),
+                            ),
                         );
 
                         if (isset($bundles['CmfContentBundle'])) {
@@ -155,8 +155,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'search_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                     'manager_registry' => $persistenceConfig['manager_registry'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         if (!empty($persistenceConfig['translation_strategy'])) {
                             $prependConfig['persistence']['phpcr']['translation_strategy'] = $persistenceConfig['translation_strategy'];
@@ -171,8 +171,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'basepath' => $persistenceConfig['basepath'].'/simple',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                     'manager_registry' => $persistenceConfig['manager_registry'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         break;
                     case 'cmf_tree_browser':
@@ -180,8 +180,8 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                )
-                            )
+                                ),
+                            ),
                         );
                         break;
                     case 'cmf_seo':
@@ -220,9 +220,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                     'orm' => array(
                                         'enabled' => $persistenceConfig['enabled'],
                                         'manager_name' => $persistenceConfig['manager_name'],
-                                    )
-                                )
-                            )
+                                    ),
+                                ),
+                            ),
                         );
 
                         if (isset($bundles['CmfContentBundle'])) {
@@ -252,7 +252,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -262,13 +262,13 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $loader->load('services.xml');
 
         if ($config['persistence']['phpcr']['enabled']) {
-            $container->setParameter($this->getAlias() . '.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
-            $container->setParameter($this->getAlias() . '.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
+            $container->setParameter($this->getAlias().'.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
+            $container->setParameter($this->getAlias().'.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
 
-            $templatingHelper = $container->getDefinition($this->getAlias() . '.templating.helper');
+            $templatingHelper = $container->getDefinition($this->getAlias().'.templating.helper');
             $templatingHelper->addMethodCall('setDoctrineRegistry', array(
                 new Reference($config['persistence']['phpcr']['manager_registry']),
-                '%cmf_core.persistence.phpcr.manager_name%'
+                '%cmf_core.persistence.phpcr.manager_name%',
             ));
 
             if ($config['persistence']['phpcr']['use_sonata_admin']) {
@@ -282,10 +282,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         }
 
         if (isset($config['multilang'])) {
-            $container->setParameter($this->getAlias() . '.multilang.locales', $config['multilang']['locales']);
+            $container->setParameter($this->getAlias().'.multilang.locales', $config['multilang']['locales']);
             $loader->load('translatable.xml');
             if (!empty($config['persistence']['phpcr']['translation_strategy'])) {
-                $container->setParameter($this->getAlias() . '.persistence.phpcr.translation_strategy', $config['persistence']['phpcr']['translation_strategy']);
+                $container->setParameter($this->getAlias().'.persistence.phpcr.translation_strategy', $config['persistence']['phpcr']['translation_strategy']);
             } else {
                 $container->removeDefinition('cmf_core.persistence.phpcr.translatable_metadata_listener');
             }
@@ -295,7 +295,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
         foreach ($config['sonata_admin']['extensions'] as $extensionName => $options) {
             foreach ($options as $key => $value) {
-                $container->setParameter('cmf_core.sonata_admin.extension.' . $extensionName . '.' . $key, $value);
+                $container->setParameter('cmf_core.sonata_admin.extension.'.$extensionName.'.'.$key, $value);
             }
         }
 
@@ -314,7 +314,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there
+     * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there.
      *
      * @param ContainerBuilder $container
      * @param LoaderInterface  $loader
@@ -348,21 +348,21 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $loader->load('publish-workflow.xml');
 
         if (!$config['request_listener']) {
-            $container->removeDefinition($this->getAlias() . '.publish_workflow.request_listener');
+            $container->removeDefinition($this->getAlias().'.publish_workflow.request_listener');
         } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
             throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
         }
 
         if (!class_exists('Sonata\AdminBundle\Admin\AdminExtension')) {
-            $container->removeDefinition($this->getAlias() . '.admin_extension.publish_workflow.publishable');
-            $container->removeDefinition($this->getAlias() . '.admin_extension.publish_workflow.time_period');
+            $container->removeDefinition($this->getAlias().'.admin_extension.publish_workflow.publishable');
+            $container->removeDefinition($this->getAlias().'.admin_extension.publish_workflow.time_period');
         }
 
         $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getXsdValidationBasePath()
     {
@@ -370,7 +370,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getNamespace()
     {

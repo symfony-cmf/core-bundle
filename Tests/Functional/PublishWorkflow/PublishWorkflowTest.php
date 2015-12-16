@@ -14,12 +14,10 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class PublishWorkflowTest extends BaseTestCase
@@ -70,7 +68,7 @@ class PublishWorkflowTest extends BaseTestCase
             ->will($this->returnValue(false))
         ;
         $roles = array(
-            new Role('ROLE_CAN_VIEW_NON_PUBLISHED')
+            new Role('ROLE_CAN_VIEW_NON_PUBLISHED'),
         );
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         $context = $this->getContainer()->get('security.context');
@@ -88,7 +86,7 @@ class PublishWorkflowTest extends BaseTestCase
             ->will($this->returnValue(false))
         ;
         $roles = array(
-            new Role('OTHER_ROLE')
+            new Role('OTHER_ROLE'),
         );
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         /** @var $context SecurityContext */
@@ -100,4 +98,6 @@ class PublishWorkflowTest extends BaseTestCase
     }
 }
 
-abstract class PublishModel implements PublishableReadInterface, PublishTimePeriodReadInterface {}
+abstract class PublishModel implements PublishableReadInterface, PublishTimePeriodReadInterface
+{
+}

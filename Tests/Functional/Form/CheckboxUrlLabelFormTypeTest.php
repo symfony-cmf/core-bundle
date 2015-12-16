@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -33,7 +33,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
                     '%a%' => array('parameters' => array('content_id' => '/test/content/a')),
                     '%b%' => array('parameters' => array('content_id' => '/test/content/b')),
                     '%c%' => array('name' => 'hello', 'parameters' => array('name' => 'world'), 'referenceType' => UrlGeneratorInterface::ABSOLUTE_URL),
-                )
+                ),
             ))
             ->getForm()
             ->createView();

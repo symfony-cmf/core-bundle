@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,26 +23,25 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  * issues.
  *
  * @author David Buchmann <mail@davidbu.ch>
-*/
+ */
 class AlwaysPublishedWorkflowChecker implements SecurityContextInterface
 {
     /**
-     * @return null always return null
      */
     public function getToken()
     {
-        return null;
+        return;
     }
 
     /**
-     * Ignored
+     * Ignored.
      */
     public function setToken(TokenInterface $token = null)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isGranted($attributes, $object = null)
     {
