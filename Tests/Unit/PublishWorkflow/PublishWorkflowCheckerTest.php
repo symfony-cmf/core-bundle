@@ -66,6 +66,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
         // assuming Symfony <2.6
         $this->container->shouldReceive('has')->with('security.context')->andReturn(true);
         $this->container->shouldReceive('has')->with('security.token_storage')->andReturn(false);
+        $this->container->shouldReceive('has')->with('security.authorization_checker')->andReturn(false);
     }
 
     protected function tearDown()
@@ -159,6 +160,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
         $container->shouldReceive('get')->with('security.token_storage')->andReturn($ts);
         $container->shouldReceive('get')->with('security.authorization_checker')->andReturn($ac);
         $container->shouldReceive('has')->with('security.token_storage')->andReturn(true);
+        $container->shouldReceive('has')->with('security.authorization_checker')->andReturn(true);
 
         $ts->shouldReceive('getToken')->andReturn($token);
         $ac->shouldReceive('isGranted')->with($this->role)->andReturn(true);
