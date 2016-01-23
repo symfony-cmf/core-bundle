@@ -28,12 +28,12 @@ class LoadRouteData implements FixtureInterface
 
         $test = new Generic();
         $test->setNodename('test');
-        $test->setParent($root);
+        $test->setParentDocument($root);
         $manager->persist($test);
 
         $content = new Generic();
         $content->setNodename('content');
-        $content->setParent($test);
+        $content->setParentDocument($test);
         $manager->persist($content);
 
         $aContent = new Content();
@@ -46,22 +46,22 @@ class LoadRouteData implements FixtureInterface
 
         $cms = new Generic();
         $cms->setNodename('cms');
-        $cms->setParent($test);
+        $cms->setParentDocument($test);
         $manager->persist($cms);
 
         $routes = new Generic();
         $routes->setNodename('routes');
-        $routes->setParent($cms);
+        $routes->setParentDocument($cms);
         $manager->persist($routes);
 
         $aRoute = new Route();
         $aRoute->setName('a');
-        $aRoute->setParent($routes);
+        $aRoute->setParentDocument($routes);
         $aRoute->setContent($aContent);
         $manager->persist($aRoute);
         $bRoute = new Route();
         $bRoute->setName('b');
-        $bRoute->setParent($routes);
+        $bRoute->setParentDocument($routes);
         $bRoute->setContent($bContent);
         $manager->persist($bRoute);
         $manager->flush();

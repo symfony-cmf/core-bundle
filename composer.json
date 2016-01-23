@@ -11,27 +11,26 @@
             "homepage": "https://github.com/symfony-cmf/CoreBundle/contributors"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "^5.3.9|^7.0",
-        "symfony/framework-bundle": "~2.3"
+        "symfony/framework-bundle": "^2.3"
     },
     "require-dev": {
-        "symfony/security-bundle": "~2.1",
-        "mockery/mockery": "~0.9.4",
-        "symfony-cmf/routing-bundle": "~1.2,>=1.2.0-RC3",
-        "symfony-cmf/testing": "~1.2,>=1.2.6",
-        "sonata-project/admin-bundle": "~2.2",
+        "symfony/security-bundle": "^2.1",
+        "mockery/mockery": "^0.9.4",
+        "symfony-cmf/routing-bundle": "^1.2.0-RC3",
+        "symfony-cmf/testing": "^1.3@dev",
+        "sonata-project/admin-bundle": "^2.2",
         "doctrine/dbal": "2.5.*"
     },
     "suggest": {
-        "symfony/twig-bundle": "To get access to the CMF twig extension, ~2.1",
-        "doctrine/phpcr-bundle": "To be able to use the CMF twig extension, ~1.0",
-        "doctrine/phpcr-odm": "To be able to use the CMF twig extension, ~1.0",
-        "symfony/security-bundle": "To be able to use the publish workflow system, ~2.1",
-        "symfony-cmf/routing": "To be able to use the CMF twig extension functions cmf_prev_linkable/cmf_next_linkable, ~1.0",
-        "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener, ~1.0",
-        "sonata-project/admin-bundle": "To be able to enable the publish_workflow_listener extension, ~2.2"
+        "symfony/twig-bundle": "To get access to the CMF twig extension (^2.1)",
+        "doctrine/phpcr-bundle": "To be able to use the CMF twig extension (^1.0)",
+        "doctrine/phpcr-odm": "To be able to use the CMF twig extension (^1.0)",
+        "symfony/security-bundle": "To be able to use the publish workflow system (^2.1)",
+        "symfony-cmf/routing": "To be able to use the CMF twig extension functions cmf_prev_linkable/cmf_next_linkable (^1.2)",
+        "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener (^1.2)",
+        "sonata-project/admin-bundle": "To be able to enable the publish_workflow_listener extension (^2.2)"
     },
     "autoload": {
         "psr-4": {
