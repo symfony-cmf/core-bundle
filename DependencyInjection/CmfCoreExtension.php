@@ -37,11 +37,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $extensions = $container->getExtensions();
-        if (isset($config['multilang']['locales'])) {
-            $prependConfig = array('multilang' => $config['multilang']);
-            if (isset($extensions['cmf_routing'])) {
-                $container->prependExtensionConfig('cmf_routing', array('dynamic' => $prependConfig['multilang']));
-            }
+        if (isset($config['multilang']['locales']) && isset($extensions['cmf_routing'])) {
+            $container->prependExtensionConfig('cmf_routing', array(
+                'dynamic' => array('locales' => $config['multilang']['locales']),
+            ));
         }
 
         if ($config['persistence']['phpcr']) {
@@ -63,6 +62,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_content':
                         $prependConfig = array(
@@ -74,6 +74,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_create':
                         $prependConfig = array(
@@ -91,6 +92,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'basepath' => $persistenceConfig['basepath'].'/media',
                             );
                         }
+
                         break;
                     case 'cmf_media':
                         $prependConfig = array(
@@ -102,6 +104,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_menu':
                         $prependConfig = array(
@@ -115,6 +118,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_routing':
                         $routePaths = array($persistenceConfig['basepath'].'/routes');
@@ -136,6 +140,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         if (isset($bundles['CmfContentBundle'])) {
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
+
                         break;
                     case 'cmf_routing_auto':
                         $prependConfig = array(
@@ -146,6 +151,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_search':
                         $prependConfig = array(
@@ -161,6 +167,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         if (!empty($persistenceConfig['translation_strategy'])) {
                             $prependConfig['persistence']['phpcr']['translation_strategy'] = $persistenceConfig['translation_strategy'];
                         }
+
                         break;
                     case 'cmf_simple_cms':
                         $prependConfig = array(
@@ -174,6 +181,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_tree_browser':
                         $prependConfig = array(
@@ -183,6 +191,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ),
                             ),
                         );
+
                         break;
                     case 'cmf_seo':
                         $prependConfig = array(
@@ -195,6 +204,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'enabled' => $persistenceConfig['use_sonata_admin'],
                             ),
                         );
+
                         break;
                 }
 

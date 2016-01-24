@@ -21,6 +21,8 @@ use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
  * Admin extension to add publish workflow time period fields.
  *
  * @author David Buchmann <mail@davidbu.ch>
+ *
+ * @deprecated Since version 1.3, to be removed in 2.0. Use the SonataTranslationBundle instead.
  */
 class TranslatableExtension extends AdminExtension
 {
@@ -40,6 +42,8 @@ class TranslatableExtension extends AdminExtension
      */
     public function __construct($locales, $formGroup = 'form.group_general')
     {
+        @trigger_error('The '.__CLASS__.' class is deprecated since version 1.3 and will be removed in 2.0. Use the SonataTranslationBundle instead.', E_USER_DEPRECATED);
+
         $this->locales = $locales;
         $this->formGroup = $formGroup;
     }
