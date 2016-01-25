@@ -30,7 +30,8 @@
         "symfony/security-bundle": "To be able to use the publish workflow system (^2.1)",
         "symfony-cmf/routing": "To be able to use the CMF twig extension functions cmf_prev_linkable/cmf_next_linkable (^1.2)",
         "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener (^1.2)",
-        "sonata-project/admin-bundle": "To be able to enable the publish_workflow_listener extension (^2.2)"
+        "sonata-project/admin-bundle": "To be able to enable the publish_workflow_listener extension (^2.2)",
+        "sonata-project/translation-bundle": "To be able to edit translatable documents (^1.0)"
     },
     "autoload": {
         "psr-4": {

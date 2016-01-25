@@ -13,6 +13,9 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Admin\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\TranslatableExtension;
 
+/**
+ * @group legacy
+ */
 class TranslatableExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
