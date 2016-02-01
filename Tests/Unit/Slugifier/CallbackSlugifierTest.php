@@ -13,12 +13,15 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Slugifier;
 
 use Symfony\Cmf\Bundle\CoreBundle\Slugifier\CallbackSlugifier;
 
+/**
+ * @group legacy
+ */
 class CallbackSlugifierTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         $this->slugifier = new CallbackSlugifier(
-            'Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Slugifier\CallbackSlugifierTest::slugify'
+            __CLASS__.'::slugify'
         );
     }
 
