@@ -1,10 +1,16 @@
 Changelog
 =========
 
+1.3.0-RC1
+---------
+
 * **2016-02-01**: The class and interface in the `Slugifier` namespace are deprecated in favor of the `symfony-cmf/slugifier-api` package.
 * **2016-01-24**: The `TranslatableExtension` and `cmf_core.admin_extension.translatable` services are deprecated in favor of the SonataTranslationBundle
 * **2015-04-12**: [BC BREAK] The following services were made private: `cmf_core.admin_extension.child`, `cmf_core.security.publishable_voter`, `cmf_core.security.publish_time_period_voter`, `cmf_core.security.published_voter`, `cmf_core.admin_extension.publish_workflow.publishable`, `cmf_core.admin_extension.publish_workflow.time_period`, `cmf_core.twig.children_extension`, `cmf_core.templating.helper`, `cmf_core.persistence.phpcr.non_translatable_metadata_listener`, `cmf_core.persistence.phpcr.translatable_metadata_listener`, `cmf_core.admin_extension.translatable`
 * **2015-04-12**: The following services could not be private, but should be considered as such: `cmf_core.publish_workflow.request_listener`, `cmf_core.form.type.checkbox_url_label`
+
+1.2.0
+-----
 
 1.2.0-RC1
 ---------
