@@ -26,7 +26,7 @@ use PHPCR\Query\QueryInterface;
 /**
  * Tool to filter queries to only find published documents.
  *
- * This only work for the known voters publishable and time period.
+ * This only takes into account the "publishable" and "time period" voters.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
