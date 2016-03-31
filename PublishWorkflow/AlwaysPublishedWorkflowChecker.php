@@ -26,8 +26,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class AlwaysPublishedWorkflowChecker implements SecurityContextInterface
 {
-    /**
-     */
     public function getToken()
     {
         return;
