@@ -14,13 +14,13 @@
     "require": {
         "php": "^5.3.9|^7.0",
         "symfony/framework-bundle": "^2.3",
-        "symfony-cmf/slugifier-api": "^1.0@rc"
+        "symfony-cmf/slugifier-api": "^1.0"
     },
     "require-dev": {
         "symfony/security-bundle": "^2.1",
         "mockery/mockery": "^0.9.4",
-        "symfony-cmf/routing-bundle": "^1.2.0-RC3",
-        "symfony-cmf/testing": "^1.3@dev",
+        "symfony-cmf/routing-bundle": "^1.2",
+        "symfony-cmf/testing": "^1.3",
         "sonata-project/admin-bundle": "^2.2",
         "doctrine/dbal": "2.5.*"
     },
