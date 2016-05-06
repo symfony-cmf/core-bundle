@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Admin\Extension;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 /**
  * Admin extension to add a publish workflow publishable field for models
@@ -40,12 +41,11 @@ class PublishableExtension extends AdminExtension
      */
     public function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->with($this->formGroup, array(
-            'translation_domain' => 'CmfCoreBundle',
-            ))
-            ->add('publishable', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox', array(
-                'required' => false,
-            ))
+        $formMapper
+            ->with($this->formGroup, array('translation_domain' => 'CmfCoreBundle'))
+                ->add('publishable', CheckboxType::class, array(
+                    'required' => false,
+                ))
             ->end();
     }
 }

@@ -20,7 +20,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
     /**
      * @var SecurityContextInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $pwc;
+    private $publishWorkflowChecker;
 
     /**
      * @var CmfHelper
@@ -32,13 +32,13 @@ class CmfHelperHierarchyTest extends BaseTestCase
         $dbManager = $this->db('PHPCR');
         $dbManager->loadFixtures(array('Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData'));
 
-        $this->pwc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->pwc->expects($this->any())
+        $this->publishWorkflowChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+        $this->publishWorkflowChecker->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true))
         ;
 
-        $this->helper = new CmfHelper($this->pwc, $dbManager->getRegistry(), 'default');
+        $this->helper = new CmfHelper($this->publishWorkflowChecker, $dbManager->getRegistry(), 'default');
     }
 
     public function testGetDescendants()

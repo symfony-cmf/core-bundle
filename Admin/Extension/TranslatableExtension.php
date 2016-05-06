@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Admin extension to add publish workflow time period fields.
@@ -69,7 +70,7 @@ class TranslatableExtension extends AdminExtension
         $formMapper
             ->with($this->formGroup)
             // do not set a translation_domain for this group or group_general will be translated by our domain.
-            ->add('locale', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
+            ->add('locale', ChoiceType::class, array(
                 'choices' => array_combine($this->locales, $this->locales),
                 'empty_value' => '',
             ), array('translation_domain' => 'CmfCoreBundle'))

@@ -1,7 +1,13 @@
 Changelog
 =========
+
+ * **2016-04-30**: [BC BREAK] Dropped PHP <5.5 support
+ * **2016-04-30**: [BC BREAK] Dropped Symfony <2.8 support
+
 1.3.0
 -----
+
+Released 1.3.0
 
 1.3.0-RC1
 ---------

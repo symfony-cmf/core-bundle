@@ -19,7 +19,7 @@ use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 
 /**
@@ -45,7 +45,7 @@ class CmfHelper extends Helper
     protected $dm;
 
     /**
-     * @var SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
     protected $publishWorkflowChecker;
 
@@ -54,12 +54,12 @@ class CmfHelper extends Helper
      * setDcotrineRegistry in order to avoid circular dependencies when a
      * doctrine event listener needs twig injected.
      *
-     * @param SecurityContextInterface $publishWorkflowChecker
-     * @param ManagerRegistry          $registry               For loading PHPCR-ODM documents from
-     *                                                         Doctrine.
-     * @param string                   $managerName
+     * @param AuthorizationCheckerInterface $publishWorkflowChecker
+     * @param ManagerRegistry               $registry               For loading PHPCR-ODM documents from
+     *                                                              Doctrine.
+     * @param string                        $managerName
      */
-    public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $managerName = null)
+    public function __construct(AuthorizationCheckerInterface $publishWorkflowChecker = null, $registry = null, $managerName = null)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
         $this->setDoctrineRegistry($registry, $managerName);

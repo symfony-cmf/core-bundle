@@ -27,7 +27,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pwc = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->pwc = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
 
         $this->managerRegistry = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
             ->disableOriginalConstructor()

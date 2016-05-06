@@ -24,7 +24,8 @@
         </service>
 
         <service id="cmf_core.publish_workflow.checker.default" class="%cmf_core.publish_workflow.checker.class%">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="cmf_core.publish_workflow.access_decision_manager"/>
             <argument>%cmf_core.publish_workflow.view_non_published_role%</argument>
         </service>
