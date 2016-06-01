@@ -42,7 +42,7 @@ class PublishTimePeriodExtension extends AdminExtension
     public function configureFormFields(FormMapper $formMapper)
     {
         $dateOptions = array(
-            'empty_value' => '',
+            'placeholder' => '',
             'required' => false,
         );
 
