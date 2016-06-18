@@ -4,14 +4,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="cmf_core.admin_extension.translatable.class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\TranslatableExtension</parameter>
-        <parameter key="cmf_core.persistence.phpcr.translatable_metadata_listener.class">Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr\TranslatableMetadataListener</parameter>
-    </parameters>
-
     <services>
 
-        <service id="cmf_core.persistence.phpcr.translatable_metadata_listener" class="%cmf_core.persistence.phpcr.translatable_metadata_listener.class%" public="false">
+        <service id="cmf_core.persistence.phpcr.translatable_metadata_listener" class="Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr\TranslatableMetadataListener" public="false">
             <argument>%cmf_core.persistence.phpcr.translation_strategy%</argument>
             <tag name="doctrine_phpcr.event_subscriber"/>
         </service>

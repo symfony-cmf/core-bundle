@@ -6,18 +6,16 @@
 
     <parameters>
         <parameter key="cmf_core.persistence.phpcr.manager_name">null</parameter>
-        <parameter key="cmf_core.twig_extension.class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension</parameter>
-        <parameter key="cmf_core.templating.helper.class">Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper</parameter>
     </parameters>
 
     <services>
 
-        <service id="cmf_core.twig.children_extension" class="%cmf_core.twig_extension.class%" public="false">
+        <service id="cmf_core.twig.children_extension" class="Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension" public="false">
             <argument type="service" id="cmf_core.templating.helper"/>
             <tag name="twig.extension"/>
         </service>
 
-        <service id="cmf_core.templating.helper" class="%cmf_core.templating.helper.class%" public="false">
+        <service id="cmf_core.templating.helper" class="Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper" public="false">
             <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
             <tag name="templating.helper" alias="cmf"/>
         </service>

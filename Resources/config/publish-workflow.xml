@@ -4,61 +4,50 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="cmf_core.publish_workflow.checker.class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker</parameter>
-        <parameter key="cmf_core.publish_workflow.access_decision_manager.class">Symfony\Component\Security\Core\Authorization\AccessDecisionManager</parameter>
-        <parameter key="cmf_core.security.publishable_voter.class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter</parameter>
-        <parameter key="cmf_core.security.publish_time_period_voter.class">Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishTimePeriodVoter</parameter>
-        <parameter key="cmf_core.publish_workflow.request_listener.class">Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener</parameter>
-        <parameter key="cmf_core.security.published_voter.class">Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter\PublishedVoter</parameter>
-        <parameter key="cmf_core.admin_extension.publish_workflow.publishable.class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishableExtension</parameter>
-        <parameter key="cmf_core.admin_extension.publish_workflow.time_period.class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishTimePeriodExtension</parameter>
-    </parameters>
-
     <services>
 
-        <service id="cmf_core.publish_workflow.access_decision_manager" class="%cmf_core.publish_workflow.access_decision_manager.class%">
+        <service id="cmf_core.publish_workflow.access_decision_manager" class="Symfony\Component\Security\Core\Authorization\AccessDecisionManager">
             <argument type="collection"/>
             <argument>unanimous</argument>
             <argument>true</argument>
         </service>
 
-        <service id="cmf_core.publish_workflow.checker.default" class="%cmf_core.publish_workflow.checker.class%">
+        <service id="cmf_core.publish_workflow.checker.default" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker">
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="cmf_core.publish_workflow.access_decision_manager"/>
             <argument>%cmf_core.publish_workflow.view_non_published_role%</argument>
         </service>
 
-        <service id="cmf_core.security.publishable_voter" class="%cmf_core.security.publishable_voter.class%" public="false">
+        <service id="cmf_core.security.publishable_voter" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter" public="false">
             <tag name="cmf_published_voter" priority="10"/>
         </service>
 
-        <service id="cmf_core.security.publish_time_period_voter" class="%cmf_core.security.publish_time_period_voter.class%" public="false">
+        <service id="cmf_core.security.publish_time_period_voter" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishTimePeriodVoter" public="false">
             <tag name="cmf_published_voter" priority="20"/>
         </service>
 
         <!-- This service can't be set to private, but has to be considered as such -->
-        <service id="cmf_core.publish_workflow.request_listener" class="%cmf_core.publish_workflow.request_listener.class%">
+        <service id="cmf_core.publish_workflow.request_listener" class="Symfony\Cmf\Bundle\CoreBundle\EventListener\PublishWorkflowListener">
             <argument type="service" id="cmf_core.publish_workflow.checker"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- integration with core security service -->
 
-        <service id="cmf_core.security.published_voter" class="%cmf_core.security.publishable_voter.class%" public="false">
+        <service id="cmf_core.security.published_voter" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter" public="false">
             <argument type="service" id="service_container" on-invalid="ignore"/>
             <tag name="security.voter"/>
         </service>
 
         <!-- integration with sonata admin - removed by the DI class if sonata is not available -->
 
-        <service id="cmf_core.admin_extension.publish_workflow.publishable" class="%cmf_core.admin_extension.publish_workflow.publishable.class%" public="false">
+        <service id="cmf_core.admin_extension.publish_workflow.publishable" class="Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishableExtension" public="false">
             <argument>%cmf_core.sonata_admin.extension.publishable.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
 
-        <service id="cmf_core.admin_extension.publish_workflow.time_period" class="%cmf_core.admin_extension.publish_workflow.time_period.class%" public="false">
+        <service id="cmf_core.admin_extension.publish_workflow.time_period" class="Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\PublishTimePeriodExtension" public="false">
             <argument>%cmf_core.sonata_admin.extension.publish_time.form_group%</argument>
             <tag name="sonata.admin.extension"/>
         </service>
