@@ -31,7 +31,7 @@ class RequestAwarePass implements CompilerPassInterface
     {
         $services = $container->findTaggedServiceIds('cmf_request_aware');
         foreach ($services as $id => $attributes) {
-            trigger_error("Service $id is using the deprecated tag cmf_request_aware");
+            @trigger_error('The cmf_request_aware tag used by "'.$id.'" is deprecated since 1.1 and will be removed in 2.0. Use the "request_stack" service instead.', E_USER_DEPRECATED);
 
             $definition = $container->getDefinition($id);
             $definition

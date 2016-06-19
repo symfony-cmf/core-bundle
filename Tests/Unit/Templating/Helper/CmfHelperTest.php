@@ -57,7 +57,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->uow))
         ;
 
-        $this->extension = new CmfHelper($this->pwc, $this->managerRegistry, 'foo');
+        $this->extension = new CmfHelper($this->pwc);
+        $this->extension->setDoctrineRegistry($this->managerRegistry, 'foo');
     }
 
     public function testGetNodeName()
@@ -210,7 +211,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindManyNoWorkflow()
     {
-        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
+        $extension = new CmfHelper(null);
+        $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
 
         $documentA = new \stdClass();
 
@@ -220,7 +222,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($documentA))
         ;
 
-        $this->extension->findMany(array('/foo', '/bar'), false, false);
+        $extension->findMany(array('/foo', '/bar'), false, false);
     }
 
     public function testIsPublished()
@@ -244,8 +246,10 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsPublishedNoWorkflow()
     {
-        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
-        $this->extension->isPublished(new \stdClass());
+        $extension = new CmfHelper(null);
+        $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
+
+        $extension->isPublished(new \stdClass());
     }
 
     public function testIsLinkable()
