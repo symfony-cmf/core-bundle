@@ -50,19 +50,11 @@ class CmfHelper extends Helper
     protected $publishWorkflowChecker;
 
     /**
-     * The $registry constructor argument is deprecated in favor of
-     * setDcotrineRegistry in order to avoid circular dependencies when a
-     * doctrine event listener needs twig injected.
-     *
      * @param AuthorizationCheckerInterface $publishWorkflowChecker
-     * @param ManagerRegistry               $registry               For loading PHPCR-ODM documents from
-     *                                                              Doctrine.
-     * @param string                        $managerName
      */
-    public function __construct(AuthorizationCheckerInterface $publishWorkflowChecker = null, $registry = null, $managerName = null)
+    public function __construct(AuthorizationCheckerInterface $publishWorkflowChecker = null)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
-        $this->setDoctrineRegistry($registry, $managerName);
     }
 
     /**
