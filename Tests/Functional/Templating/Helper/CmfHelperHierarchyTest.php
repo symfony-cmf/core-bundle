@@ -38,7 +38,8 @@ class CmfHelperHierarchyTest extends BaseTestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->helper = new CmfHelper($this->pwc, $dbManager->getRegistry(), 'default');
+        $this->helper = new CmfHelper($this->pwc);
+        $this->helper->setDoctrineRegistry($dbManager->getRegistry(), 'default');
     }
 
     public function testGetDescendants()

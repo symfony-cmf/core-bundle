@@ -62,7 +62,11 @@ class CmfHelper extends Helper
     public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $managerName = null)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
-        $this->setDoctrineRegistry($registry, $managerName);
+
+        if (null !== $registry) {
+            @trigger_error('The second and third argument of '.__METHOD__.' is deprecated since 1.3 and will be removed in 2.0. Execute setDoctrineRegistry() instead.', E_USER_DEPRECATED);
+            $this->setDoctrineRegistry($registry, $managerName);
+        }
     }
 
     /**
