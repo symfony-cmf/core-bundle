@@ -5,8 +5,11 @@ Changelog
  * **2016-06-19**: [BC BREAK] Removed `RequestAwarePass` class.
  * **2016-06-19**: [BC BREAK] Removed `TranslatableExtension` class and related
    `cmf_core.admin_extension.translatable` service.
+ * **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
  * **2016-04-30**: [BC BREAK] Dropped PHP <5.5 support
  * **2016-04-30**: [BC BREAK] Dropped Symfony <2.8 support
+ * **2016-04-30**: [BC BREAK] Dropped PHP <5.5 support.
+ * **2016-04-30**: [BC BREAK] Dropped Symfony <2.8 support.
 
 1.3.0
 -----

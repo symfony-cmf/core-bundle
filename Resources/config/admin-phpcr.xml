@@ -4,13 +4,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="cmf_core.admin_extension.child.class">Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\ChildExtension</parameter>
-    </parameters>
-
     <services>
 
-        <service id="cmf_core.admin_extension.child" class="%cmf_core.admin_extension.child.class%" public="false">
+        <service id="cmf_core.admin_extension.child" class="Symfony\Cmf\Bundle\CoreBundle\Admin\Extension\ChildExtension" public="false">
             <tag name="sonata.admin.extension"/>
         </service>
 
