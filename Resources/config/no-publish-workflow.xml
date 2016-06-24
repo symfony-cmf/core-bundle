@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="cmf_core.publish_workflow.checker" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker"/>
+        <service id="cmf_core.publish_workflow.checker" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\AlwaysPublishedWorkflowChecker"/>
 
     </services>
 </container>
