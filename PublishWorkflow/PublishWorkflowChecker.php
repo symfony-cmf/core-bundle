@@ -63,7 +63,7 @@ class PublishWorkflowChecker implements SecurityContextInterface
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
-     *                  VIEW attribute is used, or false to never bypass.
+     *                  VIEW attribute is used, or false to never bypass
      */
     private $bypassingRole;
 
@@ -88,12 +88,12 @@ class PublishWorkflowChecker implements SecurityContextInterface
     private $authorizationChecker = false;
 
     /**
-     * @param ContainerInterface             $container             To get the security context from.
-     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
+     * @param ContainerInterface             $container             To get the security context from
+     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision
      * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
      *                                                              the VIEW permission. Ignored on
-     *                                                              VIEW_ANONYMOUS.
+     *                                                              VIEW_ANONYMOUS
      */
     public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {

@@ -22,7 +22,7 @@ use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
  *
  * @author David Buchmann <mail@davidbu.ch>
  *
- * @deprecated Since version 1.3, to be removed in 2.0. Use the SonataTranslationBundle instead.
+ * @deprecated Since version 1.3, to be removed in 2.0. Use the SonataTranslationBundle instead
  */
 class TranslatableExtension extends AdminExtension
 {
@@ -37,8 +37,8 @@ class TranslatableExtension extends AdminExtension
     protected $locales;
 
     /**
-     * @param array  $locales   Available locales to select.
-     * @param string $formGroup The group name to use for form mapper.
+     * @param array  $locales   Available locales to select
+     * @param string $formGroup The group name to use for form mapper
      */
     public function __construct($locales, $formGroup = 'form.group_general')
     {
