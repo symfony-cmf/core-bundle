@@ -65,6 +65,7 @@ class CmfExtensionTest extends \PHPUnit_Framework_TestCase
             array('getPrev', array('current'), 'getPrev', array('current', null, null, false, null)),
             array('getNext', array('current'), 'getNext', array('current', null, null, false, null)),
             array('find', array('/cms/simple')),
+            array('findTranslation', array('/cms/simple', 'en')),
             array('findMany', array(array('/cms/simple')), 'findMany', array(array('/cms/simple'), false, false, false, null)),
             array('getDescendants', array('parent', 2)),
             array('getNodeName', array('document1')),
