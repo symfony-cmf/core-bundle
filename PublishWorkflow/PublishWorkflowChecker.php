@@ -80,7 +80,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
     /**
      * @param TokenStorageInterface          $tokenStorage
      * @param AuthorizationCheckerInterface  $authorizationChecker
-     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
+     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision
      * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
      *                                                              the VIEW permission. Ignored on
