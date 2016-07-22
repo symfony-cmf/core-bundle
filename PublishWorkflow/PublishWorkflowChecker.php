@@ -53,7 +53,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
-     *                  VIEW attribute is used, or false to never bypass.
+     *                  VIEW attribute is used, or false to never bypass
      */
     private $bypassingRole;
 
@@ -84,7 +84,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
      *                                                              the VIEW permission. Ignored on
-     *                                                              VIEW_ANONYMOUS.
+     *                                                              VIEW_ANONYMOUS
      */
     public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {
@@ -131,37 +131,5 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
         }
 
         return $this->accessDecisionManager->decide($token, $attributes, $object);
-    }
-
-    private function getTokenStorage()
-    {
-        if (false === $this->tokenStorage) {
-            if ($this->container->has('security.token_storage')) {
-                $this->tokenStorage = $this->container->get('security.token_storage');
-            } elseif ($this->container->has('security.context')) {
-                // for Symfony <2.6 compatibility
-                $this->tokenStorage = $this->container->get('security.context');
-            } else {
-                $this->tokenStorage = null;
-            }
-        }
-
-        return $this->tokenStorage;
-    }
-
-    private function getAuthorizationChecker()
-    {
-        if (false === $this->authorizationChecker) {
-            if ($this->container->has('security.authorization_checker')) {
-                $this->authorizationChecker = $this->container->get('security.authorization_checker');
-            } elseif ($this->container->has('security.context')) {
-                // for Symfony <2.6 compatibility
-                $this->authorizationChecker = $this->container->get('security.context');
-            } else {
-                $this->authorizationChecker = null;
-            }
-        }
-
-        return $this->authorizationChecker;
     }
 }

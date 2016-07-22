@@ -21,13 +21,13 @@ interface TranslatableInterface
 {
     /**
      * @return string|bool The locale of this model or false if
-     *                     translations are disabled in this project.
+     *                     translations are disabled in this project
      */
     public function getLocale();
 
     /**
      * @param string|bool $locale The local for this model, or false if
-     *                            translations are disabled in this project.
+     *                            translations are disabled in this project
      */
     public function setLocale($locale);
 }
