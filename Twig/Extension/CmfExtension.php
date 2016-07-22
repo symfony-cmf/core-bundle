@@ -36,6 +36,7 @@ class CmfExtension extends \Twig_Extension
             new \Twig_SimpleFunction('cmf_prev', array($this, 'getPrev')),
             new \Twig_SimpleFunction('cmf_next', array($this, 'getNext')),
             new \Twig_SimpleFunction('cmf_find', array($this, 'find')),
+            new \Twig_SimpleFunction('cmf_find_translation', array($this, 'findTranslation')),
             new \Twig_SimpleFunction('cmf_find_many', array($this, 'findMany')),
             new \Twig_SimpleFunction('cmf_descendants', array($this, 'getDescendants')),
             new \Twig_SimpleFunction('cmf_nodename', array($this, 'getNodeName')),
@@ -89,6 +90,11 @@ class CmfExtension extends \Twig_Extension
     public function find($path)
     {
         return $this->helper->find($path);
+    }
+
+    public function findTranslation($path, $locale, $fallback = true)
+    {
+        return $this->helper->findTranslation($path, $locale, $fallback);
     }
 
     public function findMany($paths = array(), $limit = false, $offset = false, $ignoreRole = false, $class = null)

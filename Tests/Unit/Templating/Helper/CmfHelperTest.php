@@ -137,6 +137,20 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($document, $this->extension->find('/foo'));
     }
 
+    public function testFindTranslation()
+    {
+        $document = new \stdClass();
+
+        $this->manager->expects($this->any())
+            ->method('findTranslation')
+            ->with(null, '/foo', 'en')
+            ->will($this->onConsecutiveCalls(null, $document, 'en'))
+        ;
+
+        $this->assertNull($this->extension->findTranslation('/foo', 'en'));
+        $this->assertEquals($document, $this->extension->findTranslation('/foo', 'en'));
+    }
+
     public function testFindMany()
     {
         $this->assertEquals(array(), $this->extension->findMany());

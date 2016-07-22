@@ -156,6 +156,26 @@ class CmfHelper extends Helper
     }
 
     /**
+     * Finds a document by path and locale.
+     *
+     * @param string|object $pathOrDocument the identifier of the class (path or document object)
+     * @param string        $locale         the language to try to load
+     * @param bool          $fallback       set to true if the language fallback mechanism should be used
+     *
+     * @return null|object
+     */
+    public function findTranslation($pathOrDocument, $locale, $fallback = true)
+    {
+        if (is_object($pathOrDocument)) {
+            $path = $this->getDm()->getUnitOfWork()->getDocumentId($pathOrDocument);
+        } else {
+            $path = $pathOrDocument;
+        }
+
+        return $this->getDm()->findTranslation(null, $path, $locale, $fallback);
+    }
+
+    /**
      * Gets a document instance and validate if its eligible.
      *
      * @param string|object $document   the id of a document or the document
