@@ -53,7 +53,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
-     *                  VIEW attribute is used, or false to never bypass.
+     *                  VIEW attribute is used, or false to never bypass
      */
     private $bypassingRole;
 
@@ -80,11 +80,11 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
     /**
      * @param TokenStorageInterface          $tokenStorage
      * @param AuthorizationCheckerInterface  $authorizationChecker
-     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
+     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision
      * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
      *                                                              the VIEW permission. Ignored on
-     *                                                              VIEW_ANONYMOUS.
+     *                                                              VIEW_ANONYMOUS
      */
     public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {

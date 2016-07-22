@@ -162,7 +162,7 @@ class CmfHelper extends Helper
      *                                  object itself
      * @param bool|null     $ignoreRole whether the bypass role should be
      *                                  ignored (leading to only show published content regardless of the
-     *                                  current user) or null to skip the published check completely.
+     *                                  current user) or null to skip the published check completely
      * @param null|string   $class      class name to filter on
      *
      * @return null|object
@@ -282,7 +282,7 @@ class CmfHelper extends Helper
      *
      * @return bool|null|object child or null if the child cannot be found
      *                          or false if the parent is not managed by
-     *                          the configured document manager.
+     *                          the configured document manager
      */
     public function getChild($parent, $name)
     {
@@ -300,9 +300,9 @@ class CmfHelper extends Helper
     /**
      * Gets child documents.
      *
-     * @param string|object $parent     parent id or document.
+     * @param string|object $parent     parent id or document
      * @param int|bool      $limit      maximum number of children to get or
-     *                                  false for no limit.
+     *                                  false for no limit
      * @param string|bool   $offset     node name to which to skip to or false
      * @param null|string   $filter     child name filter (optional)
      * @param bool|null     $ignoreRole whether the role should be ignored or
@@ -369,15 +369,15 @@ class CmfHelper extends Helper
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object $parent     parent path/document.
-     * @param int|bool      $limit      limit or false for no limit.
+     * @param string|object $parent     parent path/document
+     * @param int|bool      $limit      limit or false for no limit
      * @param string|bool   $offset     node name to which to skip to or false
      *                                  to not skip any elements
      * @param null|string   $filter     child name filter
      * @param bool|null     $ignoreRole whether the role should be ignored or
      *                                  null if publish workflow should be
-     *                                  ignored (defaults to false).
-     * @param string|null   $class      class name to filter on.
+     *                                  ignored (defaults to false)
+     * @param string|null   $class      class name to filter on
      *
      * @return array
      *
@@ -449,9 +449,9 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param string|object $parent parent path/document.
+     * @param string|object $parent parent path/document
      * @param null|int      $depth  null denotes no limit, depth of 1 means
-     *                              direct children only.
+     *                              direct children only
      *
      * @return array
      */
@@ -764,13 +764,13 @@ class CmfHelper extends Helper
      * This has the same semantics as the isLinkable method.
      *
      * @param string|object      $current    Document instance or path from
-     *                                       which to search.
+     *                                       which to search
      * @param null|string|object $anchor     Document instance or path which
      *                                       serves as an anchor from which to
-     *                                       flatten the hierarchy.
+     *                                       flatten the hierarchy
      * @param null|int           $depth      Depth up to which to traverse down
      *                                       the tree when an anchor is
-     *                                       provided.
+     *                                       provided
      * @param bool               $ignoreRole Whether to ignore the role,
      *
      * @return null|object
@@ -796,14 +796,14 @@ class CmfHelper extends Helper
      * This has the same semantics as the isLinkable method.
      *
      * @param string|object      $current    Document instance or path from
-     *                                       which to search.
+     *                                       which to search
      * @param null|string|object $anchor     Document instance or path which
      *                                       serves as an anchor from which to
-     *                                       flatten the hierarchy.
+     *                                       flatten the hierarchy
      * @param null|int           $depth      Depth up to which to traverse down
      *                                       the tree when an anchor is
-     *                                       provided.
-     * @param bool               $ignoreRole Whether to ignore the role.
+     *                                       provided
+     * @param bool               $ignoreRole Whether to ignore the role
      *
      * @return null|object
      *
