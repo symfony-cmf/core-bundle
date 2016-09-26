@@ -13,7 +13,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Admin\Extension;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Cmf\Bundle\CoreBundle\Form\Type\PublishTimePeriodType;
 
 /**
  * Admin extension to add publish workflow time period fields for models
@@ -41,19 +41,11 @@ class PublishTimePeriodExtension extends AdminExtension
      */
     public function configureFormFields(FormMapper $formMapper)
     {
-        $dateOptions = array(
-            'placeholder' => '',
-            'required' => false,
-        );
-
         $formMapper
-            ->with($this->formGroup, array('translation_domain' => 'CmfCoreBundle'))
-                ->add('publish_start_date', DateType::class, $dateOptions, array(
-                    'help' => 'form.help_publish_start_date',
-                ))
-                ->add('publish_end_date', DateType::class, $dateOptions, array(
-                    'help' => 'form.help_publish_end_date',
-                ))
+            ->with($this->formGroup, ['translation_domain' => 'CmfCoreBundle'])
+                ->add('cmf_core_publish_time_period', PublishTimePeriodType::class, [
+                    'inherit_data' => true,
+                ])
             ->end();
     }
 }

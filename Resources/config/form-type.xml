@@ -13,5 +13,9 @@
         <service id="cmf_core.form.extension.publishable" abstract="true" class="Symfony\Cmf\Bundle\CoreBundle\Form\Extension\PublishableExtension">
             <!-- <argument /> Extended type fqcn -->
         </service>
+
+        <service id="cmf_core.form.extension.publish_time_period" abstract="true" class="Symfony\Cmf\Bundle\CoreBundle\Form\Extension\PublishTimePeriodExtension">
+            <!-- <argument /> Extended type fqcn -->
+        </service>
     </services>
 </container>
