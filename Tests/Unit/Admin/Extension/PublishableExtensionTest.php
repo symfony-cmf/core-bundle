@@ -33,7 +33,6 @@ class PublishableExtensionTest extends \PHPUnit_Framework_TestCase
         $this->formMapper->expects($this->exactly(1))
             ->method('add')
             ->will($this->returnSelf());
-
         $this->extension->configureFormFields($this->formMapper);
     }
 }
