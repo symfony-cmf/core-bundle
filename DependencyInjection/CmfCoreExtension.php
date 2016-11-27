@@ -56,7 +56,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'block_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                 ),
@@ -69,7 +68,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
                                 ),
                             ),
@@ -111,7 +109,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
                                     'menu_basepath' => $persistenceConfig['basepath'].'/menu',
                                     'manager_name' => $persistenceConfig['manager_name'],
@@ -128,7 +125,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'persistence' => array(
                                     'phpcr' => array(
                                         'enabled' => $persistenceConfig['enabled'],
-                                        'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                         'content_basepath' => $persistenceConfig['basepath'].'/content',
                                         'route_basepaths' => $routePaths,
                                         'manager_name' => $persistenceConfig['manager_name'],
@@ -174,7 +170,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             'persistence' => array(
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
-                                    'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                     'basepath' => $persistenceConfig['basepath'].'/simple',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                     'manager_registry' => $persistenceConfig['manager_registry'],
@@ -199,9 +194,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'phpcr' => array(
                                     'enabled' => $persistenceConfig['enabled'],
                                 ),
-                            ),
-                            'sonata_admin_extension' => array(
-                                'enabled' => $persistenceConfig['use_sonata_admin'],
                             ),
                         );
 
@@ -246,9 +238,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'orm' => array(
                                     'enabled' => $persistenceConfig['enabled'],
                                 ),
-                            ),
-                            'sonata_admin_extension' => array(
-                                'enabled' => $persistenceConfig['use_sonata_admin'],
                             ),
                         );
                         break;
