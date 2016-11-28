@@ -30,10 +30,9 @@ class PublishTimePeriodExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('with')
             ->with('some_group')
             ->will($this->returnSelf());
-        $this->formMapper->expects($this->exactly(2))
+        $this->formMapper->expects($this->once())
             ->method('add')
             ->will($this->returnSelf());
-
         $this->extension->configureFormFields($this->formMapper);
     }
 }
