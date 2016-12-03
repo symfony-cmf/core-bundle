@@ -269,10 +269,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                 new Reference($config['persistence']['phpcr']['manager_registry']),
                 '%cmf_core.persistence.phpcr.manager_name%',
             ));
-
-            if ($config['persistence']['phpcr']['use_sonata_admin']) {
-                $this->loadSonataPhpcrAdmin($config, $loader, $container);
-            }
         }
         if ($config['publish_workflow']['enabled']) {
             $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
@@ -292,24 +288,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $loader->load('translatable-disabled.xml');
         }
 
-        foreach ($config['sonata_admin']['extensions'] as $extensionName => $options) {
-            foreach ($options as $key => $value) {
-                $container->setParameter('cmf_core.sonata_admin.extension.'.$extensionName.'.'.$key, $value);
-            }
-        }
-
         $this->setupFormTypes($container, $loader);
-    }
-
-    public function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
-    {
-        $bundles = $container->getParameter('kernel.bundles');
-
-        if ('auto' === $config['persistence']['phpcr']['use_sonata_admin'] && !isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
-            return;
-        }
-
-        $loader->load('admin-phpcr.xml');
     }
 
     /**
@@ -350,11 +329,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $container->removeDefinition($this->getAlias().'.publish_workflow.request_listener');
         } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
             throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
-        }
-
-        if (!class_exists('Sonata\AdminBundle\Admin\AdminExtension')) {
-            $container->removeDefinition($this->getAlias().'.admin_extension.publish_workflow.publishable');
-            $container->removeDefinition($this->getAlias().'.admin_extension.publish_workflow.time_period');
         }
 
         $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);

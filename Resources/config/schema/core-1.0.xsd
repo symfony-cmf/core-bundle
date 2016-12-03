@@ -12,7 +12,6 @@
             <xsd:element name="persistence" type="persistence" minOccurs="0" />
             <xsd:element name="multilang" type="multilang" minOccurs="0" />
             <xsd:element name="publish-workflow" type="publish-workflow" minOccurs="0" />
-            <xsd:element name="sonata-admin" type="sonata-admin" minOccurs="0" />
         </xsd:sequence>
         <xsd:attribute name="document-manager-name" type="xsd:string" />
     </xsd:complexType>
