@@ -24,8 +24,9 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 
     public function testFormTwigTemplate()
     {
-        $this->getContainer()->get('twig')->initRuntime();
-        $renderer = $this->getContainer()->get('twig')->getExtension('form')->renderer;
+        $twigExtension = $this->getContainer()->get('twig');
+        $twigExtension->initRuntime();
+        $renderer = $twigExtension->getExtension('form')->renderer;
 
         $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name')
             ->add('terms', CheckboxUrlLabelFormType::class, array(
