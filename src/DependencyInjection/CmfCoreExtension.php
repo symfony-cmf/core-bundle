@@ -37,7 +37,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $extensions = $container->getExtensions();
-        if (isset($config['multilang']['locales']) && isset($extensions['cmf_routing'])) {
+        if (isset($config['multilang']['locales'], $extensions['cmf_routing'])) {
             $container->prependExtensionConfig('cmf_routing', array(
                 'dynamic' => array('locales' => $config['multilang']['locales']),
             ));
