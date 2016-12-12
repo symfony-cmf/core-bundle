@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.0 (unreleased)
+------------------
+
+ * **2016-12-03**: [BC BREAK] Moved sonata admin related classes and configuration to the CmfSonataAdminIntegrationBundle
  * **2016-06-19**: [BC BREAK] Removed second and third argument from `CmfHelper` constructor.
  * **2016-06-19**: [BC BREAK] Removed `RequestAwarePass` class.
  * **2016-06-19**: [BC BREAK] Removed `TranslatableExtension` class and related
