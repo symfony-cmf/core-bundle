@@ -8,11 +8,11 @@
 
     <testsuites>
         <testsuite name="Symfony CoreBundle Test Suite">
-            <directory>./Tests/Unit</directory>
+            <directory>./tests/Unit</directory>
         </testsuite>
 
         <testsuite name="phpcr">
-            <directory>./Tests/Functional</directory>
+            <directory>./tests/Functional</directory>
         </testsuite>
     </testsuites>
 
@@ -30,7 +30,7 @@
     </filter>
 
     <php>
-        <server name="KERNEL_DIR" value="Tests/Resources/app" />
+        <server name="KERNEL_DIR" value="tests/Resources/app" />
     </php>
 
     <listeners>

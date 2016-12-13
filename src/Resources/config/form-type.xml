@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- This service can't be set to private, but has to be considered as such -->
+        <service id="cmf_core.form.type.checkbox_url_label" class="Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType">
+            <tag name="form.type" alias="cmf_core_checkbox_url_label" />
+            <argument type="service" id="router" />
+        </service>
+    </services>
+</container>
