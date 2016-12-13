@@ -16,7 +16,7 @@ class AppKernel extends TestKernel
 {
     public function configure()
     {
-        $this->requireBundleSets(array('default', 'phpcr_odm',));
+        $this->requireBundleSets(array('default', 'phpcr_odm'));
 
         $this->addBundles(array(
             new \Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
