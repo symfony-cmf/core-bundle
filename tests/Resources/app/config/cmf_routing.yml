@@ -1,0 +1,11 @@
+cmf_routing:
+    chain:
+        routers_by_id:
+            cmf_routing.dynamic_router: 20
+            router.default: 100
+    dynamic:
+        enabled: true
+        persistence:
+            phpcr:
+                enabled: true
+                route_basepaths: [/test/cms/routes]

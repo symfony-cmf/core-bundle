@@ -1,5 +1,0 @@
-home:
-    path: /
-
-hello:
-    path: /hello/{name}
