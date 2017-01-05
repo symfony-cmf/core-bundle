@@ -1,17 +1,15 @@
 Changelog
 =========
 
-2.0.0 (unreleased)
-------------------
-
- * **2016-12-03**: [BC BREAK] Moved sonata admin related classes and configuration to the CmfSonataAdminIntegrationBundle
+ * **2017-01-13**: [BC BREAK] Removed the `Slugifier` classes and the
+   dependency on `symfony-cmf/slugifier-api`.
+ * **2016-12-03**: [BC BREAK] Moved sonata admin related classes and
+   configuration to the CmfSonataAdminIntegrationBundle.
  * **2016-06-19**: [BC BREAK] Removed second and third argument from `CmfHelper` constructor.
  * **2016-06-19**: [BC BREAK] Removed `RequestAwarePass` class.
  * **2016-06-19**: [BC BREAK] Removed `TranslatableExtension` class and related
    `cmf_core.admin_extension.translatable` service.
  * **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
- * **2016-04-30**: [BC BREAK] Dropped PHP <5.5 support
- * **2016-04-30**: [BC BREAK] Dropped Symfony <2.8 support
  * **2016-04-30**: [BC BREAK] Dropped PHP <5.5 support.
  * **2016-04-30**: [BC BREAK] Dropped Symfony <2.8 support.
 
