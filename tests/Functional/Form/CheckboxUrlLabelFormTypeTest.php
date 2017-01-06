@@ -31,7 +31,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             $renderer = $twig->getRuntime(TwigRenderer::class);
         } else {
             $twig->initRuntime();
-            $twig->getExtension('form')->renderer;
+            $renderer = $twig->getExtension('form')->renderer;
         }
 
         $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name')
