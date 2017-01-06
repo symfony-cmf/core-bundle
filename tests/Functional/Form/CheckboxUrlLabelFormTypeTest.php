@@ -16,6 +16,7 @@ use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadRouteData;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
+use Symfony\Bundle\TwigBundle\ContainerAwareRuntimeLoader;
 
 class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 {
@@ -27,9 +28,11 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
     public function testFormTwigTemplate()
     {
         $twig = $this->getContainer()->get('twig');
-        if (method_exists($twig, 'getRuntime')) {
+        if (class_exists(ContainerAwareRuntimeLoader::class)) {
+            // TwigBridge 3.2+
             $renderer = $twig->getRuntime(TwigRenderer::class);
         } else {
+            // TwigBridge <3.2
             $twig->initRuntime();
             $renderer = $twig->getExtension('form')->renderer;
         }
