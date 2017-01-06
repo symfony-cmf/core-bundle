@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 
 use Symfony\Bridge\Twig\Form\TwigRenderer;
+use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadRouteData;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
@@ -32,9 +33,9 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             // TwigBridge 3.2+
             $renderer = $twig->getRuntime(TwigRenderer::class);
         } else {
-            // TwigBridge <3.2
-            $twig->initRuntime();
-            $renderer = $twig->getExtension('form')->renderer;
+            $twig25 = !method_exists($twig, 'getRuntime');
+            $renderer = $twig->getExtension($twig25 ? 'form' : FormExtension::class)->renderer;
+            $renderer->setEnvironment($twig);
         }
 
         $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name')
