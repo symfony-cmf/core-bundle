@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -327,8 +328,11 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
         if (!$config['request_listener']) {
             $container->removeDefinition($this->getAlias().'.publish_workflow.request_listener');
-        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
-            throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
+        } elseif (!class_exists(DynamicRouter::class)) {
+            throw new InvalidConfigurationException(sprintf(
+                'The "publish_workflow.request_listener" may not be enabled unless "%s" is available.',
+                DynamicRouter::class
+            ));
         }
 
         $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);

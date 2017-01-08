@@ -11,8 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,10 +30,10 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->role = 'IS_FOOBAR';
-        $this->authorizationChecker = \Mockery::mock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        $this->tokenStorage = \Mockery::mock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
-        $this->document = \Mockery::mock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
-        $this->accessDecisionManager = \Mockery::mock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+        $this->authorizationChecker = \Mockery::mock(AuthorizationCheckerInterface::class);
+        $this->tokenStorage = \Mockery::mock(TokenStorageInterface::class);
+        $this->document = \Mockery::mock(PublishableReadInterface::class);
+        $this->accessDecisionManager = \Mockery::mock(AccessDecisionManagerInterface::class);
 
         $this->publishWorkflowChecker = new PublishWorkflowChecker(
             $this->tokenStorage,
@@ -94,7 +98,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 
         $this->accessDecisionManager
             ->shouldReceive('decide')->once()
-            ->with(\Mockery::type('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken'), [PublishWorkflowChecker::VIEW_ATTRIBUTE], $this->document)
+            ->with(\Mockery::type(AnonymousToken::class), [PublishWorkflowChecker::VIEW_ATTRIBUTE], $this->document)
             ->andReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));

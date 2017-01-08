@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 class CmfExtension extends \Twig_Extension
 {
@@ -45,7 +46,7 @@ class CmfExtension extends \Twig_Extension
             new \Twig_SimpleFunction('cmf_document_locales', [$this, 'getLocalesFor']),
         ];
 
-        if (interface_exists('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface')) {
+        if (interface_exists(RouteReferrersReadInterface::class)) {
             $functions = array_merge($functions, [
                 new \Twig_SimpleFunction('cmf_is_linkable', [$this, 'isLinkable']),
                 new \Twig_SimpleFunction('cmf_prev_linkable', [$this, 'getPrevLinkable']),

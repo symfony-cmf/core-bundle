@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -77,7 +78,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
             [null, '/a'],
             [null, '/a/b'],
             [null, '/a/b/c'],
-            ['/a/b/c', '/a/b/d', null, null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/c', '/a/b/d', null, null, RouteAware::class],
             ['/a/b/d', '/a/b/e'],
             ['/a/b', '/a/f'],
             [null, '/a/f/g'],
@@ -85,9 +86,9 @@ class CmfHelperHierarchyTest extends BaseTestCase
             [null, '/a', '/a'],
             ['/a', '/a/b', '/a'],
             ['/a/b', '/a/b/c', '/a'],
-            ['/a/b/c', '/a/b/d', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/c', '/a/b/d', '/a', null, RouteAware::class],
             ['/a/b/d', '/a/b/e', '/a'],
-            ['/a/b/e', '/a/f', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/e', '/a/f', '/a', null, RouteAware::class],
             ['/a/f', '/a/f/g', '/a'],
             ['/a/f/g', '/a/f/g/h', '/a'],
             ['/a/f/g/h', '/a/i', '/a'],
@@ -116,15 +117,15 @@ class CmfHelperHierarchyTest extends BaseTestCase
             [null, '/a'],
             ['/a/f', '/a/b'],
             ['/a/b/d', '/a/b/c'],
-            ['/a/b/e', '/a/b/d', null, null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/e', '/a/b/d', null, null, RouteAware::class],
             [null, '/a/b/e'],
             ['/a/i', '/a/f'],
             [null, '/a/f/g'],
             [null, '/a/f/g/h'],
             ['/a/b', '/a', '/a'],
-            ['/a/b/c', '/a/b', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/c', '/a/b', '/a', null, RouteAware::class],
             ['/a/b/d', '/a/b/c', '/a'],
-            ['/a/b/e', '/a/b/d', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/e', '/a/b/d', '/a', null, RouteAware::class],
             ['/a/f', '/a/b/e', '/a'],
             ['/a/f/g', '/a/f', '/a'],
             ['/a/f/g/h', '/a/f/g', '/a'],
@@ -144,7 +145,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
         if (null === $expected) {
             $this->assertNull($prev);
         } else {
-            $this->assertInstanceOf('Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware', $prev);
+            $this->assertInstanceOf(RouteAware::class, $prev);
             $this->assertEquals($expected, $prev->getId());
         }
     }
@@ -169,7 +170,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
         if (null === $expected) {
             $this->assertNull($next);
         } else {
-            $this->assertInstanceOf('Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware', $next);
+            $this->assertInstanceOf(RouteAware::class, $next);
             $this->assertEquals($expected, $next->getId());
         }
     }

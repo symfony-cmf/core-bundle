@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 
 /**
  * Metadata listener for when the translations are globally defined.
@@ -55,7 +56,7 @@ class TranslatableMetadataListener implements EventSubscriber
         /** @var $meta ClassMetadata */
         $meta = $eventArgs->getClassMetadata();
 
-        if ($meta->getReflectionClass()->implementsInterface('Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface')) {
+        if ($meta->getReflectionClass()->implementsInterface(TranslatableInterface::class)) {
             $meta->setTranslator($this->translationStrategy);
         }
     }
