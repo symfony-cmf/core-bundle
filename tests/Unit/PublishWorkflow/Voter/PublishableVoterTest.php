@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow\Voter;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -82,7 +83,7 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
     public function testPublishWorkflowChecker($expected, $isPublishable, $attributes)
     {
         $attributes = (array) $attributes;
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
+        $doc = $this->createMock(PublishableReadInterface::class);
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue($isPublishable))

@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow\Voter;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishTimePeriodVoter;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -104,7 +105,7 @@ class PublishTimePeriodVoterTest extends \PHPUnit_Framework_TestCase
     public function testPublishWorkflowChecker($expected, $startDate, $endDate, $attributes = PublishWorkflowChecker::VIEW_ATTRIBUTE, $currentTime = false)
     {
         $attributes = (array) $attributes;
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface');
+        $doc = $this->createMock(PublishTimePeriodReadInterface::class);
 
         $doc->expects($this->any())
             ->method('getPublishStartDate')

@@ -33,7 +33,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testPublishable()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
+        $doc = $this->createMock(PublishableReadInterface::class);
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(true))
@@ -45,7 +45,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testPublishPeriod()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow\PublishModel');
+        $doc = $this->createMock(PublishModel::class);
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(true))
@@ -61,7 +61,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testIgnoreRoleHas()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow\PublishModel');
+        $doc = $this->createMock(PublishModel::class);
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(false))
@@ -79,7 +79,7 @@ class PublishWorkflowTest extends BaseTestCase
 
     public function testIgnoreRoleNotHas()
     {
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow\PublishModel');
+        $doc = $this->createMock(PublishModel::class);
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue(false))

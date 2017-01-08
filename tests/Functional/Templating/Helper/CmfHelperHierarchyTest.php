@@ -15,6 +15,7 @@ use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class CmfHelperHierarchyTest extends BaseTestCase
@@ -34,7 +35,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
         $dbManager = $this->db('PHPCR');
         $dbManager->loadFixtures([LoadHierarchyRouteData::class]);
 
-        $this->publishWorkflowChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+        $this->publishWorkflowChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->publishWorkflowChecker->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true))
