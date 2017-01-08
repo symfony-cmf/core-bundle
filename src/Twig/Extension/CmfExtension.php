@@ -29,29 +29,29 @@ class CmfExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        $functions = array(
-            new \Twig_SimpleFunction('cmf_is_published', array($this, 'isPublished')),
-            new \Twig_SimpleFunction('cmf_child', array($this, 'getChild')),
-            new \Twig_SimpleFunction('cmf_children', array($this, 'getChildren')),
-            new \Twig_SimpleFunction('cmf_prev', array($this, 'getPrev')),
-            new \Twig_SimpleFunction('cmf_next', array($this, 'getNext')),
-            new \Twig_SimpleFunction('cmf_find', array($this, 'find')),
-            new \Twig_SimpleFunction('cmf_find_translation', array($this, 'findTranslation')),
-            new \Twig_SimpleFunction('cmf_find_many', array($this, 'findMany')),
-            new \Twig_SimpleFunction('cmf_descendants', array($this, 'getDescendants')),
-            new \Twig_SimpleFunction('cmf_nodename', array($this, 'getNodeName')),
-            new \Twig_SimpleFunction('cmf_parent_path', array($this, 'getParentPath')),
-            new \Twig_SimpleFunction('cmf_path', array($this, 'getPath')),
-            new \Twig_SimpleFunction('cmf_document_locales', array($this, 'getLocalesFor')),
-        );
+        $functions = [
+            new \Twig_SimpleFunction('cmf_is_published', [$this, 'isPublished']),
+            new \Twig_SimpleFunction('cmf_child', [$this, 'getChild']),
+            new \Twig_SimpleFunction('cmf_children', [$this, 'getChildren']),
+            new \Twig_SimpleFunction('cmf_prev', [$this, 'getPrev']),
+            new \Twig_SimpleFunction('cmf_next', [$this, 'getNext']),
+            new \Twig_SimpleFunction('cmf_find', [$this, 'find']),
+            new \Twig_SimpleFunction('cmf_find_translation', [$this, 'findTranslation']),
+            new \Twig_SimpleFunction('cmf_find_many', [$this, 'findMany']),
+            new \Twig_SimpleFunction('cmf_descendants', [$this, 'getDescendants']),
+            new \Twig_SimpleFunction('cmf_nodename', [$this, 'getNodeName']),
+            new \Twig_SimpleFunction('cmf_parent_path', [$this, 'getParentPath']),
+            new \Twig_SimpleFunction('cmf_path', [$this, 'getPath']),
+            new \Twig_SimpleFunction('cmf_document_locales', [$this, 'getLocalesFor']),
+        ];
 
         if (interface_exists('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface')) {
-            $functions = array_merge($functions, array(
-                new \Twig_SimpleFunction('cmf_is_linkable', array($this, 'isLinkable')),
-                new \Twig_SimpleFunction('cmf_prev_linkable', array($this, 'getPrevLinkable')),
-                new \Twig_SimpleFunction('cmf_next_linkable', array($this, 'getNextLinkable')),
-                new \Twig_SimpleFunction('cmf_linkable_children', array($this, 'getLinkableChildren')),
-            ));
+            $functions = array_merge($functions, [
+                new \Twig_SimpleFunction('cmf_is_linkable', [$this, 'isLinkable']),
+                new \Twig_SimpleFunction('cmf_prev_linkable', [$this, 'getPrevLinkable']),
+                new \Twig_SimpleFunction('cmf_next_linkable', [$this, 'getNextLinkable']),
+                new \Twig_SimpleFunction('cmf_linkable_children', [$this, 'getLinkableChildren']),
+            ]);
         }
 
         return $functions;
@@ -97,7 +97,7 @@ class CmfExtension extends \Twig_Extension
         return $this->helper->findTranslation($path, $locale, $fallback);
     }
 
-    public function findMany($paths = array(), $limit = false, $offset = false, $ignoreRole = false, $class = null)
+    public function findMany($paths = [], $limit = false, $offset = false, $ignoreRole = false, $class = null)
     {
         return $this->helper->findMany($paths, $limit, $offset, $ignoreRole, $class);
     }

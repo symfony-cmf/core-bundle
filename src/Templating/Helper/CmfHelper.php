@@ -221,13 +221,13 @@ class CmfHelper extends Helper
      *
      * @return array
      */
-    public function findMany($paths = array(), $limit = false, $offset = false, $ignoreRole = false, $class = null)
+    public function findMany($paths = [], $limit = false, $offset = false, $ignoreRole = false, $class = null)
     {
         if ($offset) {
             $paths = array_slice($paths, $offset);
         }
 
-        $result = array();
+        $result = [];
         foreach ($paths as $path) {
             $document = $this->getDocument($path, $ignoreRole, $class);
             if (null === $document) {
@@ -284,13 +284,13 @@ class CmfHelper extends Helper
         }
 
         if (empty($document)) {
-            return array();
+            return [];
         }
 
         try {
             $locales = $this->getDm()->getLocalesFor($document, $includeFallbacks);
         } catch (MissingTranslationException $e) {
-            $locales = array();
+            $locales = [];
         }
 
         return $locales;
@@ -335,7 +335,7 @@ class CmfHelper extends Helper
     public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
     {
         if (empty($parent)) {
-            return array();
+            return [];
         }
 
         if (is_object($parent)) {
@@ -354,12 +354,12 @@ class CmfHelper extends Helper
         if ($offset) {
             $key = array_search($offset, $children);
             if (false === $key) {
-                return array();
+                return [];
             }
             $children = array_slice($children, $key);
         }
 
-        $result = array();
+        $result = [];
         foreach ($children as $name => $child) {
             // if we requested all children above, we did not filter yet
             if (strpos($name, 'phpcr_locale:') === 0) {
@@ -478,10 +478,10 @@ class CmfHelper extends Helper
     public function getDescendants($parent, $depth = null)
     {
         if (empty($parent)) {
-            return array();
+            return [];
         }
 
-        $children = array();
+        $children = [];
         if (is_object($parent)) {
             $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
         }

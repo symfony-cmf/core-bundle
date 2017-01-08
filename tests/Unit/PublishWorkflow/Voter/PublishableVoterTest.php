@@ -37,41 +37,41 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
 
     public function providePublishWorkflowChecker()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected' => VoterInterface::ACCESS_GRANTED,
                 'isPublishable' => true,
                 'attributes' => PublishWorkflowChecker::VIEW_ATTRIBUTE,
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_DENIED,
                 'isPublishable' => false,
                 'attributes' => PublishWorkflowChecker::VIEW_ATTRIBUTE,
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_GRANTED,
                 'isPublishable' => true,
-                'attributes' => array(
+                'attributes' => [
                     PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE,
                     PublishWorkflowChecker::VIEW_ATTRIBUTE,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_DENIED,
                 'isPublishable' => false,
                 'attributes' => PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE,
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_ABSTAIN,
                 'isPublishable' => true,
                 'attributes' => 'other',
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_ABSTAIN,
                 'isPublishable' => true,
-                'attributes' => array(PublishWorkflowChecker::VIEW_ATTRIBUTE, 'other'),
-            ),
-        );
+                'attributes' => [PublishWorkflowChecker::VIEW_ATTRIBUTE, 'other'],
+            ],
+        ];
     }
 
     /**
@@ -96,7 +96,7 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
         $result = $this->voter->vote(
             $this->token,
             $this,
-            array(PublishWorkflowChecker::VIEW_ATTRIBUTE)
+            [PublishWorkflowChecker::VIEW_ATTRIBUTE]
         );
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }

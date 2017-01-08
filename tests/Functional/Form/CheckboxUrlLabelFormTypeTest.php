@@ -23,7 +23,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 {
     public function setUp()
     {
-        $this->db('PHPCR')->loadFixtures(array(LoadRouteData::class));
+        $this->db('PHPCR')->loadFixtures([LoadRouteData::class]);
     }
 
     public function testFormTwigTemplate()
@@ -39,18 +39,18 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
         }
 
         $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name')
-            ->add('terms', CheckboxUrlLabelFormType::class, array(
+            ->add('terms', CheckboxUrlLabelFormType::class, [
                 'label' => '%a% and %b% and %c%',
-                'routes' => array(
-                    '%a%' => array('parameters' => array('content_id' => '/test/content/a')),
-                    '%b%' => array('parameters' => array('content_id' => '/test/content/b')),
-                    '%c%' => array('name' => 'hello', 'parameters' => array('name' => 'world'), 'referenceType' => UrlGeneratorInterface::ABSOLUTE_URL),
-                ),
-            ))
+                'routes' => [
+                    '%a%' => ['parameters' => ['content_id' => '/test/content/a']],
+                    '%b%' => ['parameters' => ['content_id' => '/test/content/b']],
+                    '%c%' => ['name' => 'hello', 'parameters' => ['name' => 'world'], 'referenceType' => UrlGeneratorInterface::ABSOLUTE_URL],
+                ],
+            ])
             ->getForm()
             ->createView();
 
-        $template = $renderer->searchAndRenderBlock($view, 'widget', array());
+        $template = $renderer->searchAndRenderBlock($view, 'widget', []);
         $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b and http://localhost/hello/world")]');
     }
 

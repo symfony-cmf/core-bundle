@@ -16,12 +16,12 @@ class AppKernel extends TestKernel
 {
     public function configure()
     {
-        $this->requireBundleSets(array('default', 'phpcr_odm'));
+        $this->requireBundleSets(['default', 'phpcr_odm']);
 
-        $this->addBundles(array(
+        $this->addBundles([
             new \Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
             new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-        ));
+        ]);
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

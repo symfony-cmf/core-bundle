@@ -31,7 +31,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->managerRegistry = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
             ->disableOriginalConstructor()
-            ->setMethods(array('getManager'))
+            ->setMethods(['getManager'])
             ->getMock()
         ;
 
@@ -153,7 +153,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testFindMany()
     {
-        $this->assertEquals(array(), $this->extension->findMany());
+        $this->assertEquals([], $this->extension->findMany());
     }
 
     public function testFindManyFilterClass()
@@ -166,8 +166,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($documentA, null, $documentA, $documentB))
         ;
 
-        $this->assertEquals(array(), $this->extension->findMany(array('/foo', 'bar'), false, false, null, 'Exception'));
-        $this->assertEquals(array($documentA, $documentB), $this->extension->findMany(array('/foo', 'bar'), false, false, null, 'stdClass'));
+        $this->assertEquals([], $this->extension->findMany(['/foo', 'bar'], false, false, null, 'Exception'));
+        $this->assertEquals([$documentA, $documentB], $this->extension->findMany(['/foo', 'bar'], false, false, null, 'stdClass'));
     }
 
     public function testFindManyIgnoreRole()
@@ -185,7 +185,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(false, true))
         ;
 
-        $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', '/bar'), false, false, true));
+        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', '/bar'], false, false, true));
     }
 
     public function testFindManyIgnoreWorkflow()
@@ -276,7 +276,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $content
             ->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue(array()))
+            ->will($this->returnValue([]))
         ;
         $this->assertFalse($this->extension->isLinkable($content));
 
@@ -292,7 +292,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLocalesFor()
     {
-        $this->assertEquals(array(), $this->extension->getLocalesFor(null));
+        $this->assertEquals([], $this->extension->getLocalesFor(null));
 
         $document = new \stdClass();
 
@@ -302,7 +302,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(null, $document))
         ;
 
-        $this->assertEquals(array(), $this->extension->getLocalesFor('/foo'));
+        $this->assertEquals([], $this->extension->getLocalesFor('/foo'));
 
         $this->manager->expects($this->once())
             ->method('getLocalesFor')
@@ -376,7 +376,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLinkableChildren()
     {
-        $this->assertEquals(array(), $this->extension->getLinkableChildren(null));
+        $this->assertEquals([], $this->extension->getLinkableChildren(null));
 
         $this->markTestIncomplete('TODO: write test');
     }

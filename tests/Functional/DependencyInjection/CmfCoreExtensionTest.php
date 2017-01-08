@@ -23,7 +23,7 @@ class CmfCoreExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->container = new ContainerBuilder();
         $this->container->registerExtension(new CmfCoreExtension());
-        $this->container->setParameter('kernel.bundles', array('CmfCoreBundle' => true));
+        $this->container->setParameter('kernel.bundles', ['CmfCoreBundle' => true]);
     }
 
     public function testPublishWorkflowDisabled()

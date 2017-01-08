@@ -11,7 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
 
+use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -30,7 +32,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
     public function setUp()
     {
         $dbManager = $this->db('PHPCR');
-        $dbManager->loadFixtures(array('Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData'));
+        $dbManager->loadFixtures([LoadHierarchyRouteData::class]);
 
         $this->publishWorkflowChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         $this->publishWorkflowChecker->expects($this->any())
@@ -44,12 +46,12 @@ class CmfHelperHierarchyTest extends BaseTestCase
 
     public function testGetDescendants()
     {
-        $this->assertEquals(array(), $this->helper->getDescendants(null));
+        $this->assertEquals([], $this->helper->getDescendants(null));
 
-        $expected = array('/a/b', '/a/b/c', '/a/b/d', '/a/b/e', '/a/f', '/a/f/g', '/a/f/g/h', '/a/i');
+        $expected = ['/a/b', '/a/b/c', '/a/b/d', '/a/b/e', '/a/f', '/a/f/g', '/a/f/g/h', '/a/i'];
         $this->assertEquals($expected, $this->helper->getDescendants('/a'));
 
-        $expected = array('/a/b', '/a/f', '/a/i');
+        $expected = ['/a/b', '/a/f', '/a/i'];
         $this->assertEquals($expected, $this->helper->getDescendants('/a', 1));
     }
 
@@ -69,33 +71,33 @@ class CmfHelperHierarchyTest extends BaseTestCase
 
     public static function getPrevData()
     {
-        return array(
-            array(null, null),
-            array(null, '/a'),
-            array(null, '/a/b'),
-            array(null, '/a/b/c'),
-            array('/a/b/c', '/a/b/d', null, null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'),
-            array('/a/b/d', '/a/b/e'),
-            array('/a/b', '/a/f'),
-            array(null, '/a/f/g'),
-            array(null, '/a/f/g/h'),
-            array(null, '/a', '/a'),
-            array('/a', '/a/b', '/a'),
-            array('/a/b', '/a/b/c', '/a'),
-            array('/a/b/c', '/a/b/d', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'),
-            array('/a/b/d', '/a/b/e', '/a'),
-            array('/a/b/e', '/a/f', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'),
-            array('/a/f', '/a/f/g', '/a'),
-            array('/a/f/g', '/a/f/g/h', '/a'),
-            array('/a/f/g/h', '/a/i', '/a'),
-            array('/a/f/g', '/a/i', '/a', 2),
-        );
+        return [
+            [null, null],
+            [null, '/a'],
+            [null, '/a/b'],
+            [null, '/a/b/c'],
+            ['/a/b/c', '/a/b/d', null, null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/d', '/a/b/e'],
+            ['/a/b', '/a/f'],
+            [null, '/a/f/g'],
+            [null, '/a/f/g/h'],
+            [null, '/a', '/a'],
+            ['/a', '/a/b', '/a'],
+            ['/a/b', '/a/b/c', '/a'],
+            ['/a/b/c', '/a/b/d', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/d', '/a/b/e', '/a'],
+            ['/a/b/e', '/a/f', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/f', '/a/f/g', '/a'],
+            ['/a/f/g', '/a/f/g/h', '/a'],
+            ['/a/f/g/h', '/a/i', '/a'],
+            ['/a/f/g', '/a/i', '/a', 2],
+        ];
     }
 
     /**
      * @dataProvider getNextData
      */
-    public function testGetNext($expected, $path, $anchor = null, $depth = null, $class = 'Doctrine\ODM\PHPCR\Document\Generic')
+    public function testGetNext($expected, $path, $anchor = null, $depth = null, $class = Generic::class)
     {
         $next = $this->helper->getNext($path, $anchor, $depth);
         if (null === $expected) {
@@ -108,28 +110,28 @@ class CmfHelperHierarchyTest extends BaseTestCase
 
     public static function getNextData()
     {
-        return array(
-            array(null, null),
-            array(null, '/a'),
-            array('/a/f', '/a/b'),
-            array('/a/b/d', '/a/b/c'),
-            array('/a/b/e', '/a/b/d', null, null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'),
-            array(null, '/a/b/e'),
-            array('/a/i', '/a/f'),
-            array(null, '/a/f/g'),
-            array(null, '/a/f/g/h'),
-            array('/a/b', '/a', '/a'),
-            array('/a/b/c', '/a/b', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'),
-            array('/a/b/d', '/a/b/c', '/a'),
-            array('/a/b/e', '/a/b/d', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'),
-            array('/a/f', '/a/b/e', '/a'),
-            array('/a/f/g', '/a/f', '/a'),
-            array('/a/f/g/h', '/a/f/g', '/a'),
-            array('/a/i', '/a/f/g/h', '/a'),
-            array(null, '/a/i', '/a'),
-            array(null, '/a/b/e', '/a/b'),
-            array('/a/i', '/a/f/g', '/a', 2),
-        );
+        return [
+            [null, null],
+            [null, '/a'],
+            ['/a/f', '/a/b'],
+            ['/a/b/d', '/a/b/c'],
+            ['/a/b/e', '/a/b/d', null, null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            [null, '/a/b/e'],
+            ['/a/i', '/a/f'],
+            [null, '/a/f/g'],
+            [null, '/a/f/g/h'],
+            ['/a/b', '/a', '/a'],
+            ['/a/b/c', '/a/b', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/b/d', '/a/b/c', '/a'],
+            ['/a/b/e', '/a/b/d', '/a', null, 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware'],
+            ['/a/f', '/a/b/e', '/a'],
+            ['/a/f/g', '/a/f', '/a'],
+            ['/a/f/g/h', '/a/f/g', '/a'],
+            ['/a/i', '/a/f/g/h', '/a'],
+            [null, '/a/i', '/a'],
+            [null, '/a/b/e', '/a/b'],
+            ['/a/i', '/a/f/g', '/a', 2],
+        ];
     }
 
     /**
@@ -149,12 +151,12 @@ class CmfHelperHierarchyTest extends BaseTestCase
     public static function getPrevLinkableData()
     {
         // TODO: expand test case
-        return array(
-            array(null, null),
-            array(null, '/a/b/c'),
-            array('/a/b/c', '/a/b/d'),
-            array('/a/b/c', '/a/b/e'),
-        );
+        return [
+            [null, null],
+            [null, '/a/b/c'],
+            ['/a/b/c', '/a/b/d'],
+            ['/a/b/c', '/a/b/e'],
+        ];
     }
 
     /**
@@ -174,11 +176,11 @@ class CmfHelperHierarchyTest extends BaseTestCase
     public static function getNextLinkableData()
     {
         // TODO: expand test case
-        return array(
-            array(null, null),
-            array('/a/b/e', '/a/b/c'),
-            array('/a/b/e', '/a/b/d'),
-            array(null, '/a/b/e'),
-        );
+        return [
+            [null, null],
+            ['/a/b/e', '/a/b/c'],
+            ['/a/b/e', '/a/b/d'],
+            [null, '/a/b/e'],
+        ];
     }
 }

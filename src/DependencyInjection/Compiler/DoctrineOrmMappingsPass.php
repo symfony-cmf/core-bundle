@@ -70,7 +70,7 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
         $chainDriverDefService = $this->getChainDriverServiceName($container);
         $chainDriverDef = $container->getDefinition($chainDriverDefService);
         foreach ($this->namespaces as $namespace) {
-            $chainDriverDef->addMethodCall('addDriver', array($this->driver, $namespace));
+            $chainDriverDef->addMethodCall('addDriver', [$this->driver, $namespace]);
         }
     }
 
@@ -107,11 +107,11 @@ class DoctrineOrmMappingsPass implements CompilerPassInterface
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional
      */
-    public static function createXmlMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false)
+    public static function createXmlMappingDriver(array $mappings, array $managerParameters = [], $enabledParameter = false)
     {
-        $arguments = array($mappings, '.orm.xml');
+        $arguments = [$mappings, '.orm.xml'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
+        $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', [$locator]);
 
         return new self($driver, $mappings, $managerParameters, $enabledParameter);
     }

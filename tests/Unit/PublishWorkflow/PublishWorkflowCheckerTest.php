@@ -53,7 +53,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 
         $this->accessDecisionManager
             ->shouldReceive('decide')->once()
-            ->with($token, array(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE), $this->document)
+            ->with($token, [PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE], $this->document)
             ->andReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $this->document));
@@ -68,7 +68,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 
         $this->accessDecisionManager
             ->shouldReceive('decide')->once()
-            ->with($token, array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->document)
+            ->with($token, [PublishWorkflowChecker::VIEW_ATTRIBUTE], $this->document)
             ->andReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));
@@ -94,7 +94,7 @@ class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 
         $this->accessDecisionManager
             ->shouldReceive('decide')->once()
-            ->with(\Mockery::type('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken'), array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $this->document)
+            ->with(\Mockery::type('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken'), [PublishWorkflowChecker::VIEW_ATTRIBUTE], $this->document)
             ->andReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));

@@ -66,9 +66,9 @@ class PublishWorkflowTest extends BaseTestCase
             ->method('isPublishable')
             ->will($this->returnValue(false))
         ;
-        $roles = array(
+        $roles = [
             new Role('ROLE_CAN_VIEW_NON_PUBLISHED'),
-        );
+        ];
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         $tokenStorage = $this->getContainer()->get('security.token_storage');
         $tokenStorage->setToken($token);
@@ -84,9 +84,9 @@ class PublishWorkflowTest extends BaseTestCase
             ->method('isPublishable')
             ->will($this->returnValue(false))
         ;
-        $roles = array(
+        $roles = [
             new Role('OTHER_ROLE'),
-        );
+        ];
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         $tokenStorage = $this->getContainer()->get('security.token_storage');
         $tokenStorage->setToken($token);
