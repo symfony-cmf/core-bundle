@@ -20,8 +20,10 @@ matrix:
 before_script:
   - composer self-update
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
+  # this should not be needed, but travis ends up with an unhealthy mix between phpunit 3 and 4
+  - wget https://phar.phpunit.de/phpunit-lts.phar
 
-script: phpunit --coverage-text
+script: ./phpunit-lts.phar --coverage-text
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
