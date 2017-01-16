@@ -1,6 +1,7 @@
 Changelog
 =========
 
+ * **2017-01-17**: [BC BREAK] Removed DoctrineOrmMappingsPass - all active Doctrine versions contain the mapping pass. Use `Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass` instead. 
  * **2017-01-13**: [BC BREAK] Removed the `Slugifier` classes and the
    dependency on `symfony-cmf/slugifier-api`.
  * **2016-12-03**: [BC BREAK] Moved sonata admin related classes and
