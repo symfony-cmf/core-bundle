@@ -29,6 +29,6 @@ class RouteAware implements RouteReferrersReadInterface
 
     public function getRoutes()
     {
-        return array(1, 2);
+        return [1, 2];
     }
 }

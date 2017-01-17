@@ -112,7 +112,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
     public function isGranted($attributes, $object = null)
     {
         if (!is_array($attributes)) {
-            $attributes = array($attributes);
+            $attributes = [$attributes];
         }
 
         if (1 === count($attributes)

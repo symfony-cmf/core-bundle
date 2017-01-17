@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware;
 
 /**
  * Fixtures class for test data.
@@ -39,11 +40,11 @@ class LoadHierarchyRouteData implements FixtureInterface
         $b = $a->addNode('b');
         $c = $b->addNode('c');
         $c->addMixin('phpcr:managed');
-        $c->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware');
+        $c->setProperty('phpcr:class', RouteAware::class);
         $b->addNode('d');
         $e = $b->addNode('e');
         $e->addMixin('phpcr:managed');
-        $e->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware');
+        $e->setProperty('phpcr:class', RouteAware::class);
         $f = $a->addNode('f');
         $g = $f->addNode('g');
         $g->addNode('h');

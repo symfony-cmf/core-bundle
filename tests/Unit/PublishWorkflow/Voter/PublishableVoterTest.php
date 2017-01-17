@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow\Voter;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -37,41 +38,41 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
 
     public function providePublishWorkflowChecker()
     {
-        return array(
-            array(
+        return [
+            [
                 'expected' => VoterInterface::ACCESS_GRANTED,
                 'isPublishable' => true,
                 'attributes' => PublishWorkflowChecker::VIEW_ATTRIBUTE,
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_DENIED,
                 'isPublishable' => false,
                 'attributes' => PublishWorkflowChecker::VIEW_ATTRIBUTE,
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_GRANTED,
                 'isPublishable' => true,
-                'attributes' => array(
+                'attributes' => [
                     PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE,
                     PublishWorkflowChecker::VIEW_ATTRIBUTE,
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_DENIED,
                 'isPublishable' => false,
                 'attributes' => PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE,
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_ABSTAIN,
                 'isPublishable' => true,
                 'attributes' => 'other',
-            ),
-            array(
+            ],
+            [
                 'expected' => VoterInterface::ACCESS_ABSTAIN,
                 'isPublishable' => true,
-                'attributes' => array(PublishWorkflowChecker::VIEW_ATTRIBUTE, 'other'),
-            ),
-        );
+                'attributes' => [PublishWorkflowChecker::VIEW_ATTRIBUTE, 'other'],
+            ],
+        ];
     }
 
     /**
@@ -82,7 +83,7 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
     public function testPublishWorkflowChecker($expected, $isPublishable, $attributes)
     {
         $attributes = (array) $attributes;
-        $doc = $this->getMock('Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface');
+        $doc = $this->createMock(PublishableReadInterface::class);
         $doc->expects($this->any())
             ->method('isPublishable')
             ->will($this->returnValue($isPublishable))
@@ -96,7 +97,7 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
         $result = $this->voter->vote(
             $this->token,
             $this,
-            array(PublishWorkflowChecker::VIEW_ATTRIBUTE)
+            [PublishWorkflowChecker::VIEW_ATTRIBUTE]
         );
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }

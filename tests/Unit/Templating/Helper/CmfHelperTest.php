@@ -11,8 +11,14 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Templating\Helper;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\UnitOfWork;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CmfHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,18 +33,11 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pwc = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+        $this->pwc = $this->createMock(AuthorizationCheckerInterface::class);
 
-        $this->managerRegistry = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getManager'))
-            ->getMock()
-        ;
+        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
 
-        $this->manager = $this->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $this->manager = $this->createMock(DocumentManager::class);
 
         $this->managerRegistry->expects($this->any())
             ->method('getManager')
@@ -46,10 +45,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->manager))
         ;
 
-        $this->uow = $this->getMockBuilder('Doctrine\ODM\PHPCR\UnitOfWork')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
+        $this->uow = $this->createMock(UnitOfWork::class);
 
         $this->manager->expects($this->any())
             ->method('getUnitOfWork')
@@ -153,7 +149,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testFindMany()
     {
-        $this->assertEquals(array(), $this->extension->findMany());
+        $this->assertEquals([], $this->extension->findMany());
     }
 
     public function testFindManyFilterClass()
@@ -166,8 +162,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($documentA, null, $documentA, $documentB))
         ;
 
-        $this->assertEquals(array(), $this->extension->findMany(array('/foo', 'bar'), false, false, null, 'Exception'));
-        $this->assertEquals(array($documentA, $documentB), $this->extension->findMany(array('/foo', 'bar'), false, false, null, 'stdClass'));
+        $this->assertEquals([], $this->extension->findMany(['/foo', 'bar'], false, false, null, 'Exception'));
+        $this->assertEquals([$documentA, $documentB], $this->extension->findMany(['/foo', 'bar'], false, false, null, 'stdClass'));
     }
 
     public function testFindManyIgnoreRole()
@@ -185,7 +181,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(false, true))
         ;
 
-        $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', '/bar'), false, false, true));
+        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', '/bar'], false, false, true));
     }
 
     public function testFindManyIgnoreWorkflow()
@@ -272,16 +268,16 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->extension->isLinkable('a'));
         $this->assertFalse($this->extension->isLinkable($this));
 
-        $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $content = $this->createMock(RouteReferrersReadInterface::class);
         $content
             ->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue(array()))
+            ->will($this->returnValue([]))
         ;
         $this->assertFalse($this->extension->isLinkable($content));
 
-        $route = $this->getMockBuilder('Symfony\Component\Routing\Route')->disableOriginalConstructor()->getMock();
-        $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $route = $this->createMock(Route::class);
+        $content = $this->createMock(RouteReferrersReadInterface::class);
         $content
             ->expects($this->once())
             ->method('getRoutes')
@@ -292,7 +288,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLocalesFor()
     {
-        $this->assertEquals(array(), $this->extension->getLocalesFor(null));
+        $this->assertEquals([], $this->extension->getLocalesFor(null));
 
         $document = new \stdClass();
 
@@ -302,7 +298,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(null, $document))
         ;
 
-        $this->assertEquals(array(), $this->extension->getLocalesFor('/foo'));
+        $this->assertEquals([], $this->extension->getLocalesFor('/foo'));
 
         $this->manager->expects($this->once())
             ->method('getLocalesFor')
@@ -376,7 +372,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLinkableChildren()
     {
-        $this->assertEquals(array(), $this->extension->getLinkableChildren(null));
+        $this->assertEquals([], $this->extension->getLinkableChildren(null));
 
         $this->markTestIncomplete('TODO: write test');
     }

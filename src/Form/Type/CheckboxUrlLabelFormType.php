@@ -54,10 +54,10 @@ class CheckboxUrlLabelFormType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $routes = $options['routes'];
-        $paths = array();
+        $paths = [];
         foreach ($routes as $key => $route) {
             $name = isset($route['name']) ? $route['name'] : null;
-            $parameters = isset($route['parameters']) ? $route['parameters'] : array();
+            $parameters = isset($route['parameters']) ? $route['parameters'] : [];
             $referenceType = isset($route['referenceType']) ? $route['referenceType'] : UrlGeneratorInterface::ABSOLUTE_PATH;
             $paths[$key] = $this->router->generate($name, $parameters, $referenceType);
         }
@@ -75,9 +75,9 @@ class CheckboxUrlLabelFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'routes' => array(),
-        ));
+        $resolver->setDefaults([
+            'routes' => [],
+        ]);
     }
 
     /**

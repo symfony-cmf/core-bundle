@@ -28,9 +28,9 @@ class NonTranslatableMetadataListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'loadClassMetadata',
-        );
+        ];
     }
 
     /**
@@ -51,7 +51,7 @@ class NonTranslatableMetadataListener implements EventSubscriber
         foreach ($meta->translatableFields as $field) {
             unset($meta->mappings[$field]['translated']);
         }
-        $meta->translatableFields = array();
+        $meta->translatableFields = [];
         if (null !== $meta->localeMapping) {
             unset($meta->mappings[$meta->localeMapping]);
             $meta->localeMapping = null;

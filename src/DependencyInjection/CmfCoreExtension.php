@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -38,9 +39,9 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
         $extensions = $container->getExtensions();
         if (isset($config['multilang']['locales'], $extensions['cmf_routing'])) {
-            $container->prependExtensionConfig('cmf_routing', array(
-                'dynamic' => array('locales' => $config['multilang']['locales']),
-            ));
+            $container->prependExtensionConfig('cmf_routing', [
+                'dynamic' => ['locales' => $config['multilang']['locales']],
+            ]);
         }
 
         if ($config['persistence']['phpcr']) {
@@ -48,90 +49,90 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $persistenceConfig = $config['persistence']['phpcr'];
 
             foreach ($container->getExtensions() as $name => $extension) {
-                $prependConfig = array();
+                $prependConfig = [];
 
                 switch ($name) {
                     case 'cmf_block':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'block_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_content':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_create':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
                         // if cmf_media is there, it will prepend the image path to its media_basepath
                         // setting.
                         if (!isset($extensions['cmf_media'])) {
-                            $prependConfig['persistence']['phpcr']['image'] = array(
+                            $prependConfig['persistence']['phpcr']['image'] = [
                                 'enabled' => false,
                                 'basepath' => $persistenceConfig['basepath'].'/media',
-                            );
+                            ];
                         }
 
                         break;
                     case 'cmf_media':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'media_basepath' => $persistenceConfig['basepath'].'/media',
                                     'manager_name' => $persistenceConfig['manager_name'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_menu':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'content_basepath' => $persistenceConfig['basepath'].'/content',
                                     'menu_basepath' => $persistenceConfig['basepath'].'/menu',
                                     'manager_name' => $persistenceConfig['manager_name'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_routing':
-                        $routePaths = array($persistenceConfig['basepath'].'/routes');
-                        $prependConfig = array(
-                            'dynamic' => array(
+                        $routePaths = [$persistenceConfig['basepath'].'/routes'];
+                        $prependConfig = [
+                            'dynamic' => [
                                 'enabled' => true,
-                                'persistence' => array(
-                                    'phpcr' => array(
+                                'persistence' => [
+                                    'phpcr' => [
                                         'enabled' => $persistenceConfig['enabled'],
                                         'content_basepath' => $persistenceConfig['basepath'].'/content',
                                         'route_basepaths' => $routePaths,
                                         'manager_name' => $persistenceConfig['manager_name'],
-                                    ),
-                                ),
-                            ),
-                        );
+                                    ],
+                                ],
+                            ],
+                        ];
 
                         if (isset($bundles['CmfContentBundle'])) {
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
@@ -139,63 +140,63 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
                         break;
                     case 'cmf_routing_auto':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'route_basepath' => $persistenceConfig['basepath'].'/routes',
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_search':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'search_basepath' => $persistenceConfig['basepath'].'/content',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                     'manager_registry' => $persistenceConfig['manager_registry'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
                         if (!empty($persistenceConfig['translation_strategy'])) {
                             $prependConfig['persistence']['phpcr']['translation_strategy'] = $persistenceConfig['translation_strategy'];
                         }
 
                         break;
                     case 'cmf_simple_cms':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
                                     'basepath' => $persistenceConfig['basepath'].'/simple',
                                     'manager_name' => $persistenceConfig['manager_name'],
                                     'manager_registry' => $persistenceConfig['manager_registry'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_tree_browser':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                     case 'cmf_seo':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'phpcr' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'phpcr' => [
                                     'enabled' => $persistenceConfig['enabled'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
 
                         break;
                 }
@@ -211,21 +212,21 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $persistenceConfig = $config['persistence']['orm'];
 
             foreach ($container->getExtensions() as $name => $extension) {
-                $prependConfig = array();
+                $prependConfig = [];
 
                 switch ($name) {
                     case 'cmf_routing':
-                        $prependConfig = array(
-                            'dynamic' => array(
+                        $prependConfig = [
+                            'dynamic' => [
                                 'enabled' => true,
-                                'persistence' => array(
-                                    'orm' => array(
+                                'persistence' => [
+                                    'orm' => [
                                         'enabled' => $persistenceConfig['enabled'],
                                         'manager_name' => $persistenceConfig['manager_name'],
-                                    ),
-                                ),
-                            ),
-                        );
+                                    ],
+                                ],
+                            ],
+                        ];
 
                         if (isset($bundles['CmfContentBundle'])) {
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
@@ -233,13 +234,13 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         break;
 
                     case 'cmf_seo':
-                        $prependConfig = array(
-                            'persistence' => array(
-                                'orm' => array(
+                        $prependConfig = [
+                            'persistence' => [
+                                'orm' => [
                                     'enabled' => $persistenceConfig['enabled'],
-                                ),
-                            ),
-                        );
+                                ],
+                            ],
+                        ];
                         break;
                 }
 
@@ -265,10 +266,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $container->setParameter($this->getAlias().'.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
 
             $templatingHelper = $container->getDefinition($this->getAlias().'.templating.helper');
-            $templatingHelper->addMethodCall('setDoctrineRegistry', array(
+            $templatingHelper->addMethodCall('setDoctrineRegistry', [
                 new Reference($config['persistence']['phpcr']['manager_registry']),
                 '%cmf_core.persistence.phpcr.manager_name%',
-            ));
+            ]);
         }
         if ($config['publish_workflow']['enabled']) {
             $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
@@ -306,7 +307,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             // if there is twig, register our form type with twig
             if ($container->hasParameter('twig.form.resources')) {
                 $resources = $container->getParameter('twig.form.resources');
-                $container->setParameter('twig.form.resources', array_merge($resources, array('CmfCoreBundle:Form:checkbox_url_label_form_type.html.twig')));
+                $container->setParameter('twig.form.resources', array_merge($resources, ['CmfCoreBundle:Form:checkbox_url_label_form_type.html.twig']));
             }
         }
     }
@@ -327,8 +328,11 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
         if (!$config['request_listener']) {
             $container->removeDefinition($this->getAlias().'.publish_workflow.request_listener');
-        } elseif (!class_exists('Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter')) {
-            throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter" is available.');
+        } elseif (!class_exists(DynamicRouter::class)) {
+            throw new InvalidConfigurationException(sprintf(
+                'The "publish_workflow.request_listener" may not be enabled unless "%s" is available.',
+                DynamicRouter::class
+            ));
         }
 
         $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);
