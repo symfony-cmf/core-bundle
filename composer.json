@@ -24,7 +24,7 @@
         "doctrine/dbal": "2.5.*",
         "doctrine/phpcr-odm": "^1.0|^2.0"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "rc",
     "prefer-stable": true,
     "suggest": {
         "symfony/twig-bundle": "To get access to the CMF twig extension (^2.1)",
