@@ -11,16 +11,16 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
-use PHPCR\Util\PathHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Translation\MissingTranslationException;
-use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Templating\Helper\Helper;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
+use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Templating\Helper\Helper;
 
 /**
  * Provides CMF helper functions.

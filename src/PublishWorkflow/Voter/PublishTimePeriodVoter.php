@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 
 /**
  * Workflow voter for the PublishTimePeriodReadInterface.

@@ -11,11 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\Content;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 /**
  * Fixtures class for test data.
