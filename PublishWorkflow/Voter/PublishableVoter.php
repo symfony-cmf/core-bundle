@@ -44,11 +44,11 @@ class PublishableVoter implements VoterInterface
     /**
      * {@inheritdoc}
      *
-     * @param PublishableReadInterface $object
+     * @param PublishableReadInterface $subject
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        if (!is_object($subject) || !$this->supportsClass(get_class($subject))) {
             return self::ACCESS_ABSTAIN;
         }
 
@@ -61,7 +61,7 @@ class PublishableVoter implements VoterInterface
                 $decision = self::ACCESS_ABSTAIN;
                 continue;
             }
-            if (!$object->isPublishable()) {
+            if (!$subject->isPublishable()) {
                 return self::ACCESS_DENIED;
             }
         }

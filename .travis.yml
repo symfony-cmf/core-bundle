@@ -16,7 +16,7 @@ cache:
 
 env:
   matrix: SYMFONY_VERSION=2.8.*
-  global: SYMFONY_DEPRECATIONS_HELPER=7
+  global: SYMFONY_DEPRECATIONS_HELPER=weak
 
 matrix:
   include:

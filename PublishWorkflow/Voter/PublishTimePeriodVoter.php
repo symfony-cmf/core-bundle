@@ -66,16 +66,16 @@ class PublishTimePeriodVoter implements VoterInterface
     /**
      * {@inheritdoc}
      *
-     * @param PublishTimePeriodReadInterface $object
+     * @param PublishTimePeriodReadInterface $subject
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        if (!is_object($subject) || !$this->supportsClass(get_class($subject))) {
             return self::ACCESS_ABSTAIN;
         }
 
-        $startDate = $object->getPublishStartDate();
-        $endDate = $object->getPublishEndDate();
+        $startDate = $subject->getPublishStartDate();
+        $endDate = $subject->getPublishEndDate();
 
         $decision = self::ACCESS_GRANTED;
         foreach ($attributes as $attribute) {
