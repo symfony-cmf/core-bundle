@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.0-RC2
+---------
+
+ * **2017-01-29**: Persistence configuration is no longer prepended to the
+   CmfTreeBrowserBundle as these options have been removed.
+ * **2017-01-29**: Fixed security voters to allow non-object subjects.
+
 2.0.0-RC1
 ---------
 
