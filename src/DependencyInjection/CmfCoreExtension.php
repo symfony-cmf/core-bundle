@@ -179,16 +179,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         ];
 
                         break;
-                    case 'cmf_tree_browser':
-                        $prependConfig = [
-                            'persistence' => [
-                                'phpcr' => [
-                                    'enabled' => $persistenceConfig['enabled'],
-                                ],
-                            ],
-                        ];
-
-                        break;
                     case 'cmf_seo':
                         $prependConfig = [
                             'persistence' => [
