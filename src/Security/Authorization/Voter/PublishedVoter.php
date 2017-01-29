@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 
 /**
  * This is a security voter registered with the Symfony security system that

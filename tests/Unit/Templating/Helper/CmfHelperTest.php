@@ -198,7 +198,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
         ;
 
-        $this->assertEquals(array($documentA, $documentB), $this->extension->findMany(array('/foo', '/bar'), false, false, null));
+        $this->assertEquals([$documentA, $documentB], $this->extension->findMany(['/foo', '/bar'], false, false, null));
     }
 
     public function testFindManyLimitOffset()
@@ -211,9 +211,9 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($documentA, $documentB, $documentA, $documentB, $documentA, $documentB))
         ;
 
-        $this->assertEquals(array($documentA), $this->extension->findMany(array('/foo', 'bar'), 1, false, null));
-        $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', 'bar'), false, 1, null));
-        $this->assertEquals(array($documentB), $this->extension->findMany(array('/foo', 'bar'), 1, 1, null));
+        $this->assertEquals([$documentA], $this->extension->findMany(['/foo', 'bar'], 1, false, null));
+        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', 'bar'], false, 1, null));
+        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', 'bar'], 1, 1, null));
     }
 
     /**
@@ -232,7 +232,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($documentA))
         ;
 
-        $extension->findMany(array('/foo', '/bar'), false, false);
+        $extension->findMany(['/foo', '/bar'], false, false);
     }
 
     public function testIsPublished()
@@ -281,7 +281,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $content
             ->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue(array($route)))
+            ->will($this->returnValue([$route]))
         ;
         $this->assertTrue($this->extension->isLinkable($content));
     }
@@ -303,10 +303,10 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
         $this->manager->expects($this->once())
             ->method('getLocalesFor')
             ->with($document)
-            ->will($this->returnValue(array('en', 'de')))
+            ->will($this->returnValue(['en', 'de']))
         ;
 
-        $this->assertEquals(array('en', 'de'), $this->extension->getLocalesFor('/foo'));
+        $this->assertEquals(['en', 'de'], $this->extension->getLocalesFor('/foo'));
     }
 
     public function testGetLocalesForMissingTranslationException()

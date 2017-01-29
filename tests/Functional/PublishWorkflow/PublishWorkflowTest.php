@@ -14,10 +14,10 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\PublishWorkflow;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
+use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class PublishWorkflowTest extends BaseTestCase
 {

@@ -104,7 +104,7 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testNonClassSubject()
     {
-        $result = $this->voter->vote($this->token, array(1, 2, 3), array(PublishWorkflowChecker::VIEW_ATTRIBUTE));
+        $result = $this->voter->vote($this->token, [1, 2, 3], [PublishWorkflowChecker::VIEW_ATTRIBUTE]);
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 }

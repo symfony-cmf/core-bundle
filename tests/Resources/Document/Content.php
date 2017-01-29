@@ -11,8 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document;
 
-use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 /**
  * @PHPCRODM\Document(referenceable=true)
