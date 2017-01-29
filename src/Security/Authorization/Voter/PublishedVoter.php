@@ -57,11 +57,11 @@ class PublishedVoter implements VoterInterface
     /**
      * {@inheritdoc}
      *
-     * @param object $object
+     * @param object $subject
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        if (!is_object($subject) || !$this->supportsClass(get_class($subject))) {
             return self::ACCESS_ABSTAIN;
         }
         foreach ($attributes as $attribute) {
@@ -70,7 +70,7 @@ class PublishedVoter implements VoterInterface
             }
         }
 
-        if ($this->publishWorkflowChecker->isGranted($attributes, $object)) {
+        if ($this->publishWorkflowChecker->isGranted($attributes, $subject)) {
             return self::ACCESS_GRANTED;
         }
 
