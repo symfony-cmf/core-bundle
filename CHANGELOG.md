@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.0-RC3
+---------
+
+ * **2017-02-10**: `content_basepath` is now prepended on the CmfSeoBundle.
+ * **2017-02-10**: `content_basepath` is no longer prepended on the
+   CmfRoutingBundle, as the setting is removed.
+
 2.0.0-RC2
 ---------
 

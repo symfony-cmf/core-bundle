@@ -49,8 +49,7 @@ UPGRADE FROM 1.x to 2.0
                        - Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface
    ```
 
-Slugifier
----------
+### Slugifier
 
  * The `Slugifier` namespace is removed, use the `symfony-cmf/slugifier-api`
    package and its interfaces instead.
