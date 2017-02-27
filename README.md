@@ -8,7 +8,7 @@
 This bundle is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/)
 and licensed under the [MIT License](LICENSE).
 
-The CoreBundle for the Symfony2 content management framework provides common functionality,
+The CoreBundle for the Symfony content management framework provides common functionality,
 helpers and utilities for the other CMF bundles. The major features are a publish workflow,
 a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional
 translated content.
