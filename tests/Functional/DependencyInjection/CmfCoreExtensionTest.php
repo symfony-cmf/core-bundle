@@ -17,6 +17,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CmfCoreExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ContainerBuilder
+     */
     private $container;
 
     protected function setUp()
