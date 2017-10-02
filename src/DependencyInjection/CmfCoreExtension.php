@@ -221,6 +221,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         if (isset($bundles['CmfContentBundle'])) {
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
+
                         break;
 
                     case 'cmf_seo':
@@ -231,6 +232,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ],
                             ],
                         ];
+
                         break;
                 }
 

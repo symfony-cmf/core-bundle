@@ -57,6 +57,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
     protected function assertMatchesXpath($html, $expression, $count = 1)
     {
         $dom = new \DomDocument('UTF-8');
+
         try {
             // Wrap in <root> node so we can load HTML with multiple tags at
             // the top level
