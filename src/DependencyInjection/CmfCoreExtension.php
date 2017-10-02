@@ -263,7 +263,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                 '%cmf_core.persistence.phpcr.manager_name%',
             ]);
         }
-        if ($config['publish_workflow']['enabled']) {
+        if ($this->isConfigEnabled($container, $config['publish_workflow'])) {
             $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
         } else {
             $loader->load('no-publish-workflow.xml');
