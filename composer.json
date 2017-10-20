@@ -20,11 +20,10 @@
         "symfony/phpunit-bridge": "^3.2",
         "mockery/mockery": "^0.9.4",
         "symfony-cmf/routing-bundle": "^2.0",
-        "symfony-cmf/testing": "^2.0",
+        "symfony-cmf/testing": "^2.1@dev",
         "doctrine/dbal": "2.5.*",
         "doctrine/phpcr-odm": "^1.0"
     },
-    "prefer-stable": true,
     "suggest": {
         "symfony/twig-bundle": "To get access to the CMF twig extension (^2.1)",
         "doctrine/phpcr-bundle": "To be able to use the CMF twig extension (^1.0)",
@@ -48,5 +47,6 @@
         "branch-alias": {
             "dev-master": "2.1-dev"
         }
-    }
+    },
+    "prefer-stable": true
 }

@@ -204,7 +204,7 @@ class CmfHelper extends Helper
         if (empty($document)
             || (false === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $document))
             || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
-            || (null != $class && !($document instanceof $class))
+            || (null !== $class && !($document instanceof $class))
         ) {
             return;
         }
