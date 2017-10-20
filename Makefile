@@ -19,7 +19,7 @@ VERSION=dev-master
 ifdef BRANCH
 	VERSION=dev-${BRANCH}
 endif
-PACKAGE=core-bundle
+PACKAGE=symfony-cmf/core-bundle
 
 list:
 	@echo 'test:                    will run all tests'
