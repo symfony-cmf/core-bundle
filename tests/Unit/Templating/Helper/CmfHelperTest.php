@@ -73,7 +73,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/foo/bar'))
         ;
 
-        $this->assertEquals(false, $this->extension->getNodeName($document));
+        $this->assertFalse($this->extension->getNodeName($document));
         $this->assertEquals('bar', $this->extension->getNodeName($document));
     }
 
