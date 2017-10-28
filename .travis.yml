@@ -30,7 +30,7 @@ env:
   global:
     - SYMFONY_DEPRECATIONS_HELPER=0
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
-    - KERNEL_CLASS=Symfony\Cmf\Bundle\CoreBundle\\ests\App
+    - KERNEL_CLASS=Symfony\Cmf\Bundle\CoreBundle\Tests\App
     - SYMFONY_PHPUNIT_VERSION=5.7
     - TEST_INSTALLATION=false
 
