@@ -24,6 +24,7 @@ ifdef BRANCH
 	VERSION=dev-${BRANCH}
 endif
 PACKAGE=symfony-cmf/core-bundle
+export KERNEL_CLASS=Symfony\Cmf\Bundle\CoreBundle\\ests\App
 list:
 	@echo 'test:                    will run all tests'
 	@echo 'unit_tests:               will run unit tests only'
