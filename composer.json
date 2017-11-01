@@ -41,7 +41,7 @@
     "autoload-dev": {
         "psr-4": {
             "Symfony\\Cmf\\Bundle\\CoreBundle\\Tests\\": "tests/",
-            "Symfony\\Cmf\\Bundle\\CoreBundle\\Tests\\App": "tests/Resources/App"
+            "Symfony\\Cmf\\Bundle\\CoreBundle\\Tests\\App\\": "tests/Resources/App"
         }
     },
     "extra": {
@@ -49,5 +49,6 @@
             "dev-master": "2.1-dev"
         }
     },
+    "minimum-stability":"dev",
     "prefer-stable": true
 }
