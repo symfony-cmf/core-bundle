@@ -331,6 +331,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $loader->load('publish-workflow.xml');
 
         $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);
+        $container->getAlias('cmf_core.publish_workflow.checker')->setPublic(true);
 
         if (false === $config['request_listener']
             || ('auto' === $config['request_listener'] && !class_exists(DynamicRouter::class))

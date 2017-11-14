@@ -36,6 +36,7 @@ class CmfCoreExtensionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->container->setAlias('app.workflow_checker', 'cmf_core.publish_workflow.checker');
+        $this->container->getAlias('app.workflow_checker')->setPublic(true);
 
         $this->container->compile();
 
