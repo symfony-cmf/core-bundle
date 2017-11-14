@@ -13,18 +13,14 @@
 # file that was distributed with this source code.                         #
 ############################################################################
 
-ifeq ("symfony-cmf/core-bundle", "symfony-cmf/testing")
-TESTING_SCRIPTS_DIR=bin
-else
 TESTING_SCRIPTS_DIR=vendor/symfony-cmf/testing/bin
-endif
 CONSOLE=${TESTING_SCRIPTS_DIR}/console
 VERSION=dev-master
 ifdef BRANCH
 	VERSION=dev-${BRANCH}
 endif
 PACKAGE=symfony-cmf/core-bundle
-export KERNEL_CLASS=Symfony\Cmf\Bundle\CoreBundle\Tests\App\AppKernel
+export KERNEL_CLASS=Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
 list:
 	@echo 'test:                    will run all tests'
 	@echo 'unit_tests:               will run unit tests only'
