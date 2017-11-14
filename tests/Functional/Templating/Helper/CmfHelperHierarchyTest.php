@@ -13,16 +13,15 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
-use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture\LoadHierarchyRouteData;
-use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture\LoadHierarchyRouteData;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document\RouteAware;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class CmfHelperHierarchyTest extends BaseTestCase
 {
     /**
-     * @var SecurityContextInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $publishWorkflowChecker;
 

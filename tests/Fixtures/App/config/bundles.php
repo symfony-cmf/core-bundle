@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle;
+use Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle;
 
-$collection = new RouteCollection();
-$collection->addCollection(
-    $loader->import(__DIR__.'/routing.yml')
-);
-
-return $collection;
+return [
+    CmfRoutingBundle::class => ['phpcr' => true],
+    CmfCoreBundle::class => ['phpcr' => true],
+];
