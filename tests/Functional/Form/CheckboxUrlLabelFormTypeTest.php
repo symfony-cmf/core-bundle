@@ -13,11 +13,11 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Twig\RuntimeLoader\ContainerRuntimeLoader;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture\LoadRouteData;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\RuntimeLoader\ContainerRuntimeLoader;
 
 class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 {
