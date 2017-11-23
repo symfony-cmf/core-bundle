@@ -12,8 +12,6 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 
 use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Twig\RuntimeLoader\ContainerRuntimeLoader;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture\LoadRouteData;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
@@ -29,9 +27,11 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
     public function testFormTwigTemplate()
     {
         $twig = $this->getContainer()->get('twig');
-        if (class_exists(ContainerRuntimeLoader::class)) {
+        if (class_exists('Symfony\Component\Form\FormRenderer')) {
+            $renderer = $twig->getRuntime('Symfony\Component\Form\FormRenderer');
+        } elseif (class_exists('Symfony\Bridge\Twig\Form\TwigRenderer')) {
             // TwigBridge 3.2+
-            $renderer = $twig->getRuntime(TwigRenderer::class);
+            $renderer = $twig->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer');
         } else {
             $twig25 = !method_exists($twig, 'getRuntime');
             $renderer = $twig->getExtension($twig25 ? 'form' : FormExtension::class)->renderer;
