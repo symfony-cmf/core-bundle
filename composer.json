@@ -2,7 +2,9 @@
     "name": "symfony-cmf/core-bundle",
     "type": "symfony-bundle",
     "description": "Symfony CMF Core Bundle",
-    "keywords": ["Symfony CMF"],
+    "keywords": [
+        "Symfony CMF"
+    ],
     "homepage": "http://cmf.symfony.com",
     "license": "MIT",
     "authors": [
@@ -12,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^5.6|^7.0",
+        "php": "^7.0",
         "symfony/framework-bundle": "^2.8|^3.3"
     },
     "require-dev": {
@@ -55,6 +57,6 @@
             "dev-master": "2.1-dev"
         }
     },
-    "minimum-stability":"dev",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
