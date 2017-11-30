@@ -23,7 +23,7 @@ a twig extension and php templating helper to walk PHPCR-ODM trees and support f
 ## Requirements
 
 * PHP 7.1
-* Symfony 2.8 / 3.3 / ^3.4
+* Symfony 2.8 / 3.3 / 3.4
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
