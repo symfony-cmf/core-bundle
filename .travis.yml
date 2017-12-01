@@ -41,7 +41,7 @@ matrix:
     - php: 7.1
       env: DEPS=dev SYMFONY_VERSION=3.4.*
     - php: 7.1
-      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION=2.8.* SYMFONY_DEPRECATIONS_HELPER=weak
+      env: DEPS=dev COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION=2.8.* SYMFONY_DEPRECATIONS_HELPER=weak
     - php: 7.1
       env: DEPS=dev SYMFONY_VERSION=3.3.*
     - env: TEST_INSTALLATION=true
