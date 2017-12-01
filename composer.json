@@ -15,13 +15,14 @@
     ],
     "require": {
         "php": "^7.1",
-        "symfony/framework-bundle": "^2.8 || ^3.3"
+        "symfony/framework-bundle": "^2.8 || ^3.3",
+        "symfony/symfony": "^2.8"
     },
     "require-dev": {
         "symfony/security-bundle": "^2.8 || ^3.3",
         "symfony/phpunit-bridge": "^3.3",
         "mockery/mockery": "^0.9.4",
-        "symfony-cmf/routing-bundle": "^2.0",
+        "symfony-cmf/routing-bundle": "^1.4 || ^2.0",
         "symfony-cmf/testing": "^2.1@dev",
         "doctrine/dbal": "2.5.*",
         "doctrine/phpcr-odm": "^1.4|^2.0 ",
