@@ -100,4 +100,14 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }
+
+    public function testNullObject()
+    {
+        $result = $this->voter->vote(
+            $this->token,
+            null,
+            array()
+        );
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
+    }
 }
