@@ -65,10 +65,8 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             $runtime->setEnvironment($twig);
             return $runtime;
         }
-        $runtime = $twig->getRuntime(FormRenderer::class);
-        $runtime->setEnvironment($twig);
 
-        return $runtime;
+        return $twig->getRuntime(FormRenderer::class);
     }
 
     protected function assertMatchesXpath($html, $expression, $count = 1)
