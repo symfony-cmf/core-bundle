@@ -23,7 +23,7 @@ a twig extension and php templating helper to walk PHPCR-ODM trees and support f
 ## Requirements
 
 * PHP 7.1
-* Symfony 2.8 / 3.3 / 3.4
+* Symfony 2.8 / 3.3 / 3.4 / 4.0
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
@@ -59,11 +59,11 @@ Thanks to
 This package is available under the [MIT license](src/Resources/meta/LICENSE).
 
 [travis_legacy_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=master
-[travis_legacy_link]: https://travis-ci.org/symfony-cmf/core-bundle
+[travis_legacy_link]: https://travis-ci.org/symfony-cmf/symfony-cmf/core-bundle
 [travis_stable_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=master
-[travis_stable_link]: https://travis-ci.org/symfony-cmf/core-bundle
+[travis_stable_link]: https://travis-ci.org/symfony-cmf/symfony-cmf/core-bundle
 [travis_unstable_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=master
-[travis_unstable_link]: https://travis-ci.org/symfony-cmf/core-bundle
+[travis_unstable_link]: https://travis-ci.org/symfony-cmf/symfony-cmf/core-bundle
 
 [coveralls_legacy_badge]: https://coveralls.io/repos/github/symfony-cmf/core-bundle/badge.svg?branch=master
 [coveralls_legacy_link]: https://coveralls.io/github/symfony-cmf/core-bundle?branch=master
