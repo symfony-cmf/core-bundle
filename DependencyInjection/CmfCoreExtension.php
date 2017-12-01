@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2017 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -238,6 +238,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         if (isset($bundles['CmfContentBundle'])) {
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
+
                         break;
 
                     case 'cmf_seo':
@@ -251,6 +252,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 'enabled' => $persistenceConfig['use_sonata_admin'],
                             ),
                         );
+
                         break;
                 }
 
