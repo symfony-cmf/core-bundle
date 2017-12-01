@@ -81,7 +81,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $document = new \stdClass();
 
-        $this->assertEquals(false, $this->extension->getParentPath($document));
+        $this->assertFalse($this->extension->getParentPath($document));
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
@@ -96,7 +96,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $document = new \stdClass();
 
-        $this->assertEquals(null, $this->extension->getPath($document));
+        $this->assertNull($this->extension->getPath($document));
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
@@ -318,7 +318,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $parent = new \stdClass();
 
-        $this->assertEquals(null, $this->extension->getChild($parent, 'bar'));
+        $this->assertNull($this->extension->getChild($parent, 'bar'));
 
         $child = new \stdClass();
 
