@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2017 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -59,6 +59,7 @@ class PublishableVoter implements VoterInterface
                 // now we only abstain or deny if we find a supported attribute
                 // and the content is not publishable
                 $decision = self::ACCESS_ABSTAIN;
+
                 continue;
             }
             if (!$subject->isPublishable()) {
