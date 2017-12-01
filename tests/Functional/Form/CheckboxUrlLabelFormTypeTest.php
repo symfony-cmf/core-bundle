@@ -52,7 +52,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
     private function getFormRenderer()
     {
         $twig = $this->getContainer()->get('twig');
-        
+
         // BC for Symfony < 3.2 where this runtime does not exists
         if (!method_exists(AppVariable::class, 'getToken')) {
             $extension = $twig->getExtension(FormExtension::class);
@@ -65,7 +65,6 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             $runtime->setEnvironment($twig);
             return $runtime;
         }
-
         return $twig->getRuntime(FormRenderer::class);
     }
 
