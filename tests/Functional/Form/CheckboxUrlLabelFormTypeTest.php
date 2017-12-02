@@ -15,10 +15,10 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Component\Form\FormRenderer;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture\LoadRouteData;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CheckboxUrlLabelFormTypeTest extends BaseTestCase
