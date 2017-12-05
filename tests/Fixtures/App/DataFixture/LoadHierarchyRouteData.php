@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\RouteAware;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document\RouteAware;
 
 /**
  * Fixtures class for test data.

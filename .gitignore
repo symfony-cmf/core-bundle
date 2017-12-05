@@ -1,5 +1,3 @@
-tests/Resources/app/cache
-tests/Resources/app/logs
+tests/Fixtures/App/var/
 composer.lock
-composer.phar
 vendor

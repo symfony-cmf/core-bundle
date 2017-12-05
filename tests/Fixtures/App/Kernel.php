@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App;
+
 use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class AppKernel extends TestKernel
+class Kernel extends TestKernel
 {
     public function configure()
     {
         $this->requireBundleSets(['default', 'phpcr_odm']);
 
-        $this->addBundles([
-            new \Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
-            new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-        ]);
+        $this->registerConfiguredBundles();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\DataFixture;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
-use Symfony\Cmf\Bundle\CoreBundle\Tests\Resources\Document\Content;
+use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document\Content;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 /**
