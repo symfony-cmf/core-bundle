@@ -21,10 +21,15 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class PublishWorkflowCheckerTest extends \PHPUnit_Framework_TestCase
 {
     private $publishWorkflowChecker;
+
     private $role;
+
     private $document;
+
     private $accessDecisionManager;
+
     private $authorizationChecker;
+
     private $tokenStorage;
 
     public function setUp()

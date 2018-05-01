@@ -17,6 +17,7 @@ use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 class CmfExtensionTest extends \PHPUnit_Framework_TestCase
 {
     private $cmfHelper;
+
     /**
      * @var \Twig_Environment
      */
