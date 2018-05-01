@@ -23,9 +23,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class CmfHelperTest extends \PHPUnit_Framework_TestCase
 {
     private $pwc;
+
     private $managerRegistry;
+
     private $manager;
+
     private $uow;
+
     /**
      * @var CmfHelper
      */
