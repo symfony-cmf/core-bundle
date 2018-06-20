@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.0
+-----
+
+* Symfony 4 support
+* Removed PHP 5.6 and 7.0 support, removed support for Symfony 3.0 - 3.2
+
 2.0.0
 -----
 

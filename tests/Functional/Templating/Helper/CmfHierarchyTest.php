@@ -12,13 +12,13 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Templating\Helper;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
-use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture\LoadHierarchyRouteData;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document\RouteAware;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class CmfHelperHierarchyTest extends BaseTestCase
+class CmfHierarchyTest extends BaseTestCase
 {
     /**
      * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -26,7 +26,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
     private $publishWorkflowChecker;
 
     /**
-     * @var CmfHelper
+     * @var Cmf
      */
     private $helper;
 
@@ -41,7 +41,7 @@ class CmfHelperHierarchyTest extends BaseTestCase
             ->will($this->returnValue(true))
         ;
 
-        $this->helper = new CmfHelper($this->publishWorkflowChecker);
+        $this->helper = new Cmf($this->publishWorkflowChecker);
         $this->helper->setDoctrineRegistry($dbManager->getRegistry(), 'default');
     }
 

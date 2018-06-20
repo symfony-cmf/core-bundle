@@ -11,11 +11,14 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig\Extension;
 
-use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
 
 class CmfExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Cmf|\PHPUnit_Framework_MockObject_MockObject
+     */
     private $cmfHelper;
 
     /**
@@ -30,7 +33,7 @@ class CmfExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->cmfHelper = $this->createMock(CmfHelper::class);
+        $this->cmfHelper = $this->createMock(Cmf::class);
 
         $this->cmfExtension = new CmfExtension($this->cmfHelper);
         $this->env = new \Twig_Environment(new \Twig_Loader_Array([]));
