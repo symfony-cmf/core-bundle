@@ -56,7 +56,6 @@ class CheckboxUrlLabelFormTypeTest extends TypeTestCase
         $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
     }
 
-
     public function testContentPathsAreSet()
     {
         $checkboxUrlLabelForm = $this->factory->create(CheckboxUrlLabelFormType::class, null, [
