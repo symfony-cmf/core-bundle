@@ -12,6 +12,8 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Form;
 
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Routing\RequestContext;
@@ -43,6 +45,18 @@ class Router implements RouterInterface
 
 class CheckboxUrlLabelFormTypeTest extends TypeTestCase
 {
+    /**
+     * This one can go back into parent, when dropping SF 2.8 support.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
+    }
+
+
     public function testContentPathsAreSet()
     {
         $checkboxUrlLabelForm = $this->factory->create(CheckboxUrlLabelFormType::class, null, [
