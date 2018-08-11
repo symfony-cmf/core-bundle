@@ -11,15 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Templating\Helper;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Doctrine\ODM\PHPCR\Translation\MissingTranslationException;
-use PHPCR\Util\PathHelper;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -30,63 +21,13 @@ use Symfony\Component\Templating\Helper\Helper;
 class CmfHelper extends Helper
 {
     /**
-     * @var ManagerRegistry
+     * @var Cmf
      */
-    private $doctrineRegistry;
+    private $cmf;
 
-    /**
-     * @var string
-     */
-    private $doctrineManagerName;
-
-    /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $publishWorkflowChecker;
-
-    /**
-     * @param AuthorizationCheckerInterface $publishWorkflowChecker
-     */
-    public function __construct(AuthorizationCheckerInterface $publishWorkflowChecker = null)
+    public function __construct(Cmf $cmf)
     {
-        $this->publishWorkflowChecker = $publishWorkflowChecker;
-    }
-
-    /**
-     * Set the doctrine manager registry to fetch the object manager from.
-     *
-     * @param ManagerRegistry $registry
-     * @param string|null     $managerName Manager name if not the default
-     */
-    public function setDoctrineRegistry($registry, $managerName = null)
-    {
-        if ($this->doctrineRegistry) {
-            throw new \LogicException('Do not call this setter repeatedly or after using constructor injection');
-        }
-
-        $this->doctrineRegistry = $registry;
-        $this->doctrineManagerName = $managerName;
-    }
-
-    /**
-     * @return DocumentManager
-     */
-    protected function getDm()
-    {
-        if (!$this->dm) {
-            if (!$this->doctrineRegistry) {
-                throw new \RuntimeException('Doctrine is not available.');
-            }
-
-            $this->dm = $this->doctrineRegistry->getManager($this->doctrineManagerName);
-        }
-
-        return $this->dm;
+        $this->cmf = $cmf;
     }
 
     /**
@@ -106,12 +47,7 @@ class CmfHelper extends Helper
      */
     public function getNodeName($document)
     {
-        $path = $this->getPath($document);
-        if (false === $path) {
-            return false;
-        }
-
-        return PathHelper::getNodeName($path);
+        return $this->cmf->getNodeName($document);
     }
 
     /**
@@ -121,12 +57,7 @@ class CmfHelper extends Helper
      */
     public function getParentPath($document)
     {
-        $path = $this->getPath($document);
-        if (!$path) {
-            return false;
-        }
-
-        return PathHelper::getParentPath($path);
+        return $this->cmf->getParentPath($document);
     }
 
     /**
@@ -136,11 +67,7 @@ class CmfHelper extends Helper
      */
     public function getPath($document)
     {
-        try {
-            return $this->getDm()->getUnitOfWork()->getDocumentId($document);
-        } catch (\Exception $e) {
-            return false;
-        }
+        return $this->cmf->getPath($document);
     }
 
     /**
@@ -152,7 +79,7 @@ class CmfHelper extends Helper
      */
     public function find($path)
     {
-        return $this->getDm()->find(null, $path);
+        return $this->cmf->find($path);
     }
 
     /**
@@ -166,50 +93,7 @@ class CmfHelper extends Helper
      */
     public function findTranslation($pathOrDocument, $locale, $fallback = true)
     {
-        if (is_object($pathOrDocument)) {
-            $path = $this->getDm()->getUnitOfWork()->getDocumentId($pathOrDocument);
-        } else {
-            $path = $pathOrDocument;
-        }
-
-        return $this->getDm()->findTranslation(null, $path, $locale, $fallback);
-    }
-
-    /**
-     * Gets a document instance and validate if its eligible.
-     *
-     * @param string|object $document   the id of a document or the document
-     *                                  object itself
-     * @param bool|null     $ignoreRole whether the bypass role should be
-     *                                  ignored (leading to only show published content regardless of the
-     *                                  current user) or null to skip the published check completely
-     * @param null|string   $class      class name to filter on
-     *
-     * @return null|object
-     */
-    private function getDocument($document, $ignoreRole = false, $class = null)
-    {
-        if (is_string($document)) {
-            try {
-                $document = $this->getDm()->find(null, $document);
-            } catch (MissingTranslationException $e) {
-                return;
-            }
-        }
-
-        if (null !== $ignoreRole && null === $this->publishWorkflowChecker) {
-            throw new InvalidConfigurationException('You can not fetch only published documents when the publishWorkflowChecker is not set. Either enable the publish workflow or pass "ignoreRole = null" to skip publication checks.');
-        }
-
-        if (empty($document)
-            || (false === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $document))
-            || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
-            || (null !== $class && !($document instanceof $class))
-        ) {
-            return;
-        }
-
-        return $document;
+        return $this->cmf->findTranslation($pathOrDocument, $locale, $fallback);
     }
 
     /**
@@ -223,27 +107,7 @@ class CmfHelper extends Helper
      */
     public function findMany($paths = [], $limit = false, $offset = false, $ignoreRole = false, $class = null)
     {
-        if ($offset) {
-            $paths = array_slice($paths, $offset);
-        }
-
-        $result = [];
-        foreach ($paths as $path) {
-            $document = $this->getDocument($path, $ignoreRole, $class);
-            if (null === $document) {
-                continue;
-            }
-
-            $result[] = $document;
-            if (false !== $limit) {
-                --$limit;
-                if (!$limit) {
-                    break;
-                }
-            }
-        }
-
-        return $result;
+        return $this->cmf->findMany($paths, $limit, $offset, $ignoreRole, $class);
     }
 
     /**
@@ -258,15 +122,7 @@ class CmfHelper extends Helper
      */
     public function isPublished($document)
     {
-        if (null === $this->publishWorkflowChecker) {
-            throw new InvalidConfigurationException('You can not check for publication as the publish workflow is not enabled.');
-        }
-
-        if (empty($document)) {
-            return false;
-        }
-
-        return $this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document);
+        return $this->cmf->isPublished($document);
     }
 
     /**
@@ -279,21 +135,7 @@ class CmfHelper extends Helper
      */
     public function getLocalesFor($document, $includeFallbacks = false)
     {
-        if (is_string($document)) {
-            $document = $this->getDm()->find(null, $document);
-        }
-
-        if (empty($document)) {
-            return [];
-        }
-
-        try {
-            $locales = $this->getDm()->getLocalesFor($document, $includeFallbacks);
-        } catch (MissingTranslationException $e) {
-            $locales = [];
-        }
-
-        return $locales;
+        return $this->cmf->getLocalesFor($document, $includeFallbacks);
     }
 
     /**
@@ -306,15 +148,7 @@ class CmfHelper extends Helper
      */
     public function getChild($parent, $name)
     {
-        if (is_object($parent)) {
-            try {
-                $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
-            } catch (\Exception $e) {
-                return false;
-            }
-        }
-
-        return $this->getDm()->find(null, "$parent/$name");
+        return $this->cmf->getChild($parent, $name);
     }
 
     /**
@@ -334,55 +168,7 @@ class CmfHelper extends Helper
      */
     public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
     {
-        if (empty($parent)) {
-            return [];
-        }
-
-        if (is_object($parent)) {
-            $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
-        }
-        $node = $this->getDm()->getPhpcrSession()->getNode($parent);
-        $children = (array) $node->getNodeNames();
-        foreach ($children as $key => $child) {
-            // filter before fetching data already to save some traffic
-            if (0 === strpos($child, 'phpcr_locale:')) {
-                unset($children[$key]);
-
-                continue;
-            }
-            $children[$key] = "$parent/$child";
-        }
-        if ($offset) {
-            $key = array_search($offset, $children);
-            if (false === $key) {
-                return [];
-            }
-            $children = array_slice($children, $key);
-        }
-
-        $result = [];
-        foreach ($children as $name => $child) {
-            // if we requested all children above, we did not filter yet
-            if (0 === strpos($name, 'phpcr_locale:')) {
-                continue;
-            }
-
-            // $child is already a document, but this method also checks access
-            $child = $this->getDocument($child, $ignoreRole, $class);
-            if (null === $child) {
-                continue;
-            }
-
-            $result[] = $child;
-            if (false !== $limit) {
-                --$limit;
-                if (!$limit) {
-                    break;
-                }
-            }
-        }
-
-        return $result;
+        return $this->cmf->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
     }
 
     /**
@@ -406,14 +192,7 @@ class CmfHelper extends Helper
      */
     public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
     {
-        $children = $this->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
-        foreach ($children as $key => $value) {
-            if (!$this->isLinkable($value)) {
-                unset($children[$key]);
-            }
-        }
-
-        return $children;
+        return $this->cmf->getLinkableChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
     }
 
     /**
@@ -434,39 +213,7 @@ class CmfHelper extends Helper
      */
     public function isLinkable($document)
     {
-        return
-            $document instanceof Route
-            || ($document instanceof RouteReferrersReadInterface
-                && count($document->getRoutes()) > 0
-            )
-        ;
-    }
-
-    /**
-     * Gets the paths of children.
-     *
-     * @param string $path
-     * @param array  $children
-     * @param int    $depth
-     */
-    private function getChildrenPaths($path, array &$children, $depth)
-    {
-        if (null !== $depth && $depth < 1) {
-            return;
-        }
-
-        --$depth;
-
-        $node = $this->getDm()->getPhpcrSession()->getNode($path);
-        $names = (array) $node->getNodeNames();
-        foreach ($names as $name) {
-            if (0 === strpos($name, 'phpcr_locale:')) {
-                continue;
-            }
-
-            $children[] = $child = "$path/$name";
-            $this->getChildrenPaths($child, $children, $depth);
-        }
+        return $this->cmf->isLinkable($document);
     }
 
     /**
@@ -478,265 +225,7 @@ class CmfHelper extends Helper
      */
     public function getDescendants($parent, $depth = null)
     {
-        if (empty($parent)) {
-            return [];
-        }
-
-        $children = [];
-        if (is_object($parent)) {
-            $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
-        }
-        $this->getChildrenPaths($parent, $children, $depth);
-
-        return $children;
-    }
-
-    /**
-     * Check children for a possible following document.
-     *
-     * @param array       $childNames
-     * @param string      $path
-     * @param bool        $ignoreRole
-     * @param null|string $class
-     *
-     * @return null|object
-     */
-    private function checkChildren(array $childNames, $path, $ignoreRole = false, $class = null)
-    {
-        foreach ($childNames as $name) {
-            if (0 === strpos($name, 'phpcr_locale:')) {
-                continue;
-            }
-
-            $child = $this->getDocument(ltrim($path, '/')."/$name", $ignoreRole, $class);
-
-            if ($child) {
-                return $child;
-            }
-        }
-
-        return;
-    }
-
-    /**
-     * Traverse the depth to find previous documents.
-     *
-     * @param null|int    $depth
-     * @param int         $anchorDepth
-     * @param array       $childNames
-     * @param string      $path
-     * @param bool        $ignoreRole
-     * @param null|string $class
-     *
-     * @return null|object
-     */
-    private function traversePrevDepth($depth, $anchorDepth, array $childNames, $path, $ignoreRole, $class)
-    {
-        foreach ($childNames as $childName) {
-            $childPath = "$path/$childName";
-            $node = $this->getDm()->getPhpcrSession()->getNode($childPath);
-            if (null === $depth || PathHelper::getPathDepth($childPath) - $anchorDepth < $depth) {
-                $childNames = $node->getNodeNames()->getArrayCopy();
-                if (!empty($childNames)) {
-                    $childNames = array_reverse($childNames);
-                    $result = $this->traversePrevDepth($depth, $anchorDepth, $childNames, $childPath, $ignoreRole, $class);
-                    if ($result) {
-                        return $result;
-                    }
-                }
-            }
-
-            $result = $this->checkChildren($childNames, $node->getPath(), $ignoreRole, $class);
-            if ($result) {
-                return $result;
-            }
-        }
-
-        return;
-    }
-
-    /**
-     * Search for a previous document.
-     *
-     * @param string|object $path       document instance or path from which to search
-     * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|int      $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param bool          $ignoreRole if to ignore the role
-     * @param null|string   $class      the class to filter by
-     *
-     * @return null|object
-     */
-    private function searchDepthPrev($path, $anchor, $depth = null, $ignoreRole = false, $class = null)
-    {
-        if (is_object($path)) {
-            $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
-        }
-
-        if (null === $path || '/' === $path) {
-            return;
-        }
-
-        $node = $this->getDm()->getPhpcrSession()->getNode($path);
-
-        if (is_object($anchor)) {
-            $anchor = $this->getDm()->getUnitOfWork()->getDocumentId($anchor);
-        }
-
-        if (0 !== strpos($path, $anchor)) {
-            throw new \RuntimeException("The anchor path '$anchor' is not a parent of the current path '$path'.");
-        }
-
-        if ($path === $anchor) {
-            return;
-        }
-
-        $parent = $node->getParent();
-        $parentPath = $parent->getPath();
-
-        $childNames = $parent->getNodeNames()->getArrayCopy();
-        if (!empty($childNames)) {
-            $childNames = array_reverse($childNames);
-            $key = array_search($node->getName(), $childNames);
-            $childNames = array_slice($childNames, $key + 1);
-
-            if (!empty($childNames)) {
-                // traverse the previous siblings down the tree
-                $result = $this->traversePrevDepth($depth, PathHelper::getPathDepth($anchor), $childNames, $parentPath, $ignoreRole, $class);
-                if ($result) {
-                    return $result;
-                }
-
-                // check siblings
-                $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
-                if ($result) {
-                    return $result;
-                }
-            }
-        }
-
-        // check parents
-        if (0 === strpos($parentPath, $anchor)) {
-            $parent = $parent->getParent();
-            $childNames = $parent->getNodeNames()->getArrayCopy();
-            $key = array_search(PathHelper::getNodeName($parentPath), $childNames);
-            $childNames = array_slice($childNames, 0, $key + 1);
-            $childNames = array_reverse($childNames);
-            if (!empty($childNames)) {
-                $result = $this->checkChildren($childNames, $parent->getPath(), $ignoreRole, $class);
-                if ($result) {
-                    return $result;
-                }
-            }
-        }
-
-        return;
-    }
-
-    /**
-     * Search for a next document.
-     *
-     * @param string|object $path       document instance or path from which to search
-     * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|int      $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param bool          $ignoreRole if to ignore the role
-     * @param null|string   $class      the class to filter by
-     *
-     * @return null|object
-     */
-    private function searchDepthNext($path, $anchor, $depth = null, $ignoreRole = false, $class = null)
-    {
-        if (is_object($path)) {
-            $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
-        }
-
-        if (null === $path || '/' === $path) {
-            return;
-        }
-
-        $node = $this->getDm()->getPhpcrSession()->getNode($path);
-
-        if (is_object($anchor)) {
-            $anchor = $this->getDm()->getUnitOfWork()->getDocumentId($anchor);
-        }
-
-        if (0 !== strpos($path, $anchor)) {
-            throw new \RuntimeException("The anchor path '$anchor' is not a parent of the current path '$path'.");
-        }
-
-        // take the first eligible child if there are any
-        if (null === $depth || PathHelper::getPathDepth($path) - PathHelper::getPathDepth($anchor) < $depth) {
-            $childNames = $node->getNodeNames()->getArrayCopy();
-            $result = $this->checkChildren($childNames, $path, $ignoreRole, $class);
-            if ($result) {
-                return $result;
-            }
-        }
-
-        $parent = $node->getParent();
-        $parentPath = PathHelper::getParentPath($path);
-
-        // take the first eligible sibling
-        if (0 === strpos($parentPath, $anchor)) {
-            $childNames = $parent->getNodeNames()->getArrayCopy();
-            $key = array_search($node->getName(), $childNames);
-            $childNames = array_slice($childNames, $key + 1);
-            $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
-            if ($result) {
-                return $result;
-            }
-        }
-
-        // take the first eligible parent, traverse up
-        while ('/' !== $parentPath) {
-            $parent = $parent->getParent();
-            if (false === strpos($parent->getPath(), $anchor)) {
-                return;
-            }
-
-            $childNames = $parent->getNodeNames()->getArrayCopy();
-            $key = array_search(PathHelper::getNodeName($parentPath), $childNames);
-            $childNames = array_slice($childNames, $key + 1);
-            $parentPath = $parent->getPath();
-            $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
-            if ($result) {
-                return $result;
-            }
-        }
-
-        return;
-    }
-
-    /**
-     * Search for a related document.
-     *
-     * @param string|object $path       document instance or path from which to search
-     * @param bool          $reverse    if to traverse back
-     * @param bool          $ignoreRole if to ignore the role
-     * @param null|string   $class      the class to filter by
-     *
-     * @return null|object
-     */
-    private function search($path, $reverse = false, $ignoreRole = false, $class = null)
-    {
-        if (is_object($path)) {
-            $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
-        }
-
-        if (null === $path || '/' === $path) {
-            return;
-        }
-
-        $node = $this->getDm()->getPhpcrSession()->getNode($path);
-        $parentNode = $node->getParent();
-        $childNames = $parentNode->getNodeNames()->getArrayCopy();
-        if ($reverse) {
-            $childNames = array_reverse($childNames);
-        }
-
-        $key = array_search($node->getName(), $childNames);
-        $childNames = array_slice($childNames, $key + 1);
-
-        return $this->checkChildren($childNames, $parentNode->getPath(), $ignoreRole, $class);
+        return $this->cmf->getDescendants($parent, $depth);
     }
 
     /**
@@ -752,11 +241,7 @@ class CmfHelper extends Helper
      */
     public function getPrev($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
     {
-        if ($anchor) {
-            return $this->searchDepthPrev($current, $anchor, $depth, $ignoreRole, $class);
-        }
-
-        return $this->search($current, true, $ignoreRole, $class);
+        return $this->cmf->getPrev($current, $anchor, $depth, $ignoreRole, $class);
     }
 
     /**
@@ -772,11 +257,7 @@ class CmfHelper extends Helper
      */
     public function getNext($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
     {
-        if ($anchor) {
-            return $this->searchDepthNext($current, $anchor, $depth, $ignoreRole, $class);
-        }
-
-        return $this->search($current, false, $ignoreRole, $class);
+        return $this->cmf->getNext($current, $anchor, $depth, $ignoreRole, $class);
     }
 
     /**
@@ -800,15 +281,7 @@ class CmfHelper extends Helper
      */
     public function getPrevLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
     {
-        while ($candidate = $this->getPrev($current, $anchor, $depth, $ignoreRole)) {
-            if ($this->isLinkable($candidate)) {
-                return $candidate;
-            }
-
-            $current = $candidate;
-        }
-
-        return;
+        return $this->cmf->getPrevLinkable($current, $anchor, $depth, $ignoreRole);
     }
 
     /**
@@ -832,14 +305,6 @@ class CmfHelper extends Helper
      */
     public function getNextLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
     {
-        while ($candidate = $this->getNext($current, $anchor, $depth, $ignoreRole)) {
-            if ($this->isLinkable($candidate)) {
-                return $candidate;
-            }
-
-            $current = $candidate;
-        }
-
-        return;
+        return $this->cmf->getNextLinkable($current, $anchor, $depth, $ignoreRole);
     }
 }

@@ -22,8 +22,8 @@
         "symfony/security-bundle": "^2.8 || ^3.3 || ^4.0",
         "symfony/phpunit-bridge": "^3.3 || ^4.0",
         "mockery/mockery": "^0.9.4",
-        "symfony-cmf/routing-bundle": "^2.1.0-RC1",
-        "symfony-cmf/testing": "^2.1.0-RC1",
+        "symfony-cmf/routing-bundle": "^2.1.0",
+        "symfony-cmf/testing": "^2.1.0",
         "doctrine/dbal": "2.5.*",
         "doctrine/phpcr-odm": "^1.4|^2.0 ",
         "symfony/browser-kit": "^2.8 || ^3.3 || ^4.0",
@@ -34,12 +34,12 @@
         "symfony/asset": "^2.8 || ^3.3 || ^4.0"
     },
     "suggest": {
-        "symfony/twig-bundle": "To get access to the CMF twig extension (^2.1)",
+        "symfony/twig-bundle": "To get access to the CMF twig extension (^2.8 || ^3.3 || ^4.0)",
         "doctrine/phpcr-bundle": "To be able to use the CMF twig extension (^1.0)",
         "doctrine/phpcr-odm": "To be able to use the CMF twig extension (^1.0)",
-        "symfony/security-bundle": "To be able to use the publish workflow system (^2.1)",
-        "symfony-cmf/routing": "To be able to use the CMF twig extension functions cmf_prev_linkable/cmf_next_linkable (^2.0)",
-        "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener (^2.0)",
+        "symfony/security-bundle": "To be able to use the publish workflow system (^2.8 || ^3.3 || ^4.0)",
+        "symfony-cmf/routing": "To be able to use the CMF twig extension functions cmf_prev_linkable/cmf_next_linkable (^2.1)",
+        "symfony-cmf/routing-bundle": "To be able to enable the publish_workflow_listener (^2.1)",
         "symfony-cmf/sonata-admin-integration-bundle": "To provide an admin interface for the PHPCR ODM documents."
     },
     "autoload": {

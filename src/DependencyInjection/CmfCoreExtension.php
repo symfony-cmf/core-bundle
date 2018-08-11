@@ -257,7 +257,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $container->setParameter($this->getAlias().'.persistence.phpcr.manager_name', $config['persistence']['phpcr']['manager_name']);
             $container->setParameter($this->getAlias().'.persistence.phpcr.basepath', $config['persistence']['phpcr']['basepath']);
 
-            $templatingHelper = $container->getDefinition($this->getAlias().'.templating.helper');
+            $templatingHelper = $container->getDefinition($this->getAlias().'.templating.cmf');
             $templatingHelper->addMethodCall('setDoctrineRegistry', [
                 new Reference($config['persistence']['phpcr']['manager_registry']),
                 '%cmf_core.persistence.phpcr.manager_name%',

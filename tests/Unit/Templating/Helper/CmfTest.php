@@ -15,12 +15,12 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class CmfHelperTest extends \PHPUnit_Framework_TestCase
+class CmfTest extends \PHPUnit_Framework_TestCase
 {
     private $pwc;
 
@@ -31,9 +31,9 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     private $uow;
 
     /**
-     * @var CmfHelper
+     * @var Cmf
      */
-    private $extension;
+    private $helper;
 
     public function setUp()
     {
@@ -57,8 +57,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->uow))
         ;
 
-        $this->extension = new CmfHelper($this->pwc);
-        $this->extension->setDoctrineRegistry($this->managerRegistry, 'foo');
+        $this->helper = new Cmf($this->pwc);
+        $this->helper->setDoctrineRegistry($this->managerRegistry, 'foo');
     }
 
     public function testGetNodeName()
@@ -77,15 +77,15 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/foo/bar'))
         ;
 
-        $this->assertFalse($this->extension->getNodeName($document));
-        $this->assertEquals('bar', $this->extension->getNodeName($document));
+        $this->assertFalse($this->helper->getNodeName($document));
+        $this->assertEquals('bar', $this->helper->getNodeName($document));
     }
 
     public function testGetParentPath()
     {
         $document = new \stdClass();
 
-        $this->assertFalse($this->extension->getParentPath($document));
+        $this->assertFalse($this->helper->getParentPath($document));
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
@@ -93,14 +93,14 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/foo/bar'))
         ;
 
-        $this->assertEquals('/foo', $this->extension->getParentPath($document));
+        $this->assertEquals('/foo', $this->helper->getParentPath($document));
     }
 
     public function testGetPath()
     {
         $document = new \stdClass();
 
-        $this->assertNull($this->extension->getPath($document));
+        $this->assertNull($this->helper->getPath($document));
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
@@ -108,7 +108,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('/foo/bar'))
         ;
 
-        $this->assertEquals('/foo/bar', $this->extension->getPath($document));
+        $this->assertEquals('/foo/bar', $this->helper->getPath($document));
     }
 
     public function testGetPathInvalid()
@@ -120,7 +120,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->with($document)
             ->will($this->throwException(new \Exception('test')));
 
-        $this->assertFalse($this->extension->getPath($document));
+        $this->assertFalse($this->helper->getPath($document));
     }
 
     public function testFind()
@@ -133,8 +133,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(null, $document))
         ;
 
-        $this->assertNull($this->extension->find('/foo'));
-        $this->assertEquals($document, $this->extension->find('/foo'));
+        $this->assertNull($this->helper->find('/foo'));
+        $this->assertEquals($document, $this->helper->find('/foo'));
     }
 
     public function testFindTranslation()
@@ -147,13 +147,13 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(null, $document, 'en'))
         ;
 
-        $this->assertNull($this->extension->findTranslation('/foo', 'en'));
-        $this->assertEquals($document, $this->extension->findTranslation('/foo', 'en'));
+        $this->assertNull($this->helper->findTranslation('/foo', 'en'));
+        $this->assertEquals($document, $this->helper->findTranslation('/foo', 'en'));
     }
 
     public function testFindMany()
     {
-        $this->assertEquals([], $this->extension->findMany());
+        $this->assertEquals([], $this->helper->findMany());
     }
 
     public function testFindManyFilterClass()
@@ -166,8 +166,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($documentA, null, $documentA, $documentB))
         ;
 
-        $this->assertEquals([], $this->extension->findMany(['/foo', 'bar'], false, false, null, 'Exception'));
-        $this->assertEquals([$documentA, $documentB], $this->extension->findMany(['/foo', 'bar'], false, false, null, 'stdClass'));
+        $this->assertEquals([], $this->helper->findMany(['/foo', 'bar'], false, false, null, 'Exception'));
+        $this->assertEquals([$documentA, $documentB], $this->helper->findMany(['/foo', 'bar'], false, false, null, 'stdClass'));
     }
 
     public function testFindManyIgnoreRole()
@@ -185,7 +185,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(false, true))
         ;
 
-        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', '/bar'], false, false, true));
+        $this->assertEquals([$documentB], $this->helper->findMany(['/foo', '/bar'], false, false, true));
     }
 
     public function testFindManyIgnoreWorkflow()
@@ -202,7 +202,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
         ;
 
-        $this->assertEquals([$documentA, $documentB], $this->extension->findMany(['/foo', '/bar'], false, false, null));
+        $this->assertEquals([$documentA, $documentB], $this->helper->findMany(['/foo', '/bar'], false, false, null));
     }
 
     public function testFindManyLimitOffset()
@@ -215,9 +215,9 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls($documentA, $documentB, $documentA, $documentB, $documentA, $documentB))
         ;
 
-        $this->assertEquals([$documentA], $this->extension->findMany(['/foo', 'bar'], 1, false, null));
-        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', 'bar'], false, 1, null));
-        $this->assertEquals([$documentB], $this->extension->findMany(['/foo', 'bar'], 1, 1, null));
+        $this->assertEquals([$documentA], $this->helper->findMany(['/foo', 'bar'], 1, false, null));
+        $this->assertEquals([$documentB], $this->helper->findMany(['/foo', 'bar'], false, 1, null));
+        $this->assertEquals([$documentB], $this->helper->findMany(['/foo', 'bar'], 1, 1, null));
     }
 
     /**
@@ -225,7 +225,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindManyNoWorkflow()
     {
-        $extension = new CmfHelper(null);
+        $extension = new Cmf(null);
         $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
 
         $documentA = new \stdClass();
@@ -241,7 +241,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testIsPublished()
     {
-        $this->assertFalse($this->extension->isPublished(null));
+        $this->assertFalse($this->helper->isPublished(null));
 
         $document = new \stdClass();
 
@@ -251,8 +251,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(false, true))
         ;
 
-        $this->assertFalse($this->extension->isPublished($document));
-        $this->assertTrue($this->extension->isPublished($document));
+        $this->assertFalse($this->helper->isPublished($document));
+        $this->assertTrue($this->helper->isPublished($document));
     }
 
     /**
@@ -260,7 +260,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsPublishedNoWorkflow()
     {
-        $extension = new CmfHelper(null);
+        $extension = new Cmf(null);
         $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
 
         $extension->isPublished(new \stdClass());
@@ -268,9 +268,9 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testIsLinkable()
     {
-        $this->assertFalse($this->extension->isLinkable(null));
-        $this->assertFalse($this->extension->isLinkable('a'));
-        $this->assertFalse($this->extension->isLinkable($this));
+        $this->assertFalse($this->helper->isLinkable(null));
+        $this->assertFalse($this->helper->isLinkable('a'));
+        $this->assertFalse($this->helper->isLinkable($this));
 
         $content = $this->createMock(RouteReferrersReadInterface::class);
         $content
@@ -278,7 +278,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->method('getRoutes')
             ->will($this->returnValue([]))
         ;
-        $this->assertFalse($this->extension->isLinkable($content));
+        $this->assertFalse($this->helper->isLinkable($content));
 
         $route = $this->createMock(Route::class);
         $content = $this->createMock(RouteReferrersReadInterface::class);
@@ -287,12 +287,12 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->method('getRoutes')
             ->will($this->returnValue([$route]))
         ;
-        $this->assertTrue($this->extension->isLinkable($content));
+        $this->assertTrue($this->helper->isLinkable($content));
     }
 
     public function testGetLocalesFor()
     {
-        $this->assertEquals([], $this->extension->getLocalesFor(null));
+        $this->assertEquals([], $this->helper->getLocalesFor(null));
 
         $document = new \stdClass();
 
@@ -302,7 +302,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->onConsecutiveCalls(null, $document))
         ;
 
-        $this->assertEquals([], $this->extension->getLocalesFor('/foo'));
+        $this->assertEquals([], $this->helper->getLocalesFor('/foo'));
 
         $this->manager->expects($this->once())
             ->method('getLocalesFor')
@@ -310,7 +310,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['en', 'de']))
         ;
 
-        $this->assertEquals(['en', 'de'], $this->extension->getLocalesFor('/foo'));
+        $this->assertEquals(['en', 'de'], $this->helper->getLocalesFor('/foo'));
     }
 
     public function testGetLocalesForMissingTranslationException()
@@ -322,7 +322,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $parent = new \stdClass();
 
-        $this->assertNull($this->extension->getChild($parent, 'bar'));
+        $this->assertNull($this->helper->getChild($parent, 'bar'));
 
         $child = new \stdClass();
 
@@ -338,7 +338,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($child))
         ;
 
-        $this->assertEquals($child, $this->extension->getChild($parent, 'bar'));
+        $this->assertEquals($child, $this->helper->getChild($parent, 'bar'));
     }
 
     public function testGetChildError()
@@ -351,7 +351,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->throwException(new \Exception('test')))
         ;
 
-        $this->assertFalse($this->extension->getChild($parent, 'bar'));
+        $this->assertFalse($this->helper->getChild($parent, 'bar'));
     }
 
     public function testGetChildren()
@@ -376,7 +376,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetLinkableChildren()
     {
-        $this->assertEquals([], $this->extension->getLinkableChildren(null));
+        $this->assertEquals([], $this->helper->getLinkableChildren(null));
 
         $this->markTestIncomplete('TODO: write test');
     }

@@ -10,13 +10,17 @@
 
     <services>
 
+        <service id="cmf_core.templating.cmf" class="Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf" public="false">
+            <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
+        </service>
+
         <service id="cmf_core.twig.children_extension" class="Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension" public="false">
-            <argument type="service" id="cmf_core.templating.helper"/>
+            <argument type="service" id="cmf_core.templating.cmf"/>
             <tag name="twig.extension"/>
         </service>
 
         <service id="cmf_core.templating.helper" class="Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper" public="false">
-            <argument type="service" id="cmf_core.publish_workflow.checker" on-invalid="ignore"/>
+            <argument type="service" id="cmf_core.templating.cmf"/>
             <tag name="templating.helper" alias="cmf"/>
         </service>
 

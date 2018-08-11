@@ -11,14 +11,14 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
+use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 class CmfExtension extends \Twig_Extension
 {
     protected $helper;
 
-    public function __construct(CmfHelper $helper)
+    public function __construct(Cmf $helper)
     {
         $this->helper = $helper;
     }
