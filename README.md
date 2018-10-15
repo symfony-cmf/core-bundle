@@ -44,7 +44,7 @@ For general support and questions, please use [StackOverflow](http://stackoverfl
 ## Contributing
 
 Pull requests are welcome. Please see our
-[CONTRIBUTING](https://github.com/symfony-cmf/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/symfony-cmf/core-bundle/blob/master/CONTRIBUTING.md)
 guide.
 
 Unit and/or functional tests exist for this package. See the
