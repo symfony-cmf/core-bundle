@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "symfony/security-bundle": "^2.8 || ^3.3 || ^4.0",
-        "symfony/phpunit-bridge": "^3.3 || ^4.0",
+        "symfony/phpunit-bridge": "^3.4.19 || ^4.0",
         "mockery/mockery": "^0.9.4",
         "symfony-cmf/routing-bundle": "^2.1.0",
         "symfony-cmf/testing": "^2.1.8",
