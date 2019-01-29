@@ -8,12 +8,13 @@
 [![Monthly Downloads](https://poser.pugx.org/symfony-cmf/core-bundle/d/monthly)](https://packagist.org/packages/symfony-cmf/core-bundle)
 [![Daily Downloads](https://poser.pugx.org/symfony-cmf/core-bundle/d/daily)](https://packagist.org/packages/symfony-cmf/core-bundle)
 
-Branch | Travis | Coveralls |
------- | ------ | --------- |
-2.1   | [![Build Status][travis_stable_badge]][travis_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     |
-master | [![Build Status][travis_unstable_badge]][travis_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
+Branch | Travis | Coveralls | Scrutinizer |
+------ | ------ | --------- | ----------- |
+3.0-dev   | [![Build Status][travis_stable_badge]][travis_stable_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     | [![Scrutinizer Status][scrutinizer_stable_badge]][scrutinizer_stable_link] |
+3.0-dev | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] | [![Scrutinizer Status][scrutinizer_unstable_badge]][scrutinizer_unstable_link] |
 
-This package is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/) and licensed
+
+This package is part of the [Symfony Content Management Framework (CMF)](https://cmf.symfony.com/) and licensed
 under the [MIT License](LICENSE).
 
 The CoreBundle for the Symfony content management framework provides common functionality,
@@ -23,24 +24,24 @@ a twig extension and php templating helper to walk PHPCR-ODM trees and support f
 
 ## Requirements
 
-* PHP 7.1 / 7.2
-* Symfony 2.8 / 3.3 / 3.4 / 4.0
+* PHP 7.2 / 7.3
+* Symfony 3.4 / 4.0 / 4.1 / 4.2
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
 
 For the install guide and reference, see:
 
-* [symfony-cmf/core-bundle Documentation](http://symfony.com/doc/master/cmf/bundles/core/index.html)
+* [symfony-cmf/core-bundle Documentation](https://symfony.com/doc/master/cmf/bundles/core/index.html)
 
 See also:
 
-* [All Symfony CMF documentation](http://symfony.com/doc/master/cmf/index.html) - complete Symfony CMF reference
-* [Symfony CMF Website](http://cmf.symfony.com/) - introduction, live demo, support and community links
+* [All Symfony CMF documentation](https://symfony.com/doc/master/cmf/index.html) - complete Symfony CMF reference
+* [Symfony CMF Website](https://cmf.symfony.com/) - introduction, live demo, support and community links
 
 ## Support
 
-For general support and questions, please use [StackOverflow](http://stackoverflow.com/questions/tagged/symfony-cmf).
+For general support and questions, please use [StackOverflow](https://stackoverflow.com/questions/tagged/symfony-cmf).
 
 ## Contributing
 
@@ -49,7 +50,7 @@ Pull requests are welcome. Please see our
 guide.
 
 Unit and/or functional tests exist for this package. See the
-[Testing documentation](http://symfony.com/doc/master/cmf/components/testing.html)
+[Testing documentation](https://symfony.com/doc/master/cmf/components/testing.html)
 for a guide to running the tests.
 
 Thanks to
@@ -59,12 +60,17 @@ Thanks to
 
 This package is available under the [MIT license](src/Resources/meta/LICENSE).
 
-[travis_stable_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=2.x
-[travis_unstable_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=master
+[travis_stable_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=3.0-dev
+[travis_stable_link]: https://travis-ci.org/symfony-cmf/core-bundle
+[travis_unstable_badge]: https://travis-ci.org/symfony-cmf/core-bundle.svg?branch=3.0-dev
+[travis_unstable_link]: https://travis-ci.org/symfony-cmf/core-bundle
 
-[travis_link]: https://travis-ci.org/symfony-cmf/core-bundle
+[coveralls_stable_badge]: https://coveralls.io/repos/github/symfony-cmf/core-bundle/badge.svg?branch=3.0-dev
+[coveralls_stable_link]: https://coveralls.io/github/symfony-cmf/core-bundle?branch=3.0-dev
+[coveralls_unstable_badge]: https://coveralls.io/repos/github/symfony-cmf/core-bundle/badge.svg?branch=3.0-dev
+[coveralls_unstable_link]: https://coveralls.io/github/symfony-cmf/core-bundle?branch=3.0-dev
 
-[coveralls_stable_badge]: https://coveralls.io/repos/github/symfony-cmf/core-bundle/badge.svg?branch=2.x
-[coveralls_stable_link]: https://coveralls.io/github/symfony-cmf/core-bundle?branch=2.x
-[coveralls_unstable_badge]: https://coveralls.io/repos/github/symfony-cmf/core-bundle/badge.svg?branch=master
-[coveralls_unstable_link]: https://coveralls.io/github/symfony-cmf/core-bundle?branch=master
+[scrutinizer_stable_badge]: https://scrutinizer-ci.com/g/symfony-cmf/core-bundle/badges/quality-score.png?b=3.0-dev
+[scrutinizer_stable_link]: https://scrutinizer-ci.com/g/symfony-cmf/core-bundle/?branch=3.0-dev
+[scrutinizer_unstable_badge]: https://scrutinizer-ci.com/g/symfony-cmf/core-bundle/badges/quality-score.png?b=3.0-dev
+[scrutinizer_unstable_link]: https://scrutinizer-ci.com/g/symfony-cmf/core-bundle/?branch=3.0-dev
