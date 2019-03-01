@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -56,9 +58,9 @@ class CheckboxUrlLabelFormType extends AbstractType
         $routes = $options['routes'];
         $paths = [];
         foreach ($routes as $key => $route) {
-            $name = isset($route['name']) ? $route['name'] : null;
-            $parameters = isset($route['parameters']) ? $route['parameters'] : [];
-            $referenceType = isset($route['referenceType']) ? $route['referenceType'] : UrlGeneratorInterface::ABSOLUTE_PATH;
+            $name = $route['name'] ?? null;
+            $parameters = $route['parameters'] ?? [];
+            $referenceType = $route['referenceType'] ?? UrlGeneratorInterface::ABSOLUTE_PATH;
             $paths[$key] = $this->router->generate($name, $parameters, $referenceType);
         }
         $view->vars['paths'] = $paths;

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,7 +41,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      * This attribute means the user is allowed to see this content, either
      * because it is published or because he is granted the bypassingRole.
      */
-    const VIEW_ATTRIBUTE = 'VIEW';
+    public const VIEW_ATTRIBUTE = 'VIEW';
 
     /**
      * This attribute means the content is available for viewing by anonymous
@@ -49,7 +51,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      * The bypass role is handled by the workflow checker, the individual
      * voters should treat VIEW and VIEW_ANONYMOUS the same.
      */
-    const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
+    public const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
@@ -111,11 +113,11 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      */
     public function isGranted($attributes, $object = null)
     {
-        if (!is_array($attributes)) {
+        if (!\is_array($attributes)) {
             $attributes = [$attributes];
         }
 
-        if (1 === count($attributes)
+        if (1 === \count($attributes)
             && self::VIEW_ATTRIBUTE === reset($attributes)
             && null !== $this->tokenStorage->getToken()
             && $this->authorizationChecker->isGranted($this->bypassingRole)

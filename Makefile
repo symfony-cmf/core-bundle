@@ -47,7 +47,7 @@ ifneq ($(strip $(EXTRA_INCLUDES)),)
   endif
 
 .PHONY: test
-test: build/xdebug-filter.php$
+test: build/xdebug-filter.php
 ifneq ($(strip $(wildcard ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)),)
 	@make unit_tests
 endif
