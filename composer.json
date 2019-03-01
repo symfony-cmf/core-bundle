@@ -24,7 +24,7 @@
         "mockery/mockery": "^0.9.4",
         "symfony-cmf/routing-bundle": "^2.1.0",
         "symfony-cmf/testing": "^2.1.11",
-        "doctrine/dbal": "2.5.*",
+        "doctrine/dbal": "^2.5",
         "doctrine/phpcr-odm": "^1.4 || ^2.0",
         "symfony/browser-kit": "^3.4 || ^4.1",
         "symfony/templating": "^3.4 || ^4.1",
