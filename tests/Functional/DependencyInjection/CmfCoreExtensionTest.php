@@ -11,11 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\CmfCoreExtension;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\AlwaysPublishedWorkflowChecker;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CmfCoreExtensionTest extends \PHPUnit_Framework_TestCase
+class CmfCoreExtensionTest extends TestCase
 {
     /**
      * @var ContainerBuilder

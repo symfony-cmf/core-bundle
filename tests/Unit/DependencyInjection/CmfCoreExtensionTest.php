@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\CmfCoreExtension;
 use Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle;
@@ -20,7 +21,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Routing\Router;
 
-class CmfCoreExtensionTest extends \PHPUnit_Framework_TestCase
+class CmfCoreExtensionTest extends TestCase
 {
     /**
      * @var CmfCoreExtension
