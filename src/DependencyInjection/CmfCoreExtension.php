@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -301,6 +303,22 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__.'/../Resources/config/schema';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/core';
+    }
+
+    /**
      * Load and configure the publish workflow services.
      *
      * @param $config
@@ -314,14 +332,14 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $bundles = $container->getParameter('kernel.bundles');
 
         if (false === $config['enabled']
-            || ('auto' === $config['enabled'] && !array_key_exists('SecurityBundle', $bundles))
+            || ('auto' === $config['enabled'] && !\array_key_exists('SecurityBundle', $bundles))
         ) {
             $loader->load('no-publish-workflow.xml');
 
             return;
         }
 
-        if (!array_key_exists('SecurityBundle', $bundles)) {
+        if (!\array_key_exists('SecurityBundle', $bundles)) {
             throw new InvalidConfigurationException(
                 'The "publish_workflow" may not be enabled unless "symfony/security-bundle" is available.'
             );
@@ -345,21 +363,5 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                 'The "publish_workflow.request_listener" may not be enabled unless "symfony-cmf/routing-bundle" is available.'
             );
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getXsdValidationBasePath()
-    {
-        return __DIR__.'/../Resources/config/schema';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return 'http://cmf.symfony.com/schema/dic/core';
     }
 }

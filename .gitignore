@@ -1,3 +1,5 @@
 tests/Fixtures/App/var/
 composer.lock
 vendor
+build/
+.php_cs.cache

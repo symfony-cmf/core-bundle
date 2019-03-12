@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,7 +41,7 @@ class AddPublishedVotersPass implements CompilerPassInterface
 
         $voters = new \SplPriorityQueue();
         foreach ($container->findTaggedServiceIds('cmf_published_voter') as $id => $attributes) {
-            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
+            $priority = $attributes[0]['priority'] ?? 0;
             $voters->insert(new Reference($id), $priority);
         }
 

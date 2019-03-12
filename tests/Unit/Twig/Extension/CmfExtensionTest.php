@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -54,10 +56,10 @@ class CmfExtensionTest extends TestCase
 
         $helperMethodMock = $this->cmfHelper->expects($this->once())->method($helperMethod);
         if ($helperArguments) {
-            call_user_func_array([$helperMethodMock, 'with'], $helperArguments);
+            \call_user_func_array([$helperMethodMock, 'with'], $helperArguments);
         }
 
-        call_user_func_array([$this->cmfExtension, $methodName], $methodArguments);
+        \call_user_func_array([$this->cmfExtension, $methodName], $methodArguments);
     }
 
     public function getFunctionsData()

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -46,32 +48,6 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
         $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b and http://localhost/hello/world")]');
     }
 
-    /**
-     * @return FormRenderer|TwigRenderer
-     */
-    private function getFormRenderer()
-    {
-        $twig = $this->getContainer()->get('twig');
-
-        // BC for Symfony < 3.2 where this runtime does not exists
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $twig25 = !method_exists($twig, 'getRuntime');
-
-            $renderer = $twig->getExtension($twig25 ? 'form' : FormExtension::class)->renderer;
-            $renderer->setEnvironment($twig);
-
-            return $renderer;
-        }
-        // BC for Symfony < 3.4 where runtime should be TwigRenderer
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $runtime = $twig->getRuntime(TwigRenderer::class);
-
-            return $runtime;
-        }
-
-        return $twig->getRuntime(FormRenderer::class);
-    }
-
     protected function assertMatchesXpath($html, $expression, $count = 1)
     {
         $dom = new \DomDocument('UTF-8');
@@ -101,5 +77,31 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
                 substr($dom->saveHTML(), 6, -8)
             ));
         }
+    }
+
+    /**
+     * @return FormRenderer|TwigRenderer
+     */
+    private function getFormRenderer()
+    {
+        $twig = $this->getContainer()->get('twig');
+
+        // BC for Symfony < 3.2 where this runtime does not exists
+        if (!method_exists(AppVariable::class, 'getToken')) {
+            $twig25 = !method_exists($twig, 'getRuntime');
+
+            $renderer = $twig->getExtension($twig25 ? 'form' : FormExtension::class)->renderer;
+            $renderer->setEnvironment($twig);
+
+            return $renderer;
+        }
+        // BC for Symfony < 3.4 where runtime should be TwigRenderer
+        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
+            $runtime = $twig->getRuntime(TwigRenderer::class);
+
+            return $runtime;
+        }
+
+        return $twig->getRuntime(FormRenderer::class);
     }
 }
