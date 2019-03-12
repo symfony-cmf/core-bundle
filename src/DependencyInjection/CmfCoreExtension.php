@@ -295,7 +295,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             // if there is twig, register our form type with twig
             if ($container->hasParameter('twig.form.resources')) {
                 $resources = $container->getParameter('twig.form.resources');
-                $container->setParameter('twig.form.resources', array_merge($resources, ['CmfCoreBundle:Form:checkbox_url_label_form_type.html.twig']));
+                $container->setParameter('twig.form.resources', array_merge($resources, ['@CmfCore/Form/checkbox_url_label_form_type.html.twig']));
             }
         }
     }

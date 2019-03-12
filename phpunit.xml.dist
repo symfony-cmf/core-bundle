@@ -27,7 +27,7 @@
     </filter>
 
     <php>
-        <server name="KERNEL_DIR" value="tests/Resources/app" />
+        <server name="KERNEL_CLASS" value="\Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel" />
     </php>
 
 </phpunit>

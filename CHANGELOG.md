@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.1
+-----
+
+* Fixed another template reference to work with Symfony 4.
+
 2.1.0
 -----
 

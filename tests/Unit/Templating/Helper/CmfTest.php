@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -221,9 +222,6 @@ class CmfTest extends TestCase
         $this->assertEquals([$documentB], $this->helper->findMany(['/foo', 'bar'], 1, 1, null));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testFindManyNoWorkflow()
     {
         $extension = new Cmf(null);
@@ -237,6 +235,7 @@ class CmfTest extends TestCase
             ->will($this->returnValue($documentA))
         ;
 
+        $this->expectException(InvalidConfigurationException::class);
         $extension->findMany(['/foo', '/bar'], false, false);
     }
 
@@ -256,14 +255,12 @@ class CmfTest extends TestCase
         $this->assertTrue($this->helper->isPublished($document));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testIsPublishedNoWorkflow()
     {
         $extension = new Cmf(null);
         $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
 
+        $this->expectException(InvalidConfigurationException::class);
         $extension->isPublished(new \stdClass());
     }
 

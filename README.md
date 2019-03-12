@@ -8,9 +8,9 @@
 [![Monthly Downloads](https://poser.pugx.org/symfony-cmf/core-bundle/d/monthly)](https://packagist.org/packages/symfony-cmf/core-bundle)
 [![Daily Downloads](https://poser.pugx.org/symfony-cmf/core-bundle/d/daily)](https://packagist.org/packages/symfony-cmf/core-bundle)
 
-Version/Branch | Travis | Coveralls |
+Branch | Travis | Coveralls |
 ------ | ------ | --------- |
-2.1.0   | [![Build Status][travis_stable_badge]][travis_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     |
+2.1   | [![Build Status][travis_stable_badge]][travis_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     |
 master | [![Build Status][travis_unstable_badge]][travis_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
 
 This package is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/) and licensed
