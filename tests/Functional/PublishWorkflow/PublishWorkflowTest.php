@@ -26,7 +26,7 @@ class PublishWorkflowTest extends BaseTestCase
      */
     private $publishWorkflowChecker;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->publishWorkflowChecker = $this->getContainer()->get('cmf_core.publish_workflow.checker');
     }

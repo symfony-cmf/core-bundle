@@ -37,7 +37,7 @@ class CmfTest extends TestCase
      */
     private $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pwc = $this->createMock(AuthorizationCheckerInterface::class);
 

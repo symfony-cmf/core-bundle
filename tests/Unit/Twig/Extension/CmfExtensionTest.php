@@ -33,7 +33,7 @@ class CmfExtensionTest extends TestCase
      */
     private $cmfExtension;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cmfHelper = $this->createMock(Cmf::class);
 

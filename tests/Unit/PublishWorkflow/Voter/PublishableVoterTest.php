@@ -31,7 +31,7 @@ class PublishableVoterTest extends TestCase
      */
     private $token;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->voter = new PublishableVoter();
         $this->token = new AnonymousToken('', '');

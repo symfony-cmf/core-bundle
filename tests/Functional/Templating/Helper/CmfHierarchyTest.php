@@ -31,7 +31,7 @@ class CmfHierarchyTest extends BaseTestCase
      */
     private $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $dbManager = $this->db('PHPCR');
         $dbManager->loadFixtures([LoadHierarchyRouteData::class]);
