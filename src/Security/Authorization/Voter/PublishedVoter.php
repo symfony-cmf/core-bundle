@@ -28,9 +28,6 @@ class PublishedVoter implements VoterInterface
      */
     private $publishWorkflowChecker;
 
-    /**
-     * @param PublishWorkflowChecker $publishWorkflowChecker
-     */
     public function __construct(PublishWorkflowChecker $publishWorkflowChecker)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
@@ -61,7 +58,7 @@ class PublishedVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (!is_object($subject) || !$this->supportsClass(get_class($subject))) {
+        if (!\is_object($subject) || !$this->supportsClass(\get_class($subject))) {
             return self::ACCESS_ABSTAIN;
         }
         foreach ($attributes as $attribute) {

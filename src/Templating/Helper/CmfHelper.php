@@ -75,7 +75,7 @@ class CmfHelper extends Helper
      *
      * @param $path
      *
-     * @return null|object
+     * @return object|null
      */
     public function find($path)
     {
@@ -89,7 +89,7 @@ class CmfHelper extends Helper
      * @param string        $locale         the language to try to load
      * @param bool          $fallback       set to true if the language fallback mechanism should be used
      *
-     * @return null|object
+     * @return object|null
      */
     public function findTranslation($pathOrDocument, $locale, $fallback = true)
     {
@@ -101,7 +101,7 @@ class CmfHelper extends Helper
      * @param int|bool    $limit      int limit or false
      * @param string|bool $offset     string node name to which to skip to or false
      * @param bool|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string $class      class name to filter on
+     * @param string|null $class      class name to filter on
      *
      * @return array
      */
@@ -142,7 +142,7 @@ class CmfHelper extends Helper
      * @param string|object $parent parent path/document
      * @param string        $name
      *
-     * @return bool|null|object child or null if the child cannot be found
+     * @return bool|object|null child or null if the child cannot be found
      *                          or false if the parent is not managed by
      *                          the configured document manager
      */
@@ -158,11 +158,11 @@ class CmfHelper extends Helper
      * @param int|bool      $limit      maximum number of children to get or
      *                                  false for no limit
      * @param string|bool   $offset     node name to which to skip to or false
-     * @param null|string   $filter     child name filter (optional)
+     * @param string|null   $filter     child name filter (optional)
      * @param bool|null     $ignoreRole whether the role should be ignored or
      *                                  null if publish workflow should be
      *                                  ignored (defaults to false)
-     * @param null|string   $class      class name to filter on (optional)
+     * @param string|null   $class      class name to filter on (optional)
      *
      * @return array
      */
@@ -180,7 +180,7 @@ class CmfHelper extends Helper
      * @param int|bool      $limit      limit or false for no limit
      * @param string|bool   $offset     node name to which to skip to or false
      *                                  to not skip any elements
-     * @param null|string   $filter     child name filter
+     * @param string|null   $filter     child name filter
      * @param bool|null     $ignoreRole whether the role should be ignored or
      *                                  null if publish workflow should be
      *                                  ignored (defaults to false)
@@ -218,7 +218,7 @@ class CmfHelper extends Helper
 
     /**
      * @param string|object $parent parent path/document
-     * @param null|int      $depth  null denotes no limit, depth of 1 means
+     * @param int|null      $depth  null denotes no limit, depth of 1 means
      *                              direct children only
      *
      * @return array
@@ -232,12 +232,12 @@ class CmfHelper extends Helper
      * Gets the previous document.
      *
      * @param string|object      $current    document instance or path from which to search
-     * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|int           $depth      depth up to which to traverse down the tree when an anchor is provided
+     * @param string|object|null $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
+     * @param int|null           $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool               $ignoreRole if to ignore the role
-     * @param null|string        $class      the class to filter by
+     * @param string|null        $class      the class to filter by
      *
-     * @return null|object
+     * @return object|null
      */
     public function getPrev($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
     {
@@ -248,12 +248,12 @@ class CmfHelper extends Helper
      * Gets the next document.
      *
      * @param string|object      $current    document instance or path from which to search
-     * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|int           $depth      depth up to which to traverse down the tree when an anchor is provided
+     * @param string|object|null $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
+     * @param int|null           $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool               $ignoreRole if to ignore the role
-     * @param null|string        $class      the class to filter by
+     * @param string|null        $class      the class to filter by
      *
-     * @return null|object
+     * @return object|null
      */
     public function getNext($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
     {
@@ -267,15 +267,15 @@ class CmfHelper extends Helper
      *
      * @param string|object      $current    Document instance or path from
      *                                       which to search
-     * @param null|string|object $anchor     Document instance or path which
+     * @param string|object|null $anchor     Document instance or path which
      *                                       serves as an anchor from which to
      *                                       flatten the hierarchy
-     * @param null|int           $depth      Depth up to which to traverse down
+     * @param int|null           $depth      Depth up to which to traverse down
      *                                       the tree when an anchor is
      *                                       provided
      * @param bool               $ignoreRole Whether to ignore the role,
      *
-     * @return null|object
+     * @return object|null
      *
      * @see isLinkable
      */
@@ -291,15 +291,15 @@ class CmfHelper extends Helper
      *
      * @param string|object      $current    Document instance or path from
      *                                       which to search
-     * @param null|string|object $anchor     Document instance or path which
+     * @param string|object|null $anchor     Document instance or path which
      *                                       serves as an anchor from which to
      *                                       flatten the hierarchy
-     * @param null|int           $depth      Depth up to which to traverse down
+     * @param int|null           $depth      Depth up to which to traverse down
      *                                       the tree when an anchor is
      *                                       provided
      * @param bool               $ignoreRole Whether to ignore the role
      *
-     * @return null|object
+     * @return object|null
      *
      * @see isLinkable
      */

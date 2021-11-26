@@ -36,8 +36,6 @@ class NonTranslatableMetadataListener implements EventSubscriber
     /**
      * Handle the load class metadata event: remove translated attribute from
      * fields and remove the locale mapping if present.
-     *
-     * @param LoadClassMetadataEventArgs $eventArgs
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {

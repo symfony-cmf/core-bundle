@@ -48,8 +48,6 @@ class TranslatableMetadataListener implements EventSubscriber
 
     /**
      * Handle the load class metadata event: set the translation strategy.
-     *
-     * @param LoadClassMetadataEventArgs $eventArgs
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {

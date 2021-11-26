@@ -37,8 +37,6 @@ class PublishTimePeriodVoter implements VoterInterface
 
     /**
      * Overwrite the current time.
-     *
-     * @param \DateTime $currentTime
      */
     public function setCurrentTime(\DateTime $currentTime)
     {
@@ -74,7 +72,7 @@ class PublishTimePeriodVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (!is_object($subject) || !$this->supportsClass(get_class($subject))) {
+        if (!\is_object($subject) || !$this->supportsClass(\get_class($subject))) {
             return self::ACCESS_ABSTAIN;
         }
 

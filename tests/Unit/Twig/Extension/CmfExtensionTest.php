@@ -54,10 +54,10 @@ class CmfExtensionTest extends TestCase
 
         $helperMethodMock = $this->cmfHelper->expects($this->once())->method($helperMethod);
         if ($helperArguments) {
-            call_user_func_array([$helperMethodMock, 'with'], $helperArguments);
+            \call_user_func_array([$helperMethodMock, 'with'], $helperArguments);
         }
 
-        call_user_func_array([$this->cmfExtension, $methodName], $methodArguments);
+        \call_user_func_array([$this->cmfExtension, $methodName], $methodArguments);
     }
 
     public function getFunctionsData()
