@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -53,21 +52,13 @@ class CheckboxUrlLabelFormType extends AbstractType
         $routes = $options['routes'];
         $paths = [];
         foreach ($routes as $key => $route) {
-            $name = isset($route['name']) ? $route['name'] : null;
+            $name = isset($route['name']) ? $route['name'] : '';
             $parameters = isset($route['parameters']) ? $route['parameters'] : [];
             $referenceType = isset($route['referenceType']) ? $route['referenceType'] : UrlGeneratorInterface::ABSOLUTE_PATH;
             $paths[$key] = $this->router->generate($name, $parameters, $referenceType);
         }
         $view->vars['paths'] = $paths;
         parent::buildView($view, $form, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
     }
 
     public function configureOptions(OptionsResolver $resolver)

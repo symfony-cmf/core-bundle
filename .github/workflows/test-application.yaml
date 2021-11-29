@@ -27,6 +27,9 @@ jobs:
                     - php-version: '7.4'
                       symfony-version: 4.4.*
                       test-installation: true
+                    - php-version: '7.4'
+                      symfony-version: 5.0.*
+                      test-installation: true
 
         steps:
             - name: Checkout project
