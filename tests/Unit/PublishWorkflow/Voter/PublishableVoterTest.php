@@ -11,12 +11,15 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow\Voter;
 
+use function is_subclass_of;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\CacheableVoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class PublishableVoterTest extends TestCase
@@ -68,8 +71,8 @@ class PublishableVoterTest extends TestCase
                 'isPublishable' => true,
                 'attributes' => 'other',
             ],
-            [
-                'expected' => VoterInterface::ACCESS_ABSTAIN,
+            'at least one supported attribute' => [
+                'expected' => VoterInterface::ACCESS_GRANTED,
                 'isPublishable' => true,
                 'attributes' => [PublishWorkflowChecker::VIEW_ATTRIBUTE, 'other'],
             ],
@@ -107,5 +110,33 @@ class PublishableVoterTest extends TestCase
     {
         $result = $this->voter->vote($this->token, [1, 2, 3], [PublishWorkflowChecker::VIEW_ATTRIBUTE]);
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testCachableVoterSupportsAttributes()
+    {
+        if (!$this->voter instanceof CacheableVoterInterface) {
+            $this->assertFalse(
+                is_subclass_of(Voter::class, CacheableVoterInterface::class),
+                'Voter cache is supported and expected to be implemented'
+            );
+        }
+
+        $this->assertTrue($this->voter->supportsAttribute(PublishWorkflowChecker::VIEW_ATTRIBUTE));
+        $this->assertTrue($this->voter->supportsAttribute(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE));
+        $this->assertFalse($this->voter->supportsAttribute('other'));
+    }
+
+    public function testCachableVoterSupportsSubjectType()
+    {
+        if (!$this->voter instanceof CacheableVoterInterface) {
+            $this->assertFalse(
+                is_subclass_of(Voter::class, CacheableVoterInterface::class),
+                'Voter cache is supported and expected to be implemented'
+            );
+        }
+
+        $doc = $this->createMock(PublishableReadInterface::class);
+        $this->assertTrue($this->voter->supportsType(\get_class($doc)));
+        $this->assertFalse($this->voter->supportsType(static::class));
     }
 }

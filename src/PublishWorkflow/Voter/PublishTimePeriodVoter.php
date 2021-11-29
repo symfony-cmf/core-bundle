@@ -11,17 +11,18 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter;
 
+use function is_subclass_of;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * Workflow voter for the PublishTimePeriodReadInterface.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class PublishTimePeriodVoter implements VoterInterface
+class PublishTimePeriodVoter extends Voter
 {
     /**
      * @var \DateTime
@@ -43,61 +44,36 @@ class PublishTimePeriodVoter implements VoterInterface
         $this->currentTime = $currentTime;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated To be removed when Symfony 2 support is dropped
-     */
-    public function supportsAttribute($attribute)
+    protected function supports($attribute, $subject)
     {
-        return PublishWorkflowChecker::VIEW_ATTRIBUTE === $attribute
+        return $subject instanceof PublishTimePeriodReadInterface
+            && $this->supportsAttribute($attribute);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param PublishTimePeriodReadInterface $subject
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        $startDate = $subject->getPublishStartDate();
+        $endDate = $subject->getPublishEndDate();
+
+        return (null === $startDate || $this->currentTime >= $startDate)
+            && (null === $endDate || $this->currentTime <= $endDate);
+    }
+
+    public function supportsAttribute(string $attribute): bool
+    {
+        return
+            PublishWorkflowChecker::VIEW_ATTRIBUTE === $attribute
             || PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE === $attribute
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated To be removed when Symfony 2 support is dropped
-     */
-    public function supportsClass($class)
+    public function supportsType(string $subjectType): bool
     {
-        return is_subclass_of($class, PublishTimePeriodReadInterface::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param PublishTimePeriodReadInterface $subject
-     */
-    public function vote(TokenInterface $token, $subject, array $attributes)
-    {
-        if (!\is_object($subject) || !$this->supportsClass(\get_class($subject))) {
-            return self::ACCESS_ABSTAIN;
-        }
-
-        $startDate = $subject->getPublishStartDate();
-        $endDate = $subject->getPublishEndDate();
-
-        $decision = self::ACCESS_GRANTED;
-        foreach ($attributes as $attribute) {
-            if (!$this->supportsAttribute($attribute)) {
-                // there was an unsupported attribute in the request.
-                // now we only abstain or deny if we find a supported attribute
-                // and the content is not publishable
-                $decision = self::ACCESS_ABSTAIN;
-
-                continue;
-            }
-
-            if (
-                (null !== $startDate && $this->currentTime < $startDate)
-                || (null !== $endDate && $this->currentTime > $endDate)
-            ) {
-                return self::ACCESS_DENIED;
-            }
-        }
-
-        return $decision;
+        return is_subclass_of($subjectType, PublishTimePeriodReadInterface::class);
     }
 }
