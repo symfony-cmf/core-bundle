@@ -109,12 +109,4 @@ class PublishWorkflowCheckerTest extends TestCase
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));
     }
-
-    public function testSupportsClass()
-    {
-        $class = 'Test\Class';
-        $this->accessDecisionManager->shouldReceive('supportsClass')->once()->with($class)->andReturn(true);
-
-        $this->assertTrue($this->publishWorkflowChecker->supportsClass($class));
-    }
 }

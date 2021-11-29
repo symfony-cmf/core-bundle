@@ -93,28 +93,11 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
     }
 
     /**
-     * Checks if the access decision manager supports the given class.
-     *
-     * @param string $class A class name
-     *
-     * @return bool true if this decision manager can process the class
-     */
-    public function supportsClass($class)
-    {
-        return $this->accessDecisionManager->supportsClass($class);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted($attribute, $object = null)
     {
-        if (!\is_array($attributes)) {
-            $attributes = [$attributes];
-        }
-
-        if (1 === \count($attributes)
-            && self::VIEW_ATTRIBUTE === reset($attributes)
+        if (self::VIEW_ATTRIBUTE === $attribute
             && null !== $this->tokenStorage->getToken()
             && $this->authorizationChecker->isGranted($this->bypassingRole)
         ) {
@@ -128,6 +111,6 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
             $token = new AnonymousToken('', '');
         }
 
-        return $this->accessDecisionManager->decide($token, $attributes, $object);
+        return $this->accessDecisionManager->decide($token, [$attribute], $object);
     }
 }
