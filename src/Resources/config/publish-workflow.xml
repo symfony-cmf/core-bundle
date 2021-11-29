@@ -36,7 +36,6 @@
         <!-- integration with core security service -->
 
         <service id="cmf_core.security.published_voter" class="Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter" public="false">
-            <argument type="service" id="service_container" on-invalid="ignore"/>
             <tag name="security.voter"/>
         </service>
 
