@@ -15,16 +15,18 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class CmfExtensionTest extends TestCase
 {
     /**
-     * @var Cmf|MockObject
+     * @var Cmf&MockObject
      */
     private $cmfHelper;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $env;
 
@@ -33,12 +35,12 @@ class CmfExtensionTest extends TestCase
      */
     private $cmfExtension;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cmfHelper = $this->createMock(Cmf::class);
 
         $this->cmfExtension = new CmfExtension($this->cmfHelper);
-        $this->env = new \Twig_Environment(new \Twig_Loader_Array([]));
+        $this->env = new Environment(new ArrayLoader([]));
         $this->env->addExtension($this->cmfExtension);
     }
 

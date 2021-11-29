@@ -11,7 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Templating\Helper;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +37,7 @@ class CmfTest extends TestCase
      */
     private $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->pwc = $this->createMock(AuthorizationCheckerInterface::class);
 

@@ -33,7 +33,7 @@ class PublishWorkflowCheckerTest extends TestCase
 
     private $tokenStorage;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->role = 'IS_FOOBAR';
         $this->authorizationChecker = \Mockery::mock(AuthorizationCheckerInterface::class);
@@ -49,7 +49,7 @@ class PublishWorkflowCheckerTest extends TestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \Mockery::close();
     }

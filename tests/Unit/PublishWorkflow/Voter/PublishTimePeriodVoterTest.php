@@ -31,7 +31,7 @@ class PublishTimePeriodVoterTest extends TestCase
      */
     private $token;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->voter = new PublishTimePeriodVoter();
         $this->token = new AnonymousToken('', '');
