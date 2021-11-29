@@ -12,8 +12,8 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document\Content;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 

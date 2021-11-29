@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Templating\Helper;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\UnitOfWork;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
