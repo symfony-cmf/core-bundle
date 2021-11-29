@@ -282,9 +282,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
     /**
      * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there.
-     *
-     * @param ContainerBuilder $container
-     * @param LoaderInterface  $loader
      */
     public function setupFormTypes(ContainerBuilder $container, LoaderInterface $loader)
     {
@@ -304,8 +301,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      * Load and configure the publish workflow services.
      *
      * @param $config
-     * @param XmlFileLoader    $loader
-     * @param ContainerBuilder $container
      *
      * @throws InvalidConfigurationException
      */
@@ -314,17 +309,15 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         $bundles = $container->getParameter('kernel.bundles');
 
         if (false === $config['enabled']
-            || ('auto' === $config['enabled'] && !array_key_exists('SecurityBundle', $bundles))
+            || ('auto' === $config['enabled'] && !\array_key_exists('SecurityBundle', $bundles))
         ) {
             $loader->load('no-publish-workflow.xml');
 
             return;
         }
 
-        if (!array_key_exists('SecurityBundle', $bundles)) {
-            throw new InvalidConfigurationException(
-                'The "publish_workflow" may not be enabled unless "symfony/security-bundle" is available.'
-            );
+        if (!\array_key_exists('SecurityBundle', $bundles)) {
+            throw new InvalidConfigurationException('The "publish_workflow" may not be enabled unless "symfony/security-bundle" is available.');
         }
 
         $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
@@ -341,9 +334,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             return;
         }
         if (!class_exists(DynamicRouter::class)) {
-            throw new InvalidConfigurationException(
-                'The "publish_workflow.request_listener" may not be enabled unless "symfony-cmf/routing-bundle" is available.'
-            );
+            throw new InvalidConfigurationException('The "publish_workflow.request_listener" may not be enabled unless "symfony-cmf/routing-bundle" is available.');
         }
     }
 

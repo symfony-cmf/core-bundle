@@ -12,8 +12,8 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 
 /**
@@ -48,8 +48,6 @@ class TranslatableMetadataListener implements EventSubscriber
 
     /**
      * Handle the load class metadata event: set the translation strategy.
-     *
-     * @param LoadClassMetadataEventArgs $eventArgs
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
