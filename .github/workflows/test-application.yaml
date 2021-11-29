@@ -25,10 +25,6 @@ jobs:
                     - php-version: '7.4'
                       dependencies: 'lowest'
                     - php-version: '7.4'
-                      symfony-version: 3.3.*
-                    - php-version: '7.4'
-                      symfony-version: 3.4.*
-                    - php-version: '7.4'
                       symfony-version: 4.4.*
                       test-installation: true
 

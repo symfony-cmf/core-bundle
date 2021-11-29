@@ -13,8 +13,10 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class CmfExtension extends \Twig_Extension
+class CmfExtension extends AbstractExtension
 {
     protected $helper;
 
@@ -31,27 +33,27 @@ class CmfExtension extends \Twig_Extension
     public function getFunctions()
     {
         $functions = [
-            new \Twig_SimpleFunction('cmf_is_published', [$this, 'isPublished']),
-            new \Twig_SimpleFunction('cmf_child', [$this, 'getChild']),
-            new \Twig_SimpleFunction('cmf_children', [$this, 'getChildren']),
-            new \Twig_SimpleFunction('cmf_prev', [$this, 'getPrev']),
-            new \Twig_SimpleFunction('cmf_next', [$this, 'getNext']),
-            new \Twig_SimpleFunction('cmf_find', [$this, 'find']),
-            new \Twig_SimpleFunction('cmf_find_translation', [$this, 'findTranslation']),
-            new \Twig_SimpleFunction('cmf_find_many', [$this, 'findMany']),
-            new \Twig_SimpleFunction('cmf_descendants', [$this, 'getDescendants']),
-            new \Twig_SimpleFunction('cmf_nodename', [$this, 'getNodeName']),
-            new \Twig_SimpleFunction('cmf_parent_path', [$this, 'getParentPath']),
-            new \Twig_SimpleFunction('cmf_path', [$this, 'getPath']),
-            new \Twig_SimpleFunction('cmf_document_locales', [$this, 'getLocalesFor']),
+            new TwigFunction('cmf_is_published', [$this, 'isPublished']),
+            new TwigFunction('cmf_child', [$this, 'getChild']),
+            new TwigFunction('cmf_children', [$this, 'getChildren']),
+            new TwigFunction('cmf_prev', [$this, 'getPrev']),
+            new TwigFunction('cmf_next', [$this, 'getNext']),
+            new TwigFunction('cmf_find', [$this, 'find']),
+            new TwigFunction('cmf_find_translation', [$this, 'findTranslation']),
+            new TwigFunction('cmf_find_many', [$this, 'findMany']),
+            new TwigFunction('cmf_descendants', [$this, 'getDescendants']),
+            new TwigFunction('cmf_nodename', [$this, 'getNodeName']),
+            new TwigFunction('cmf_parent_path', [$this, 'getParentPath']),
+            new TwigFunction('cmf_path', [$this, 'getPath']),
+            new TwigFunction('cmf_document_locales', [$this, 'getLocalesFor']),
         ];
 
         if (interface_exists(RouteReferrersReadInterface::class)) {
             $functions = array_merge($functions, [
-                new \Twig_SimpleFunction('cmf_is_linkable', [$this, 'isLinkable']),
-                new \Twig_SimpleFunction('cmf_prev_linkable', [$this, 'getPrevLinkable']),
-                new \Twig_SimpleFunction('cmf_next_linkable', [$this, 'getNextLinkable']),
-                new \Twig_SimpleFunction('cmf_linkable_children', [$this, 'getLinkableChildren']),
+                new TwigFunction('cmf_is_linkable', [$this, 'isLinkable']),
+                new TwigFunction('cmf_prev_linkable', [$this, 'getPrevLinkable']),
+                new TwigFunction('cmf_next_linkable', [$this, 'getNextLinkable']),
+                new TwigFunction('cmf_linkable_children', [$this, 'getLinkableChildren']),
             ]);
         }
 
