@@ -31,7 +31,7 @@ For the install guide and reference, see:
 
 See also:
 
-* [All Symfony CMF documentation](https://github.com/symfony-cmf/symfony-cmf-docs/tree/master/bundles/core) - Symfony CMF Routing reference
+* [Symfony CMF routing documentation](https://github.com/symfony-cmf/symfony-cmf-docs/tree/master/bundles/core)
 
 ## Support
 
@@ -40,7 +40,7 @@ For general support and questions, please use [StackOverflow](http://stackoverfl
 ## Contributing
 
 Pull requests are welcome. Please see our
-[CONTRIBUTING](https://github.com/symfony-cmf/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://symfony.com/doc/current/CMFRoutingBundle/contributing/index.html)
 guide.
 
 Unit and/or functional tests exist for this package.
