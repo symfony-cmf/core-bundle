@@ -12,8 +12,8 @@
 namespace Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 
 /**
  * Metadata listener for when translations are disabled in PHPCR-ODM to remove
@@ -36,8 +36,6 @@ class NonTranslatableMetadataListener implements EventSubscriber
     /**
      * Handle the load class metadata event: remove translated attribute from
      * fields and remove the locale mapping if present.
-     *
-     * @param LoadClassMetadataEventArgs $eventArgs
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {

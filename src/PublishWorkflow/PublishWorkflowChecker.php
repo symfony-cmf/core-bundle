@@ -78,8 +78,6 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
     private $token;
 
     /**
-     * @param TokenStorageInterface          $tokenStorage
-     * @param AuthorizationCheckerInterface  $authorizationChecker
      * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision
      * @param bool|string                    $bypassingRole         A role that is allowed to bypass
      *                                                              the published check if we ask for
@@ -111,11 +109,11 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      */
     public function isGranted($attributes, $object = null)
     {
-        if (!is_array($attributes)) {
+        if (!\is_array($attributes)) {
             $attributes = [$attributes];
         }
 
-        if (1 === count($attributes)
+        if (1 === \count($attributes)
             && self::VIEW_ATTRIBUTE === reset($attributes)
             && null !== $this->tokenStorage->getToken()
             && $this->authorizationChecker->isGranted($this->bypassingRole)

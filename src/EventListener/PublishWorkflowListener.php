@@ -39,8 +39,7 @@ class PublishWorkflowListener implements EventSubscriberInterface
     private $publishWorkflowPermission;
 
     /**
-     * @param PublishWorkflowChecker $publishWorkflowChecker
-     * @param string                 $attribute              the attribute name to check
+     * @param string $attribute the attribute name to check
      */
     public function __construct(PublishWorkflowChecker $publishWorkflowChecker, $attribute = PublishWorkflowChecker::VIEW_ATTRIBUTE)
     {
@@ -66,8 +65,6 @@ class PublishWorkflowListener implements EventSubscriberInterface
 
     /**
      * Handling the request event.
-     *
-     * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
