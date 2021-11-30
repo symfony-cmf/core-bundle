@@ -16,13 +16,12 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PublishWorkflowTest extends BaseTestCase
 {
     /**
-     * @var SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
     private $publishWorkflowChecker;
 
@@ -67,7 +66,7 @@ class PublishWorkflowTest extends BaseTestCase
             ->will($this->returnValue(false))
         ;
         $roles = [
-            new Role('ROLE_CAN_VIEW_NON_PUBLISHED'),
+            'ROLE_CAN_VIEW_NON_PUBLISHED',
         ];
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         $tokenStorage = $this->getContainer()->get('security.token_storage');
@@ -85,7 +84,7 @@ class PublishWorkflowTest extends BaseTestCase
             ->will($this->returnValue(false))
         ;
         $roles = [
-            new Role('OTHER_ROLE'),
+            'OTHER_ROLE',
         ];
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
         $tokenStorage = $this->getContainer()->get('security.token_storage');
