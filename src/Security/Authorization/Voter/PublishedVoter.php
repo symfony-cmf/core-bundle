@@ -11,9 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter;
 
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * This is a security voter registered with the Symfony security system that
@@ -21,7 +23,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class PublishedVoter implements VoterInterface
+class PublishedVoter extends Voter
 {
     /**
      * @var PublishWorkflowChecker
@@ -36,41 +38,28 @@ class PublishedVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
         return PublishWorkflowChecker::VIEW_ATTRIBUTE === $attribute
             || PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE === $attribute
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
+    public function supportsType(string $subjectType): bool
     {
-        return $this->publishWorkflowChecker->supportsClass($class);
+        return \is_subclass_of($subjectType, PublishableReadInterface::class)
+            || \is_subclass_of($subjectType, PublishTimePeriodReadInterface::class);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param object $subject
-     */
-    public function vote(TokenInterface $token, $subject, array $attributes)
+
+    protected function supports(string $attribute, $subject)
     {
-        if (!\is_object($subject) || !$this->supportsClass(\get_class($subject))) {
-            return self::ACCESS_ABSTAIN;
-        }
-        foreach ($attributes as $attribute) {
-            if (!$this->supportsAttribute($attribute)) {
-                return self::ACCESS_ABSTAIN;
-            }
-        }
+        return $this->supportsType(\get_class($subject))
+            && $this->supportsAttribute($attribute);
+    }
 
-        if ($this->publishWorkflowChecker->isGranted($attributes, $subject)) {
-            return self::ACCESS_GRANTED;
-        }
-
-        return self::ACCESS_DENIED;
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    {
+        return $this->publishWorkflowChecker->isGranted($attribute, $subject);
     }
 }
