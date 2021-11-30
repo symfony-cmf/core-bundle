@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter;
 
+use function is_subclass_of;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
@@ -47,10 +48,9 @@ class PublishedVoter extends Voter
 
     public function supportsType(string $subjectType): bool
     {
-        return \is_subclass_of($subjectType, PublishableReadInterface::class)
-            || \is_subclass_of($subjectType, PublishTimePeriodReadInterface::class);
+        return is_subclass_of($subjectType, PublishableReadInterface::class)
+            || is_subclass_of($subjectType, PublishTimePeriodReadInterface::class);
     }
-
 
     protected function supports(string $attribute, $subject)
     {
