@@ -52,13 +52,13 @@ class PublishedVoter extends Voter
             || is_subclass_of($subjectType, PublishTimePeriodReadInterface::class);
     }
 
-    protected function supports(string $attribute, $subject)
+    protected function supports($attribute, $subject)
     {
-        return $this->supportsType(\get_class($subject))
+        return \is_object($subject) && $this->supportsType(\get_class($subject))
             && $this->supportsAttribute($attribute);
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         return $this->publishWorkflowChecker->isGranted($attribute, $subject);
     }
