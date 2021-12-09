@@ -67,16 +67,10 @@ class CmfTest extends TestCase
     {
         $document = new \stdClass();
 
-        $this->uow->expects($this->at(0))
+        $this->uow->expects(self::exactly(2))
             ->method('getDocumentId')
-            ->with($document)
-            ->will($this->throwException(new \Exception()))
-        ;
-
-        $this->uow->expects($this->at(1))
-            ->method('getDocumentId')
-            ->with($document)
-            ->will($this->returnValue('/foo/bar'))
+            ->withConsecutive([$document], [$document])
+            ->willReturnOnConsecutiveCalls($this->throwException(new \Exception()), $this->returnValue('/foo/bar'))
         ;
 
         $this->assertFalse($this->helper->getNodeName($document));

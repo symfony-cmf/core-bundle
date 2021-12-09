@@ -28,6 +28,7 @@
 
     <php>
         <server name="KERNEL_CLASS" value="\Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0&amp;max[direct]=52"/>
     </php>
 
 </phpunit>

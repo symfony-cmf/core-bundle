@@ -30,7 +30,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 
     public function testFormTwigTemplate()
     {
-        $view = $this->getContainer()->get('form.factory')->createNamedBuilder('name')
+        $view = $this->getContainer()->get('test.service_container')->get('form.factory')->createNamedBuilder('name')
             ->add('terms', CheckboxUrlLabelFormType::class, [
                 'label' => '%a% and %b% and %c%',
                 'routes' => [
@@ -51,7 +51,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
      */
     private function getFormRenderer()
     {
-        $twig = $this->getContainer()->get('twig');
+        $twig = $this->getContainer()->get('test.service_container')->get('twig');
 
         // BC for Symfony < 3.2 where this runtime does not exists
         if (!method_exists(AppVariable::class, 'getToken')) {
