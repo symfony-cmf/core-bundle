@@ -17,5 +17,5 @@ $loader->import(__DIR__.'/cmf_routing.yml');
 $loader->import(__DIR__.'/config.yml');
 
 $container->loadFromExtension('framework', [
-    'csrf_protection' => true,
+    'csrf_protection' => false,
 ]);

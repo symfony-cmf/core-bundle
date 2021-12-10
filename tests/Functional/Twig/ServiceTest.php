@@ -19,7 +19,7 @@ class ServiceTest extends BaseTestCase
     public function testContainer()
     {
         /** @var \Twig\Environment $twig */
-        $twig = $this->getContainer()->get('twig');
+        $twig = $this->getContainer()->get('test.service_container')->get('twig');
         $ext = $twig->getExtension(method_exists($twig, 'getRuntime') ? CmfExtension::class : 'cmf');
         $this->assertNotEmpty($ext);
     }

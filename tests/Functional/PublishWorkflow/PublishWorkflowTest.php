@@ -15,6 +15,7 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -25,9 +26,15 @@ class PublishWorkflowTest extends BaseTestCase
      */
     private $publishWorkflowChecker;
 
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
     public function setUp(): void
     {
         $this->publishWorkflowChecker = $this->getContainer()->get('cmf_core.publish_workflow.checker');
+        $this->tokenStorage = $this->getContainer()->get('test.service_container')->get('security.token_storage');
     }
 
     public function testPublishable()
@@ -69,8 +76,7 @@ class PublishWorkflowTest extends BaseTestCase
             'ROLE_CAN_VIEW_NON_PUBLISHED',
         ];
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
-        $tokenStorage = $this->getContainer()->get('security.token_storage');
-        $tokenStorage->setToken($token);
+        $this->tokenStorage->setToken($token);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
         $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
@@ -87,8 +93,7 @@ class PublishWorkflowTest extends BaseTestCase
             'OTHER_ROLE',
         ];
         $token = new UsernamePasswordToken('test', 'pass', 'testprovider', $roles);
-        $tokenStorage = $this->getContainer()->get('security.token_storage');
-        $tokenStorage->setToken($token);
+        $this->tokenStorage->setToken($token);
 
         $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $doc));
         $this->assertFalse($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $doc));
