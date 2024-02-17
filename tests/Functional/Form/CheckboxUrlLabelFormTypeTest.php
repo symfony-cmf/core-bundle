@@ -101,5 +101,6 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
                 substr($dom->saveHTML(), 6, -8)
             ));
         }
+        $this->addToAssertionCount(1);
     }
 }

@@ -51,7 +51,7 @@ class TranslatableMetadataListener implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
-        /** @var $meta ClassMetadata */
+        /** @var ClassMetadata $meta */
         $meta = $eventArgs->getClassMetadata();
 
         if ($meta->getReflectionClass()->implementsInterface(TranslatableInterface::class)) {

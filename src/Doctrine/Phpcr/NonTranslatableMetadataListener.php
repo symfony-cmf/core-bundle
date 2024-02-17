@@ -39,7 +39,7 @@ class NonTranslatableMetadataListener implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
-        /** @var $meta ClassMetadata */
+        /** @var ClassMetadata $meta */
         $meta = $eventArgs->getClassMetadata();
 
         if (!$meta->translator) {

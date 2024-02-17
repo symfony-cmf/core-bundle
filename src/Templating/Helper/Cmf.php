@@ -175,7 +175,7 @@ class Cmf
             try {
                 $document = $this->getDm()->find(null, $document);
             } catch (MissingTranslationException $e) {
-                return;
+                return null;
             }
         }
 
@@ -188,7 +188,7 @@ class Cmf
             || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
             || (null !== $class && !($document instanceof $class))
         ) {
-            return;
+            return null;
         }
 
         return $document;
@@ -234,7 +234,7 @@ class Cmf
      * If you need the bypass role, you will have a firewall configured and can
      * simply use {{ is_granted('VIEW', document) }}
      *
-     * @param object $document
+     * @param ?object $document
      */
     public function isPublished($document): bool
     {
@@ -426,11 +426,11 @@ class Cmf
      */
     private function getChildrenPaths(string $path, array &$children, ?int $depth)
     {
-        if (null !== $depth && $depth < 1) {
-            return;
+        if (null !== $depth) {
+            if ($depth-- < 1) {
+                return;
+            }
         }
-
-        --$depth;
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
         $names = (array) $node->getNodeNames();
@@ -485,7 +485,7 @@ class Cmf
             }
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -515,7 +515,7 @@ class Cmf
             }
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -536,7 +536,7 @@ class Cmf
         }
 
         if (null === $path || '/' === $path) {
-            return;
+            return null;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
@@ -550,7 +550,7 @@ class Cmf
         }
 
         if ($path === $anchor) {
-            return;
+            return null;
         }
 
         $parent = $node->getParent();
@@ -592,7 +592,7 @@ class Cmf
             }
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -613,7 +613,7 @@ class Cmf
         }
 
         if (null === $path || '/' === $path) {
-            return;
+            return null;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
@@ -653,7 +653,7 @@ class Cmf
         while ('/' !== $parentPath) {
             $parent = $parent->getParent();
             if (false === strpos($parent->getPath(), $anchor)) {
-                return;
+                return null;
             }
 
             $childNames = $parent->getNodeNames()->getArrayCopy();
@@ -666,7 +666,7 @@ class Cmf
             }
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -686,7 +686,7 @@ class Cmf
         }
 
         if (null === $path || '/' === $path) {
-            return;
+            return null;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
@@ -770,6 +770,8 @@ class Cmf
 
             $current = $candidate;
         }
+
+        return null;
     }
 
     /**
@@ -800,5 +802,7 @@ class Cmf
 
             $current = $candidate;
         }
+
+        return null;
     }
 }
