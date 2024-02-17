@@ -73,8 +73,6 @@ class CmfHelper extends Helper
     /**
      * Finds a document by path.
      *
-     * @param $path
-     *
      * @return object|null
      */
     public function find($path)

@@ -300,8 +300,6 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     /**
      * Load and configure the publish workflow services.
      *
-     * @param $config
-     *
      * @throws InvalidConfigurationException
      */
     private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
