@@ -11,11 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter;
 
-use function is_subclass_of;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use function is_subclass_of;
 
 /**
  * Workflow voter for the PublishableReadInterface.

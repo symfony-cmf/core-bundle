@@ -11,12 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Security\Authorization\Voter;
 
-use function is_subclass_of;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use function is_subclass_of;
 
 /**
  * This is a security voter registered with the Symfony security system that

@@ -50,9 +50,6 @@ class Cmf
      */
     private $publishWorkflowChecker;
 
-    /**
-     * @param AuthorizationCheckerInterface $publishWorkflowChecker
-     */
     public function __construct(AuthorizationCheckerInterface $publishWorkflowChecker = null)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
@@ -132,8 +129,6 @@ class Cmf
 
     /**
      * Finds a document by path.
-     *
-     * @param $path
      *
      * @return object|null
      */
@@ -473,8 +468,6 @@ class Cmf
 
     /**
      * Check children for a possible following document.
-     *
-     * @param bool $ignoreRole
      *
      * @return object|null
      */
