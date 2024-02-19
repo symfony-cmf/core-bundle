@@ -23,23 +23,15 @@ use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
  */
 class TranslatableMetadataListener implements EventSubscriber
 {
-    /**
-     * @var string
-     */
-    private $translationStrategy;
-
-    /**
-     * @param string $translationStrategy
-     */
-    public function __construct($translationStrategy)
-    {
-        $this->translationStrategy = $translationStrategy;
+    public function __construct(
+        private string $translationStrategy
+    ) {
     }
 
     /**
      * @return array
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'loadClassMetadata',
@@ -49,7 +41,7 @@ class TranslatableMetadataListener implements EventSubscriber
     /**
      * Handle the load class metadata event: set the translation strategy.
      */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         /** @var ClassMetadata $meta */
         $meta = $eventArgs->getClassMetadata();

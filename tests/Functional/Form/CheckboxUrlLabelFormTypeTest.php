@@ -11,10 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\DataFixture\LoadRouteData;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
@@ -28,9 +24,9 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
         $this->db('PHPCR')->loadFixtures([LoadRouteData::class]);
     }
 
-    public function testFormTwigTemplate()
+    public function testFormTwigTemplate(): void
     {
-        $view = $this->getContainer()->get('test.service_container')->get('form.factory')->createNamedBuilder('name')
+        $view = self::getContainer()->get('test.service_container')->get('form.factory')->createNamedBuilder('name')
             ->add('terms', CheckboxUrlLabelFormType::class, [
                 'label' => '%a% and %b% and %c%',
                 'routes' => [
@@ -46,33 +42,16 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
         $this->assertMatchesXpath($template, '//label[@class="checkbox"][contains(.,"/a and /b and http://localhost/hello/world")]');
     }
 
-    /**
-     * @return FormRenderer|TwigRenderer
-     */
-    private function getFormRenderer()
+    private function getFormRenderer(): FormRenderer
     {
-        $twig = $this->getContainer()->get('test.service_container')->get('twig');
-
-        // BC for Symfony < 3.2 where this runtime does not exists
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $twig25 = !method_exists($twig, 'getRuntime');
-
-            $renderer = $twig->getExtension($twig25 ? 'form' : FormExtension::class)->renderer;
-            $renderer->setEnvironment($twig);
-
-            return $renderer;
-        }
-        // BC for Symfony < 3.4 where runtime should be TwigRenderer
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $runtime = $twig->getRuntime(TwigRenderer::class);
-
-            return $runtime;
-        }
-
-        return $twig->getRuntime(FormRenderer::class);
+        return self::getContainer()
+            ->get('test.service_container')
+            ->get('twig')
+            ->getRuntime(FormRenderer::class)
+        ;
     }
 
-    protected function assertMatchesXpath($html, $expression, $count = 1)
+    protected function assertMatchesXpath($html, $expression, $count = 1): void
     {
         $dom = new \DOMDocument('UTF-8');
 

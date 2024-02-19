@@ -40,7 +40,7 @@ class PublishWorkflowTest extends BaseTestCase
     public function testPublishable()
     {
         $doc = $this->createMock(PublishableReadInterface::class);
-        $doc->expects($this->any())
+        $doc
             ->method('isPublishable')
             ->will($this->returnValue(true))
         ;
@@ -52,11 +52,11 @@ class PublishWorkflowTest extends BaseTestCase
     public function testPublishPeriod()
     {
         $doc = $this->createMock(PublishModel::class);
-        $doc->expects($this->any())
+        $doc
             ->method('isPublishable')
             ->will($this->returnValue(true))
         ;
-        $doc->expects($this->any())
+        $doc
             ->method('getPublishEndDate')
             ->will($this->returnValue(new \DateTime('01/01/1980')))
         ;
@@ -68,7 +68,7 @@ class PublishWorkflowTest extends BaseTestCase
     public function testIgnoreRoleHas()
     {
         $doc = $this->createMock(PublishModel::class);
-        $doc->expects($this->any())
+        $doc
             ->method('isPublishable')
             ->will($this->returnValue(false))
         ;
@@ -85,7 +85,7 @@ class PublishWorkflowTest extends BaseTestCase
     public function testIgnoreRoleNotHas()
     {
         $doc = $this->createMock(PublishModel::class);
-        $doc->expects($this->any())
+        $doc
             ->method('isPublishable')
             ->will($this->returnValue(false))
         ;

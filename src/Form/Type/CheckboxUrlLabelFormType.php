@@ -34,60 +34,46 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class CheckboxUrlLabelFormType extends AbstractType
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    public function __construct(RouterInterface $router)
-    {
-        $this->router = $router;
+    public function __construct(
+        private RouterInterface $router
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $routes = $options['routes'];
         $paths = [];
         foreach ($routes as $key => $route) {
-            $name = isset($route['name']) ? $route['name'] : '';
-            $parameters = isset($route['parameters']) ? $route['parameters'] : [];
-            $referenceType = isset($route['referenceType']) ? $route['referenceType'] : UrlGeneratorInterface::ABSOLUTE_PATH;
+            $name = $route['name'] ?? '';
+            $parameters = $route['parameters'] ?? [];
+            $referenceType = $route['referenceType'] ?? UrlGeneratorInterface::ABSOLUTE_PATH;
             $paths[$key] = $this->router->generate($name, $parameters, $referenceType);
         }
         $view->vars['paths'] = $paths;
         parent::buildView($view, $form, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'routes' => [],
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'cmf_core_checkbox_url_label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): ?string
     {
         return CheckboxType::class;
     }

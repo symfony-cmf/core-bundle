@@ -24,35 +24,23 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * Layout helper for the CMF.
  *
- * This class is used by the symfony templating integration and by the twig extension.
+ * This class is used by the twig extension.
  *
  * @author Wouter J <waldio.webdesign@gmail.com>
  */
 class Cmf
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrineRegistry;
-
-    /**
-     * @var string
-     */
-    private $doctrineManagerName;
+    private ManagerRegistry $doctrineRegistry;
+    private ?string $doctrineManagerName;
 
     /**
      * @var DocumentManager
      */
-    protected $dm;
+    protected DocumentManager $dm;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $publishWorkflowChecker;
-
-    public function __construct(AuthorizationCheckerInterface $publishWorkflowChecker = null)
-    {
-        $this->publishWorkflowChecker = $publishWorkflowChecker;
+    public function __construct(
+        private ?AuthorizationCheckerInterface $publishWorkflowChecker = null
+    ) {
     }
 
     /**
@@ -60,9 +48,9 @@ class Cmf
      *
      * @param string|null $managerName Manager name if not the default
      */
-    public function setDoctrineRegistry(ManagerRegistry $registry, ?string $managerName = null)
+    public function setDoctrineRegistry(ManagerRegistry $registry, ?string $managerName = null): void
     {
-        if ($this->doctrineRegistry) {
+        if (isset($this->doctrineRegistry)) {
             throw new \LogicException('Do not call this setter repeatedly.');
         }
 
@@ -72,8 +60,8 @@ class Cmf
 
     protected function getDm(): DocumentManager
     {
-        if (!$this->dm) {
-            if (!$this->doctrineRegistry) {
+        if (!isset($this->dm)) {
+            if (!isset($this->doctrineRegistry)) {
                 throw new \RuntimeException('Doctrine is not available.');
             }
 
@@ -88,7 +76,7 @@ class Cmf
      *
      * @return bool|string node name or false if the document is not in the unit of work
      */
-    public function getNodeName($document)
+    public function getNodeName($document): bool|string
     {
         $path = $this->getPath($document);
         if (false === $path) {
@@ -103,7 +91,7 @@ class Cmf
      *
      * @return bool|string node name or false if the document is not in the unit of work
      */
-    public function getParentPath($document)
+    public function getParentPath($document): bool|string
     {
         $path = $this->getPath($document);
         if (!$path) {
@@ -118,11 +106,11 @@ class Cmf
      *
      * @return bool|string path or false if the document is not in the unit of work
      */
-    public function getPath($document)
+    public function getPath($document): bool|string
     {
         try {
             return $this->getDm()->getUnitOfWork()->getDocumentId($document);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
     }
@@ -132,7 +120,7 @@ class Cmf
      *
      * @return object|null
      */
-    public function find($path)
+    public function find($path): ?object
     {
         return $this->getDm()->find(null, $path);
     }
@@ -146,7 +134,7 @@ class Cmf
      *
      * @return object|null
      */
-    public function findTranslation($pathOrDocument, string $locale, bool $fallback = true)
+    public function findTranslation($pathOrDocument, string $locale, bool $fallback = true): ?object
     {
         if (\is_object($pathOrDocument)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($pathOrDocument);
@@ -169,7 +157,7 @@ class Cmf
      *
      * @return object|null
      */
-    private function getDocument($document, ?bool $ignoreRole = false, ?string $class = null)
+    private function getDocument($document, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         if (\is_string($document)) {
             try {
@@ -184,9 +172,9 @@ class Cmf
         }
 
         if (empty($document)
+            || (null !== $class && !($document instanceof $class))
             || (false === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $document))
             || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
-            || (null !== $class && !($document instanceof $class))
         ) {
             return null;
         }
@@ -203,7 +191,7 @@ class Cmf
      *
      * @return array
      */
-    public function findMany(array $paths = [], $limit = false, $offset = false, ?bool $ignoreRole = false, ?string $class = null)
+    public function findMany(array $paths = [], $limit = false, $offset = false, ?bool $ignoreRole = false, ?string $class = null): array
     {
         if ($offset) {
             $paths = \array_slice($paths, $offset);
@@ -282,7 +270,7 @@ class Cmf
      *                          or false if the parent is not managed by
      *                          the configured document manager
      */
-    public function getChild($parent, string $name)
+    public function getChild($parent, string $name): object|bool|null
     {
         if (\is_object($parent)) {
             try {
@@ -310,7 +298,7 @@ class Cmf
      *
      * @return array
      */
-    public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
+    public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null): array
     {
         if (empty($parent)) {
             return [];
@@ -323,7 +311,7 @@ class Cmf
         $children = (array) $node->getNodeNames();
         foreach ($children as $key => $child) {
             // filter before fetching data already to save some traffic
-            if (0 === strpos($child, 'phpcr_locale:')) {
+            if (str_starts_with($child, 'phpcr_locale:')) {
                 unset($children[$key]);
 
                 continue;
@@ -331,7 +319,7 @@ class Cmf
             $children[$key] = "$parent/$child";
         }
         if ($offset) {
-            $key = array_search($offset, $children);
+            $key = array_search($offset, $children, true);
             if (false === $key) {
                 return [];
             }
@@ -341,7 +329,7 @@ class Cmf
         $result = [];
         foreach ($children as $name => $child) {
             // if we requested all children above, we did not filter yet
-            if (0 === strpos($name, 'phpcr_locale:')) {
+            if (str_starts_with($name, 'phpcr_locale:')) {
                 continue;
             }
 
@@ -404,11 +392,9 @@ class Cmf
      * This does not work for route names or other things some routers may
      * support, only for objects.
      *
-     * @param object $document
-     *
      * @return bool true if it is possible to generate a link to $document
      */
-    public function isLinkable($document): bool
+    public function isLinkable(mixed $document): bool
     {
         return
             $document instanceof Route
@@ -424,7 +410,7 @@ class Cmf
      * @param string[] $children
      * @param ?int     $depth
      */
-    private function getChildrenPaths(string $path, array &$children, ?int $depth)
+    private function getChildrenPaths(string $path, array &$children, ?int $depth): void
     {
         if (null !== $depth) {
             if ($depth-- < 1) {
@@ -471,10 +457,10 @@ class Cmf
      *
      * @return object|null
      */
-    private function checkChildren(array $childNames, string $path, ?bool $ignoreRole = false, ?string $class = null)
+    private function checkChildren(array $childNames, string $path, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         foreach ($childNames as $name) {
-            if (0 === strpos($name, 'phpcr_locale:')) {
+            if (str_starts_with($name, 'phpcr_locale:')) {
                 continue;
             }
 
@@ -493,7 +479,7 @@ class Cmf
      *
      * @return object|null
      */
-    private function traversePrevDepth(?int $depth, int $anchorDepth, array $childNames, string $path, bool $ignoreRole, ?string $class)
+    private function traversePrevDepth(?int $depth, int $anchorDepth, array $childNames, string $path, bool $ignoreRole, ?string $class): object|string|null
     {
         foreach ($childNames as $childName) {
             $childPath = "$path/$childName";
@@ -529,7 +515,7 @@ class Cmf
      *
      * @return object|null
      */
-    private function searchDepthPrev($path, $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null)
+    private function searchDepthPrev($path, $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         if (\is_object($path)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
@@ -559,7 +545,7 @@ class Cmf
         $childNames = $parent->getNodeNames()->getArrayCopy();
         if (!empty($childNames)) {
             $childNames = array_reverse($childNames);
-            $key = array_search($node->getName(), $childNames);
+            $key = array_search($node->getName(), $childNames, true);
             $childNames = \array_slice($childNames, $key + 1);
 
             if (!empty($childNames)) {
@@ -578,10 +564,10 @@ class Cmf
         }
 
         // check parents
-        if (0 === strpos($parentPath, $anchor)) {
+        if (str_starts_with($parentPath, $anchor)) {
             $parent = $parent->getParent();
             $childNames = $parent->getNodeNames()->getArrayCopy();
-            $key = array_search(PathHelper::getNodeName($parentPath), $childNames);
+            $key = array_search(PathHelper::getNodeName($parentPath), $childNames, true);
             $childNames = \array_slice($childNames, 0, $key + 1);
             $childNames = array_reverse($childNames);
             if (!empty($childNames)) {
@@ -603,10 +589,8 @@ class Cmf
      * @param int|null      $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool          $ignoreRole if to ignore the role
      * @param string|null   $class      the class to filter by
-     *
-     * @return object|null
      */
-    private function searchDepthNext($path, $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null)
+    private function searchDepthNext($path, $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         if (\is_object($path)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
@@ -622,7 +606,7 @@ class Cmf
             $anchor = $this->getDm()->getUnitOfWork()->getDocumentId($anchor);
         }
 
-        if (0 !== strpos($path, $anchor)) {
+        if (!str_starts_with($path, $anchor)) {
             throw new \RuntimeException("The anchor path '$anchor' is not a parent of the current path '$path'.");
         }
 
@@ -639,9 +623,9 @@ class Cmf
         $parentPath = PathHelper::getParentPath($path);
 
         // take the first eligible sibling
-        if (0 === strpos($parentPath, $anchor)) {
+        if (str_starts_with($parentPath, $anchor)) {
             $childNames = $parent->getNodeNames()->getArrayCopy();
-            $key = array_search($node->getName(), $childNames);
+            $key = array_search($node->getName(), $childNames, true);
             $childNames = \array_slice($childNames, $key + 1);
             $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
             if ($result) {
@@ -652,12 +636,12 @@ class Cmf
         // take the first eligible parent, traverse up
         while ('/' !== $parentPath) {
             $parent = $parent->getParent();
-            if (false === strpos($parent->getPath(), $anchor)) {
+            if (!str_contains($parent->getPath(), $anchor)) {
                 return null;
             }
 
             $childNames = $parent->getNodeNames()->getArrayCopy();
-            $key = array_search(PathHelper::getNodeName($parentPath), $childNames);
+            $key = array_search(PathHelper::getNodeName($parentPath), $childNames, true);
             $childNames = \array_slice($childNames, $key + 1);
             $parentPath = $parent->getPath();
             $result = $this->checkChildren($childNames, $parentPath, $ignoreRole, $class);
@@ -679,7 +663,7 @@ class Cmf
      *
      * @return object|null
      */
-    private function search($path, ?bool $reverse = false, ?bool $ignoreRole = false, ?string $class = null)
+    private function search($path, ?bool $reverse = false, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         if (\is_object($path)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
@@ -696,7 +680,7 @@ class Cmf
             $childNames = array_reverse($childNames);
         }
 
-        $key = array_search($node->getName(), $childNames);
+        $key = array_search($node->getName(), $childNames, true);
         $childNames = \array_slice($childNames, $key + 1);
 
         return $this->checkChildren($childNames, $parentNode->getPath(), $ignoreRole, $class);
@@ -713,7 +697,7 @@ class Cmf
      *
      * @return object|null
      */
-    public function getPrev($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null)
+    public function getPrev($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         if ($anchor) {
             return $this->searchDepthPrev($current, $anchor, $depth, $ignoreRole, $class);
@@ -733,7 +717,7 @@ class Cmf
      *
      * @return object|null
      */
-    public function getNext($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null)
+    public function getNext($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
     {
         if ($anchor) {
             return $this->searchDepthNext($current, $anchor, $depth, $ignoreRole, $class);
@@ -761,7 +745,7 @@ class Cmf
      *
      * @see isLinkable
      */
-    public function getPrevLinkable($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false)
+    public function getPrevLinkable($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false): object|string|null
     {
         while ($candidate = $this->getPrev($current, $anchor, $depth, $ignoreRole)) {
             if ($this->isLinkable($candidate)) {
@@ -793,7 +777,7 @@ class Cmf
      *
      * @see isLinkable
      */
-    public function getNextLinkable($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false)
+    public function getNextLinkable($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false): object|string|null
     {
         while ($candidate = $this->getNext($current, $anchor, $depth, $ignoreRole)) {
             if ($this->isLinkable($candidate)) {

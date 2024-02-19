@@ -11,9 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -39,7 +38,7 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      * This attribute means the user is allowed to see this content, either
      * because it is published or because he is granted the bypassingRole.
      */
-    const VIEW_ATTRIBUTE = 'VIEW';
+    public const VIEW_ATTRIBUTE = 'VIEW';
 
     /**
      * This attribute means the content is available for viewing by anonymous
@@ -49,53 +48,24 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
      * The bypass role is handled by the workflow checker, the individual
      * voters should treat VIEW and VIEW_ANONYMOUS the same.
      */
-    const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
+    public const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
 
     /**
-     * @var bool|string Role allowed to bypass the published check if the
-     *                  VIEW attribute is used, or false to never bypass
+     * @param bool|string $bypassingRole A role that is allowed to bypass the published check if we
+     *                                   ask for the VIEW permission. Ignored on VIEW_ANONYMOUS.
      */
-    private $bypassingRole;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
-
-    /**
-     * @var AccessDecisionManagerInterface
-     */
-    private $accessDecisionManager;
-
-    /**
-     * @var TokenInterface
-     */
-    private $token;
-
-    /**
-     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision
-     * @param bool|string                    $bypassingRole         A role that is allowed to bypass
-     *                                                              the published check if we ask for
-     *                                                              the VIEW permission. Ignored on
-     *                                                              VIEW_ANONYMOUS
-     */
-    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
+    public function __construct(
+        private TokenStorageInterface $tokenStorage,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private AccessDecisionManagerInterface $accessDecisionManager,
+        private string|bool $bypassingRole = false)
     {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->accessDecisionManager = $accessDecisionManager;
-        $this->bypassingRole = $bypassingRole;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isGranted($attribute, $object = null)
+    public function isGranted(mixed $attribute, mixed $subject = null): bool
     {
         if (self::VIEW_ATTRIBUTE === $attribute
             && null !== $this->tokenStorage->getToken()
@@ -108,9 +78,9 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
 
         // not logged in, just check with a dummy token
         if (null === $token) {
-            $token = new AnonymousToken('', '');
+            $token = new NullToken();
         }
 
-        return $this->accessDecisionManager->decide($token, [$attribute], $object);
+        return $this->accessDecisionManager->decide($token, [$attribute], $subject);
     }
 }

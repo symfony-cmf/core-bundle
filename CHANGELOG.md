@@ -5,6 +5,7 @@ Changelog
 -----
 
 * Support Symfony 6
+* Use DateTimeInterface instead of DateTime.
 * Adjust to doctrine and twig BC breaks. If you extended classes or customized services, check for old `Twig_*` classes or `Doctrine\Common\Persistence` namespace.
 * Drop support for old Symfony versions
 * Drop support for old PHP versions

@@ -29,7 +29,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      *
      * {@inheritdoc}
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         // process the configuration of CmfCoreExtension
         $configs = $container->getExtensionConfig($this->getAlias());
@@ -243,10 +243,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
@@ -283,7 +280,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
     /**
      * Setup the cmf_core_checkbox_url_label form type if the routing bundle is there.
      */
-    public function setupFormTypes(ContainerBuilder $container, LoaderInterface $loader)
+    public function setupFormTypes(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['CmfRoutingBundle'])) {
@@ -302,7 +299,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      *
      * @throws InvalidConfigurationException
      */
-    private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
+    private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -336,18 +333,12 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getXsdValidationBasePath()
+    public function getXsdValidationBasePath(): bool|string
     {
         return __DIR__.'/../Resources/config/schema';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'http://cmf.symfony.com/schema/dic/core';
     }

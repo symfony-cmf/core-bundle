@@ -15,6 +15,7 @@ use Symfony\Cmf\Bundle\CoreBundle\Form\Type\CheckboxUrlLabelFormType;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 
 class Router implements RouterInterface
@@ -23,19 +24,20 @@ class Router implements RouterInterface
     {
     }
 
-    public function getContext()
+    public function getContext(): RequestContext
     {
     }
 
-    public function match($pathinfo)
+    public function match($pathinfo): array
+    {
+        return [];
+    }
+
+    public function getRouteCollection(): RouteCollection
     {
     }
 
-    public function getRouteCollection()
-    {
-    }
-
-    public function generate($name, $parameters = [], $absolute = false)
+    public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH): string
     {
         return '/test/'.$name;
     }
@@ -43,7 +45,7 @@ class Router implements RouterInterface
 
 class CheckboxUrlLabelFormTypeTest extends TypeTestCase
 {
-    public function testContentPathsAreSet()
+    public function testContentPathsAreSet(): void
     {
         $checkboxUrlLabelForm = $this->factory->create(CheckboxUrlLabelFormType::class, null, [
             'routes' => ['a' => ['name' => 'a'], 'b' => ['name' => 'b']],
@@ -54,7 +56,7 @@ class CheckboxUrlLabelFormTypeTest extends TypeTestCase
         $this->assertSame('/test/b', $view->vars['paths']['b']);
     }
 
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return array_merge(parent::getExtensions(), [
             new PreloadedExtension([

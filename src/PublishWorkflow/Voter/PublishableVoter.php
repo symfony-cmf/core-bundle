@@ -24,7 +24,7 @@ use function is_subclass_of;
  */
 class PublishableVoter extends Voter
 {
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $subject instanceof PublishableReadInterface
             && $this->supportsAttribute($attribute);
@@ -35,7 +35,7 @@ class PublishableVoter extends Voter
      *
      * @param PublishableReadInterface $subject
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         return $subject->isPublishable();
     }
