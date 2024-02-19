@@ -28,9 +28,6 @@ class TranslatableMetadataListener implements EventSubscriber
     ) {
     }
 
-    /**
-     * @return array
-     */
     public function getSubscribedEvents(): array
     {
         return [
