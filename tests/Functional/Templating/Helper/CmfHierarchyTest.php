@@ -37,7 +37,7 @@ class CmfHierarchyTest extends BaseTestCase
         $dbManager->loadFixtures([LoadHierarchyRouteData::class]);
 
         $this->publishWorkflowChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        $this->publishWorkflowChecker->expects($this->any())
+        $this->publishWorkflowChecker
             ->method('isGranted')
             ->will($this->returnValue(true))
         ;

@@ -20,20 +20,9 @@ use Twig\Loader\ArrayLoader;
 
 class CmfExtensionTest extends TestCase
 {
-    /**
-     * @var Cmf&MockObject
-     */
-    private $cmfHelper;
-
-    /**
-     * @var Environment
-     */
-    private $env;
-
-    /**
-     * @var CmfExtension
-     */
-    private $cmfExtension;
+    private Cmf&MockObject $cmfHelper;
+    private Environment $env;
+    private CmfExtension $cmfExtension;
 
     public function setUp(): void
     {
@@ -47,7 +36,7 @@ class CmfExtensionTest extends TestCase
     /**
      * @dataProvider getFunctionsData
      */
-    public function testFunctions($methodName, array $methodArguments, $helperMethod = null, array $helperArguments = [])
+    public function testFunctions($methodName, array $methodArguments, $helperMethod = null, array $helperArguments = []): void
     {
         if (null === $helperMethod) {
             $helperMethod = $methodName;
@@ -62,7 +51,7 @@ class CmfExtensionTest extends TestCase
         \call_user_func_array([$this->cmfExtension, $methodName], $methodArguments);
     }
 
-    public function getFunctionsData()
+    public function getFunctionsData(): array
     {
         return [
             ['isPublished', ['document1']],

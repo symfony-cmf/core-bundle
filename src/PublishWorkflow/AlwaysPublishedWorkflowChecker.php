@@ -28,7 +28,7 @@ class AlwaysPublishedWorkflowChecker implements AuthorizationCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted(mixed $attribute, mixed $subject = null): bool
     {
         return true;
     }

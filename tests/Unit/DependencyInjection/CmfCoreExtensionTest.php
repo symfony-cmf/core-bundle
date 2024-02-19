@@ -23,17 +23,14 @@ use Symfony\Component\Routing\Router;
 
 class CmfCoreExtensionTest extends TestCase
 {
-    /**
-     * @var CmfCoreExtension
-     */
-    protected $extension;
+    private CmfCoreExtension $extension;
 
     protected function setUp(): void
     {
         $this->extension = new CmfCoreExtension();
     }
 
-    public function testPublishWorkflowAutoSupported()
+    public function testPublishWorkflowAutoSupported(): void
     {
         $container = $this->createContainer(['kernel.bundles' => ['SecurityBundle' => SecurityBundle::class]]);
 
@@ -46,7 +43,7 @@ class CmfCoreExtensionTest extends TestCase
         $this->assertFalse($container->hasDefinition('cmf_core.publish_workflow.request_listener'));
     }
 
-    public function testPublishWorkflowListenerEnabled()
+    public function testPublishWorkflowListenerEnabled(): void
     {
         $container = $this->createContainer(['kernel.bundles' => [
             'SecurityBundle' => SecurityBundle::class,
@@ -62,7 +59,7 @@ class CmfCoreExtensionTest extends TestCase
         $this->assertTrue($container->hasDefinition('cmf_core.publish_workflow.request_listener'));
     }
 
-    public function testPublishWorkflowAutoNotSupported()
+    public function testPublishWorkflowAutoNotSupported(): void
     {
         $container = $this->createContainer(['kernel.bundles' => []]);
 
@@ -76,7 +73,7 @@ class CmfCoreExtensionTest extends TestCase
         $this->assertFalse($container->hasDefinition('cmf_core.publish_workflow.request_listener'));
     }
 
-    public function testPublishWorkflowFalse()
+    public function testPublishWorkflowFalse(): void
     {
         $container = $this->createContainer(['kernel.bundles' => [
             'SecurityBundle' => SecurityBundle::class,
@@ -93,7 +90,7 @@ class CmfCoreExtensionTest extends TestCase
         $this->assertFalse($container->hasDefinition('cmf_core.publish_workflow.request_listener'));
     }
 
-    public function testPublishWorkflowTrueSupported()
+    public function testPublishWorkflowTrueSupported(): void
     {
         $container = $this->createContainer(['kernel.bundles' => [
             'SecurityBundle' => SecurityBundle::class,
@@ -109,7 +106,7 @@ class CmfCoreExtensionTest extends TestCase
         $this->assertTrue($container->hasDefinition('cmf_core.publish_workflow.request_listener'));
     }
 
-    public function testPublishWorkflowTrueNotSupported()
+    public function testPublishWorkflowTrueNotSupported(): void
     {
         $container = $this->createContainer(['kernel.bundles' => [
             'CmfRoutingBundle' => CmfRoutingBundle::class,
@@ -119,7 +116,7 @@ class CmfCoreExtensionTest extends TestCase
         $this->extension->load([['publish_workflow' => true]], $container);
     }
 
-    private function createContainer(array $parameters)
+    private function createContainer(array $parameters): ContainerBuilder
     {
         $parameters = array_merge(['kernel.debug' => false], $parameters);
         $container = new ContainerBuilder(

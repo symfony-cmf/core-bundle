@@ -24,8 +24,6 @@ interface PublishableReadInterface
      *
      * A false value indicates that the content is not published. True means it
      * is allowed to show this content.
-     *
-     * @return bool
      */
-    public function isPublishable();
+    public function isPublishable(): bool;
 }

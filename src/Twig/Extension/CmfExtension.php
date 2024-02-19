@@ -18,19 +18,15 @@ use Twig\TwigFunction;
 
 class CmfExtension extends AbstractExtension
 {
-    protected $helper;
-
-    public function __construct(Cmf $helper)
-    {
-        $this->helper = $helper;
+    public function __construct(
+        private Cmf $cmf
+    ) {
     }
 
     /**
      * Get list of available functions.
-     *
-     * @return array
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         $functions = [
             new TwigFunction('cmf_is_published', [$this, 'isPublished']),
@@ -60,92 +56,92 @@ class CmfExtension extends AbstractExtension
         return $functions;
     }
 
-    public function isPublished($document)
+    public function isPublished($document): bool
     {
-        return $this->helper->isPublished($document);
+        return $this->cmf->isPublished($document);
     }
 
-    public function isLinkable($document)
+    public function isLinkable($document): bool
     {
-        return $this->helper->isLinkable($document);
+        return $this->cmf->isLinkable($document);
     }
 
-    public function getChild($parent, $name)
+    public function getChild($parent, $name): object|bool|null
     {
-        return $this->helper->getChild($parent, $name);
+        return $this->cmf->getChild($parent, $name);
     }
 
-    public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
+    public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null): array
     {
-        return $this->helper->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
+        return $this->cmf->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
     }
 
-    public function getPrev($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
+    public function getPrev($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null): object|string|null
     {
-        return $this->helper->getPrev($current, $anchor, $depth, $ignoreRole, $class);
+        return $this->cmf->getPrev($current, $anchor, $depth, $ignoreRole, $class);
     }
 
-    public function getNext($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null)
+    public function getNext($current, $anchor = null, $depth = null, $ignoreRole = false, $class = null): object|string|null
     {
-        return $this->helper->getNext($current, $anchor, $depth, $ignoreRole, $class);
+        return $this->cmf->getNext($current, $anchor, $depth, $ignoreRole, $class);
     }
 
     public function find($path)
     {
-        return $this->helper->find($path);
+        return $this->cmf->find($path);
     }
 
     public function findTranslation($path, $locale, $fallback = true)
     {
-        return $this->helper->findTranslation($path, $locale, $fallback);
+        return $this->cmf->findTranslation($path, $locale, $fallback);
     }
 
-    public function findMany($paths = [], $limit = false, $offset = false, $ignoreRole = false, $class = null)
+    public function findMany($paths = [], $limit = false, $offset = false, $ignoreRole = false, $class = null): array
     {
-        return $this->helper->findMany($paths, $limit, $offset, $ignoreRole, $class);
+        return $this->cmf->findMany($paths, $limit, $offset, $ignoreRole, $class);
     }
 
-    public function getDescendants($parent, $depth = null)
+    public function getDescendants($parent, $depth = null): array
     {
-        return $this->helper->getDescendants($parent, $depth);
+        return $this->cmf->getDescendants($parent, $depth);
     }
 
-    public function getNodeName($document)
+    public function getNodeName($document): bool|string
     {
-        return $this->helper->getNodeName($document);
+        return $this->cmf->getNodeName($document);
     }
 
-    public function getParentPath($document)
+    public function getParentPath($document): bool|string
     {
-        return $this->helper->getParentPath($document);
+        return $this->cmf->getParentPath($document);
     }
 
-    public function getPath($document)
+    public function getPath($document): bool|string
     {
-        return $this->helper->getPath($document);
+        return $this->cmf->getPath($document);
     }
 
-    public function getLocalesFor($document, $includeFallbacks = false)
+    public function getLocalesFor($document, $includeFallbacks = false): array
     {
-        return $this->helper->getLocalesFor($document, $includeFallbacks);
+        return $this->cmf->getLocalesFor($document, $includeFallbacks);
     }
 
-    public function getPrevLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
+    public function getPrevLinkable($current, $anchor = null, $depth = null, $ignoreRole = false): object|string|null
     {
-        return $this->helper->getPrevLinkable($current, $anchor, $depth, $ignoreRole);
+        return $this->cmf->getPrevLinkable($current, $anchor, $depth, $ignoreRole);
     }
 
-    public function getNextLinkable($current, $anchor = null, $depth = null, $ignoreRole = false)
+    public function getNextLinkable($current, $anchor = null, $depth = null, $ignoreRole = false): object|string|null
     {
-        return $this->helper->getNextLinkable($current, $anchor, $depth, $ignoreRole);
+        return $this->cmf->getNextLinkable($current, $anchor, $depth, $ignoreRole);
     }
 
-    public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null)
+    public function getLinkableChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null): array
     {
-        return $this->helper->getLinkableChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
+        return $this->cmf->getLinkableChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'cmf';
     }

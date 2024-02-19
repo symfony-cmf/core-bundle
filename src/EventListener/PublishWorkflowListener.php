@@ -26,39 +26,21 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class PublishWorkflowListener implements EventSubscriberInterface
 {
-    /**
-     * @var PublishWorkflowChecker
-     */
-    protected $publishWorkflowChecker;
-
-    /**
-     * The attribute to check with the workflow checker, typically VIEW or VIEW_ANONYMOUS.
-     *
-     * @var string
-     */
-    private $publishWorkflowPermission;
-
-    /**
-     * @param string $attribute the attribute name to check
-     */
-    public function __construct(PublishWorkflowChecker $publishWorkflowChecker, $attribute = PublishWorkflowChecker::VIEW_ATTRIBUTE)
+    public function __construct(
+        private PublishWorkflowChecker $publishWorkflowChecker,
+        /**
+         * The attribute to check with the workflow checker, typically VIEW or VIEW_ANONYMOUS.
+         */
+        private string $publishWorkflowPermission = PublishWorkflowChecker::VIEW_ATTRIBUTE)
     {
-        $this->publishWorkflowChecker = $publishWorkflowChecker;
-        $this->publishWorkflowPermission = $attribute;
     }
 
-    /**
-     * @return string
-     */
-    public function getPublishWorkflowPermission()
+    public function getPublishWorkflowPermission(): string
     {
         return $this->publishWorkflowPermission;
     }
 
-    /**
-     * @param string $attribute specify what permission to check, typically VIEW or VIEW_ANONYMOUS
-     */
-    public function setPublishWorkflowPermission($attribute)
+    public function setPublishWorkflowPermission(string $attribute): void
     {
         $this->publishWorkflowPermission = $attribute;
     }
@@ -66,7 +48,7 @@ class PublishWorkflowListener implements EventSubscriberInterface
     /**
      * Handling the request event.
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -83,10 +65,8 @@ class PublishWorkflowListener implements EventSubscriberInterface
 
     /**
      * We are only interested in request events.
-     *
-     * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [['onKernelRequest', 1]],

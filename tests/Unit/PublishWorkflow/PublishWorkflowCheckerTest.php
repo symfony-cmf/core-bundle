@@ -11,35 +11,36 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class PublishWorkflowCheckerTest extends TestCase
 {
-    private $publishWorkflowChecker;
+    private PublishWorkflowChecker $publishWorkflowChecker;
 
-    private $role;
+    private string $role;
 
-    private $document;
+    private PublishableReadInterface&MockObject $document;
 
-    private $accessDecisionManager;
+    private AccessDecisionManagerInterface&MockObject $accessDecisionManager;
 
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface&MockObject $authorizationChecker;
 
-    private $tokenStorage;
+    private TokenStorageInterface&MockObject $tokenStorage;
 
     public function setUp(): void
     {
         $this->role = 'IS_FOOBAR';
-        $this->authorizationChecker = \Mockery::mock(AuthorizationCheckerInterface::class);
-        $this->tokenStorage = \Mockery::mock(TokenStorageInterface::class);
-        $this->document = \Mockery::mock(PublishableReadInterface::class);
-        $this->accessDecisionManager = \Mockery::mock(AccessDecisionManagerInterface::class);
+        $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
+        $this->document = $this->createMock(PublishableReadInterface::class);
+        $this->accessDecisionManager = $this->createMock(AccessDecisionManagerInterface::class);
 
         $this->publishWorkflowChecker = new PublishWorkflowChecker(
             $this->tokenStorage,
@@ -54,58 +55,58 @@ class PublishWorkflowCheckerTest extends TestCase
         \Mockery::close();
     }
 
-    public function testIsGranted()
+    public function testIsGranted(): void
     {
-        $token = new AnonymousToken('', '');
-        $this->tokenStorage->shouldReceive('getToken')->andReturn($token);
+        $token = $this->createMock(TokenInterface::class);
+        $this->tokenStorage->method('getToken')->willReturn($token);
 
-        $this->authorizationChecker->shouldNotReceive('isGranted');
+        $this->authorizationChecker->expects($this->never())->method('isGranted');
 
         $this->accessDecisionManager
-            ->shouldReceive('decide')->once()
+            ->expects($this->once())
+            ->method('decide')
             ->with($token, [PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE], $this->document)
-            ->andReturn(true);
+            ->willReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $this->document));
     }
 
-    public function testNotHasBypassRole()
+    public function testNotHasBypassRole(): void
     {
-        $token = new AnonymousToken('', '');
-        $this->tokenStorage->shouldReceive('getToken')->andReturn($token);
+        $token = $this->createMock(TokenInterface::class);
+        $this->tokenStorage->method('getToken')->willReturn($token);
 
-        $this->authorizationChecker->shouldReceive('isGranted')->once()->with($this->role)->andReturn(false);
+        $this->authorizationChecker->expects($this->once())->method('isGranted')->with($this->role)->willReturn(false);
 
-        $this->accessDecisionManager
-            ->shouldReceive('decide')->once()
+        $this->accessDecisionManager->expects($this->once())
+            ->method('decide')
             ->with($token, [PublishWorkflowChecker::VIEW_ATTRIBUTE], $this->document)
-            ->andReturn(true);
+            ->willReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));
     }
 
-    public function testHasBypassRole()
+    public function testHasBypassRole(): void
     {
-        $token = new AnonymousToken('', '');
-        $this->tokenStorage->shouldReceive('getToken')->andReturn($token);
+        $token = $this->createMock(TokenInterface::class);
+        $this->tokenStorage->method('getToken')->willReturn($token);
 
-        $this->authorizationChecker->shouldReceive('isGranted')->once()->with($this->role)->andReturn(true);
+        $this->authorizationChecker->expects($this->once())->method('isGranted')->with($this->role)->willReturn(true);
 
-        $this->accessDecisionManager->shouldNotReceive('decide');
+        $this->accessDecisionManager->expects($this->never())->method('decide');
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));
     }
 
-    public function testNoFirewall()
+    public function testNoFirewall(): void
     {
-        $this->tokenStorage->shouldReceive('getToken')->andReturnNull();
+        $this->tokenStorage->method('getToken')->willReturn(null);
 
-        $this->authorizationChecker->shouldNotReceive('isGranted');
+        $this->authorizationChecker->expects($this->never())->method('isGranted');
 
-        $this->accessDecisionManager
-            ->shouldReceive('decide')->once()
-            ->with(\Mockery::type(AnonymousToken::class), [PublishWorkflowChecker::VIEW_ATTRIBUTE], $this->document)
-            ->andReturn(true);
+        $this->accessDecisionManager->expects($this->once())
+            ->method('decide')
+            ->willReturn(true);
 
         $this->assertTrue($this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->document));
     }

@@ -24,27 +24,24 @@ use function is_subclass_of;
  */
 class PublishTimePeriodVoter extends Voter
 {
-    /**
-     * @var \DateTime
-     */
-    protected $currentTime;
+    private \DateTimeInterface $currentTime;
 
     public function __construct()
     {
         // we create the timestamp on instantiation to avoid glitches due to
         // the time passing during the request
-        $this->currentTime = new \DateTime();
+        $this->currentTime = new \DateTimeImmutable();
     }
 
     /**
      * Overwrite the current time.
      */
-    public function setCurrentTime(\DateTime $currentTime)
+    public function setCurrentTime(\DateTimeInterface $currentTime): void
     {
         $this->currentTime = $currentTime;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         return $subject instanceof PublishTimePeriodReadInterface
             && $this->supportsAttribute($attribute);
@@ -55,7 +52,7 @@ class PublishTimePeriodVoter extends Voter
      *
      * @param PublishTimePeriodReadInterface $subject
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $startDate = $subject->getPublishStartDate();
         $endDate = $subject->getPublishEndDate();

@@ -18,8 +18,6 @@ interface PublishableInterface extends PublishableReadInterface
 {
     /**
      * Set the boolean flag whether this content is publishable or not.
-     *
-     * @param bool $publishable
      */
-    public function setPublishable($publishable);
+    public function setPublishable(bool $publishable): void;
 }
