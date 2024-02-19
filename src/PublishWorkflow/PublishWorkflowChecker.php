@@ -62,9 +62,6 @@ class PublishWorkflowChecker implements AuthorizationCheckerInterface
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isGranted(mixed $attribute, mixed $subject = null): bool
     {
         if (self::VIEW_ATTRIBUTE === $attribute
