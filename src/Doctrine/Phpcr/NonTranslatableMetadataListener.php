@@ -23,9 +23,6 @@ use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
  */
 class NonTranslatableMetadataListener implements EventSubscriber
 {
-    /**
-     * @return array
-     */
     public function getSubscribedEvents(): array
     {
         return [

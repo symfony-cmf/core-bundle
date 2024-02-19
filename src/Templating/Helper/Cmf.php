@@ -33,9 +33,6 @@ class Cmf
     private ManagerRegistry $doctrineRegistry;
     private ?string $doctrineManagerName;
 
-    /**
-     * @var DocumentManager
-     */
     protected DocumentManager $dm;
 
     public function __construct(
@@ -117,8 +114,6 @@ class Cmf
 
     /**
      * Finds a document by path.
-     *
-     * @return object|null
      */
     public function find($path): ?object
     {
@@ -131,8 +126,6 @@ class Cmf
      * @param string|object $pathOrDocument the identifier of the class (path or document object)
      * @param string        $locale         the language to try to load
      * @param bool          $fallback       set to true if the language fallback mechanism should be used
-     *
-     * @return object|null
      */
     public function findTranslation($pathOrDocument, string $locale, bool $fallback = true): ?object
     {
@@ -188,8 +181,6 @@ class Cmf
      * @param string|bool $offset     string node name to which to skip to or false
      * @param bool|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
      * @param string|null $class      class name to filter on
-     *
-     * @return array
      */
     public function findMany(array $paths = [], $limit = false, $offset = false, ?bool $ignoreRole = false, ?string $class = null): array
     {
@@ -295,8 +286,6 @@ class Cmf
      *                                  null if publish workflow should be
      *                                  ignored (defaults to false)
      * @param string|null   $class      class name to filter on (optional)
-     *
-     * @return array
      */
     public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null): array
     {
