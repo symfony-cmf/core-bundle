@@ -11,26 +11,26 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document;
 
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCRODM;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
-/**
- * @PHPCRODM\Document(referenceable=true)
- */
+#[PHPCRODM\Document(referenceable: true)]
 class Content implements RouteReferrersReadInterface
 {
-    /** @PHPCRODM\Id */
-    public $id;
+    #[PHPCRODM\Id]
+    public string $id;
 
-    /** @PHPCRODM\Referrers(referringDocument="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route", referencedBy="content") */
-    public $routes;
+    #[PHPCRODM\Referrers(referencedBy: 'content', referringDocument: Route::class)]
+    public array|Collection $routes;
 
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getRoutes()
+    public function getRoutes(): iterable
     {
         return $this->routes;
     }

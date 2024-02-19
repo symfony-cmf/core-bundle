@@ -1,4 +1,13 @@
 # for cmf routing bundle
 framework:
-  property_access: ~
-  annotations: ~
+    property_access: ~
+    http_method_override: false
+    handle_all_throwables: true
+    php_errors:
+        log: true
+    session:
+        handler_id: null
+        cookie_secure: auto
+        cookie_samesite: lax
+    validation:
+        email_validation_mode: html5

@@ -26,7 +26,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 
     public function testFormTwigTemplate(): void
     {
-        $view = self::getContainer()->get('test.service_container')->get('form.factory')->createNamedBuilder('name')
+        $view = self::getContainer()->get('form_factory_public')->createNamedBuilder('name')
             ->add('terms', CheckboxUrlLabelFormType::class, [
                 'label' => '%a% and %b% and %c%',
                 'routes' => [

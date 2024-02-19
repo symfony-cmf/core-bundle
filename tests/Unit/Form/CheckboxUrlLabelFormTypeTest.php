@@ -20,7 +20,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class Router implements RouterInterface
 {
-    public function setContext(RequestContext $context)
+    public function setContext(RequestContext $context): void
     {
     }
 

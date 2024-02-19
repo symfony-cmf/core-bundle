@@ -16,14 +16,14 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends TestKernel
 {
-    public function configure()
+    public function configure(): void
     {
         $this->requireBundleSets(['default', 'phpcr_odm']);
 
         $this->registerConfiguredBundles();
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__.'/config/config.php');
     }
