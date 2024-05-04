@@ -16,7 +16,7 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class ServiceTest extends BaseTestCase
 {
-    public function testContainer()
+    public function testContainer(): void
     {
         /** @var \Twig\Environment $twig */
         $twig = $this->getContainer()->get('test.service_container')->get('twig');
