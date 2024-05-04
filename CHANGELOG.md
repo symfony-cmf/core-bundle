@@ -4,6 +4,8 @@ Changelog
 3.0.0 (unreleased)
 -----
 
+* Support Symfony 6
+* Use DateTimeInterface instead of DateTime.
 * Adjust to doctrine and twig BC breaks. If you extended classes or customized services, check for old `Twig_*` classes or `Doctrine\Common\Persistence` namespace.
 * Drop support for old Symfony versions
 * Drop support for old PHP versions
@@ -41,7 +43,7 @@ Released 2.0.0
 2.0.0-RC1
 ---------
 
- * **2017-01-17**: [BC BREAK] Removed DoctrineOrmMappingsPass - all active Doctrine versions contain the mapping pass. Use `Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass` instead. 
+ * **2017-01-17**: [BC BREAK] Removed DoctrineOrmMappingsPass - all active Doctrine versions contain the mapping pass. Use `Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass` instead.
  * **2017-01-13**: [BC BREAK] Removed the `Slugifier` classes and the
    dependency on `symfony-cmf/slugifier-api`.
  * **2016-12-03**: [BC BREAK] Moved sonata admin related classes and

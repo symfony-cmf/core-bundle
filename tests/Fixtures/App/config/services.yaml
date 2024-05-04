@@ -1,0 +1,4 @@
+services:
+  form_factory_public:
+    public: true
+    alias: form.factory

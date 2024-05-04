@@ -24,18 +24,14 @@ interface PublishTimePeriodReadInterface
      *
      * A NULL value is interpreted as a date in the past, meaning the content
      * is publishable unless publish end date is set and in the past.
-     *
-     * @return \DateTime|null
      */
-    public function getPublishStartDate();
+    public function getPublishStartDate(): ?\DateTimeInterface;
 
     /**
      * Return the date at which the content should stop being published.
      *
      * A NULL value is interpreted as saying that the document will
      * never end being publishable.
-     *
-     * @return \DateTime|null
      */
-    public function getPublishEndDate();
+    public function getPublishEndDate(): ?\DateTimeInterface;
 }

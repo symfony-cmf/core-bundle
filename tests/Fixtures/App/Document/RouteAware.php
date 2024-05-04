@@ -11,23 +11,21 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Document;
 
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCRODM;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
-/**
- * @PHPCRODM\Document()
- */
+#[PHPCRODM\Document]
 class RouteAware implements RouteReferrersReadInterface
 {
-    /** @PHPCRODM\Id */
-    public $id;
+    #[PHPCRODM\Id]
+    public string $id;
 
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getRoutes()
+    public function getRoutes(): iterable
     {
         return [1, 2];
     }

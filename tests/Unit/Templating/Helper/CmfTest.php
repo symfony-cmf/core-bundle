@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Templating\Helper;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
@@ -24,18 +25,15 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CmfTest extends TestCase
 {
-    private $pwc;
+    private AuthorizationCheckerInterface&MockObject $pwc;
 
-    private $managerRegistry;
+    private ManagerRegistry&MockObject $managerRegistry;
 
-    private $manager;
+    private DocumentManager&MockObject $manager;
 
-    private $uow;
+    private UnitOfWork&MockObject $uow;
 
-    /**
-     * @var Cmf
-     */
-    private $helper;
+    private Cmf $helper;
 
     public function setUp(): void
     {
@@ -45,25 +43,25 @@ class CmfTest extends TestCase
 
         $this->manager = $this->createMock(DocumentManager::class);
 
-        $this->managerRegistry->expects($this->any())
+        $this->managerRegistry
             ->method('getManager')
             ->with('foo')
-            ->will($this->returnValue($this->manager))
+            ->willReturn($this->manager)
         ;
 
         $this->uow = $this->createMock(UnitOfWork::class);
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('getUnitOfWork')
             ->with()
-            ->will($this->returnValue($this->uow))
+            ->willReturn($this->uow)
         ;
 
         $this->helper = new Cmf($this->pwc);
         $this->helper->setDoctrineRegistry($this->managerRegistry, 'foo');
     }
 
-    public function testGetNodeName()
+    public function testGetNodeName(): void
     {
         $document = new \stdClass();
 
@@ -77,37 +75,58 @@ class CmfTest extends TestCase
         $this->assertEquals('bar', $this->helper->getNodeName($document));
     }
 
-    public function testGetParentPath()
+    public function testGetParentPath(): void
     {
         $document = new \stdClass();
-
-        $this->assertFalse($this->helper->getParentPath($document));
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
             ->with($document)
-            ->will($this->returnValue('/foo/bar'))
+            ->willReturn('/foo/bar')
         ;
 
         $this->assertEquals('/foo', $this->helper->getParentPath($document));
     }
 
-    public function testGetPath()
+    public function testGetParentPathNotManaged(): void
     {
         $document = new \stdClass();
-
-        $this->assertNull($this->helper->getPath($document));
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
             ->with($document)
-            ->will($this->returnValue('/foo/bar'))
+            ->willThrowException(new \Exception())
+        ;
+
+        $this->assertFalse($this->helper->getParentPath($document));
+    }
+
+    public function testGetPath(): void
+    {
+        $document = new \stdClass();
+
+        $this->uow->expects($this->once())
+            ->method('getDocumentId')
+            ->with($document)
+            ->willReturn('/foo/bar')
         ;
 
         $this->assertEquals('/foo/bar', $this->helper->getPath($document));
     }
 
-    public function testGetPathInvalid()
+    public function testGetPathNotManaged(): void
+    {
+        $document = new \stdClass();
+
+        $this->uow->expects($this->once())
+            ->method('getDocumentId')
+            ->with($document)
+            ->willThrowException(new \Exception())
+        ;
+        $this->assertFalse($this->helper->getPath($document));
+    }
+
+    public function testGetPathInvalid(): void
     {
         $document = new \stdClass();
 
@@ -119,64 +138,64 @@ class CmfTest extends TestCase
         $this->assertFalse($this->helper->getPath($document));
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $document = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
             ->with(null, '/foo')
-            ->will($this->onConsecutiveCalls(null, $document))
+            ->willReturnOnConsecutiveCalls(null, $document)
         ;
 
         $this->assertNull($this->helper->find('/foo'));
         $this->assertEquals($document, $this->helper->find('/foo'));
     }
 
-    public function testFindTranslation()
+    public function testFindTranslation(): void
     {
         $document = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('findTranslation')
             ->with(null, '/foo', 'en')
-            ->will($this->onConsecutiveCalls(null, $document, 'en'))
+            ->willReturnOnConsecutiveCalls(null, $document, 'en')
         ;
 
         $this->assertNull($this->helper->findTranslation('/foo', 'en'));
         $this->assertEquals($document, $this->helper->findTranslation('/foo', 'en'));
     }
 
-    public function testFindMany()
+    public function testFindMany(): void
     {
         $this->assertEquals([], $this->helper->findMany());
     }
 
-    public function testFindManyFilterClass()
+    public function testFindManyFilterClass(): void
     {
         $documentA = new \stdClass();
         $documentB = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
-            ->will($this->onConsecutiveCalls($documentA, null, $documentA, $documentB))
+            ->willReturnOnConsecutiveCalls($documentA, null, $documentA, $documentB)
         ;
 
         $this->assertEquals([], $this->helper->findMany(['/foo', 'bar'], false, false, null, 'Exception'));
         $this->assertEquals([$documentA, $documentB], $this->helper->findMany(['/foo', 'bar'], false, false, null, 'stdClass'));
     }
 
-    public function testFindManyIgnoreRole()
+    public function testFindManyIgnoreRole(): void
     {
         $documentA = new \stdClass();
         $documentB = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
             ->will($this->onConsecutiveCalls($documentA, $documentB))
         ;
 
-        $this->pwc->expects($this->any())
+        $this->pwc
             ->method('isGranted')
             ->will($this->onConsecutiveCalls(false, true))
         ;
@@ -184,12 +203,12 @@ class CmfTest extends TestCase
         $this->assertEquals([$documentB], $this->helper->findMany(['/foo', '/bar'], false, false, true));
     }
 
-    public function testFindManyIgnoreWorkflow()
+    public function testFindManyIgnoreWorkflow(): void
     {
         $documentA = new \stdClass();
         $documentB = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
             ->will($this->onConsecutiveCalls($documentA, $documentB))
         ;
@@ -201,12 +220,12 @@ class CmfTest extends TestCase
         $this->assertEquals([$documentA, $documentB], $this->helper->findMany(['/foo', '/bar'], false, false, null));
     }
 
-    public function testFindManyLimitOffset()
+    public function testFindManyLimitOffset(): void
     {
         $documentA = new \stdClass();
         $documentB = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
             ->will($this->onConsecutiveCalls($documentA, $documentB, $documentA, $documentB, $documentA, $documentB))
         ;
@@ -216,30 +235,30 @@ class CmfTest extends TestCase
         $this->assertEquals([$documentB], $this->helper->findMany(['/foo', 'bar'], 1, 1, null));
     }
 
-    public function testFindManyNoWorkflow()
+    public function testFindManyNoWorkflow(): void
     {
         $extension = new Cmf(null);
         $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
 
         $documentA = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
             ->with(null, '/foo')
-            ->will($this->returnValue($documentA))
+            ->willReturn($documentA)
         ;
 
         $this->expectException(InvalidConfigurationException::class);
         $extension->findMany(['/foo', '/bar'], false, false);
     }
 
-    public function testIsPublished()
+    public function testIsPublished(): void
     {
         $this->assertFalse($this->helper->isPublished(null));
 
         $document = new \stdClass();
 
-        $this->pwc->expects($this->any())
+        $this->pwc
             ->method('isGranted')
             ->with(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document)
             ->will($this->onConsecutiveCalls(false, true))
@@ -249,7 +268,7 @@ class CmfTest extends TestCase
         $this->assertTrue($this->helper->isPublished($document));
     }
 
-    public function testIsPublishedNoWorkflow()
+    public function testIsPublishedNoWorkflow(): void
     {
         $extension = new Cmf(null);
         $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
@@ -258,7 +277,7 @@ class CmfTest extends TestCase
         $extension->isPublished(new \stdClass());
     }
 
-    public function testIsLinkable()
+    public function testIsLinkable(): void
     {
         $this->assertFalse($this->helper->isLinkable(null));
         $this->assertFalse($this->helper->isLinkable('a'));
@@ -268,7 +287,7 @@ class CmfTest extends TestCase
         $content
             ->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue([]))
+            ->willReturn([])
         ;
         $this->assertFalse($this->helper->isLinkable($content));
 
@@ -277,18 +296,18 @@ class CmfTest extends TestCase
         $content
             ->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue([$route]))
+            ->willReturn([$route])
         ;
         $this->assertTrue($this->helper->isLinkable($content));
     }
 
-    public function testGetLocalesFor()
+    public function testGetLocalesFor(): void
     {
         $this->assertEquals([], $this->helper->getLocalesFor(null));
 
         $document = new \stdClass();
 
-        $this->manager->expects($this->any())
+        $this->manager
             ->method('find')
             ->with(null, '/foo')
             ->will($this->onConsecutiveCalls(null, $document))
@@ -299,18 +318,18 @@ class CmfTest extends TestCase
         $this->manager->expects($this->once())
             ->method('getLocalesFor')
             ->with($document)
-            ->will($this->returnValue(['en', 'de']))
+            ->willReturn(['en', 'de'])
         ;
 
         $this->assertEquals(['en', 'de'], $this->helper->getLocalesFor('/foo'));
     }
 
-    public function testGetLocalesForMissingTranslationException()
+    public function testGetLocalesForMissingTranslationException(): void
     {
         $this->markTestIncomplete('TODO: write test');
     }
 
-    public function testGetChild()
+    public function testGetChild(): void
     {
         $parent = new \stdClass();
 
@@ -321,52 +340,52 @@ class CmfTest extends TestCase
         $this->uow->expects($this->once())
             ->method('getDocumentId')
             ->with($parent)
-            ->will($this->returnValue('/foo'))
+            ->willReturn('/foo')
         ;
 
         $this->manager->expects($this->once())
             ->method('find')
             ->with(null, '/foo/bar')
-            ->will($this->returnValue($child))
+            ->willReturn($child)
         ;
 
         $this->assertEquals($child, $this->helper->getChild($parent, 'bar'));
     }
 
-    public function testGetChildError()
+    public function testGetChildError(): void
     {
         $parent = new \stdClass();
 
         $this->uow->expects($this->once())
             ->method('getDocumentId')
             ->with($parent)
-            ->will($this->throwException(new \Exception('test')))
+            ->willThrowException(new \Exception('test'))
         ;
 
         $this->assertFalse($this->helper->getChild($parent, 'bar'));
     }
 
-    public function testGetChildren()
+    public function testGetChildren(): void
     {
         $this->markTestIncomplete('TODO: write test');
     }
 
-    public function testGetChildrenFilterClass()
+    public function testGetChildrenFilterClass(): void
     {
         $this->markTestIncomplete('TODO: write test');
     }
 
-    public function testGetChildrenIgnoreRole()
+    public function testGetChildrenIgnoreRole(): void
     {
         $this->markTestIncomplete('TODO: write test');
     }
 
-    public function testGetChildrenLimitOffset()
+    public function testGetChildrenLimitOffset(): void
     {
         $this->markTestIncomplete('TODO: write test');
     }
 
-    public function testGetLinkableChildren()
+    public function testGetLinkableChildren(): void
     {
         $this->assertEquals([], $this->helper->getLinkableChildren(null));
 

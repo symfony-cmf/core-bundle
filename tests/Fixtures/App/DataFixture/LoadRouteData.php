@@ -22,7 +22,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
  */
 class LoadRouteData implements FixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $root = $manager->find(null, '/');
 

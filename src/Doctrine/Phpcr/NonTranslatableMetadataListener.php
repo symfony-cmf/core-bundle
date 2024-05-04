@@ -23,10 +23,7 @@ use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
  */
 class NonTranslatableMetadataListener implements EventSubscriber
 {
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'loadClassMetadata',
@@ -37,9 +34,9 @@ class NonTranslatableMetadataListener implements EventSubscriber
      * Handle the load class metadata event: remove translated attribute from
      * fields and remove the locale mapping if present.
      */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
-        /** @var $meta ClassMetadata */
+        /** @var ClassMetadata $meta */
         $meta = $eventArgs->getClassMetadata();
 
         if (!$meta->translator) {

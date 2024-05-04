@@ -26,14 +26,9 @@ use function is_subclass_of;
  */
 class PublishedVoter extends Voter
 {
-    /**
-     * @var PublishWorkflowChecker
-     */
-    private $publishWorkflowChecker;
-
-    public function __construct(PublishWorkflowChecker $publishWorkflowChecker)
-    {
-        $this->publishWorkflowChecker = $publishWorkflowChecker;
+    public function __construct(
+        private PublishWorkflowChecker $publishWorkflowChecker
+    ) {
     }
 
     /**
@@ -52,13 +47,13 @@ class PublishedVoter extends Voter
             || is_subclass_of($subjectType, PublishTimePeriodReadInterface::class);
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return \is_object($subject) && $this->supportsType(\get_class($subject))
             && $this->supportsAttribute($attribute);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         return $this->publishWorkflowChecker->isGranted($attribute, $subject);
     }

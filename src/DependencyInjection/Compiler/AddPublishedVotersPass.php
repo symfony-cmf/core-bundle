@@ -31,7 +31,7 @@ class AddPublishedVotersPass implements CompilerPassInterface
      *
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('cmf_core.publish_workflow.access_decision_manager')) {
             return;

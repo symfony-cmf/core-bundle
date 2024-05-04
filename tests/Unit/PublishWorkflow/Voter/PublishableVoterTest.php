@@ -11,36 +11,27 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\PublishWorkflow\Voter;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter\PublishableVoter;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\CacheableVoterInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use function is_subclass_of;
 
 class PublishableVoterTest extends TestCase
 {
-    /**
-     * @var PublishableVoter
-     */
-    private $voter;
+    private PublishableVoter $voter;
 
-    /**
-     * @var TokenInterface
-     */
-    private $token;
+    private TokenInterface&MockObject $token;
 
     public function setUp(): void
     {
         $this->voter = new PublishableVoter();
-        $this->token = new AnonymousToken('', '');
+        $this->token = $this->createMock(TokenInterface::class);
     }
 
-    public function providePublishWorkflowChecker()
+    public function providePublishWorkflowChecker(): array
     {
         return [
             [
@@ -84,19 +75,19 @@ class PublishableVoterTest extends TestCase
      *
      * use for voters!
      */
-    public function testPublishWorkflowChecker($expected, $isPublishable, $attributes)
+    public function testPublishWorkflowChecker(int $expected, bool $isPublishable, array|string $attributes): void
     {
         $attributes = (array) $attributes;
         $doc = $this->createMock(PublishableReadInterface::class);
-        $doc->expects($this->any())
+        $doc
             ->method('isPublishable')
-            ->will($this->returnValue($isPublishable))
+            ->willReturn($isPublishable)
         ;
 
         $this->assertEquals($expected, $this->voter->vote($this->token, $doc, $attributes));
     }
 
-    public function testUnsupportedClass()
+    public function testUnsupportedClass(): void
     {
         $result = $this->voter->vote(
             $this->token,
@@ -106,35 +97,21 @@ class PublishableVoterTest extends TestCase
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
-    public function testNonClassSubject()
+    public function testNonClassSubject(): void
     {
         $result = $this->voter->vote($this->token, [1, 2, 3], [PublishWorkflowChecker::VIEW_ATTRIBUTE]);
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
-    public function testCachableVoterSupportsAttributes()
+    public function testCachableVoterSupportsAttributes(): void
     {
-        if (!$this->voter instanceof CacheableVoterInterface) {
-            $this->assertFalse(
-                is_subclass_of(Voter::class, CacheableVoterInterface::class),
-                'Voter cache is supported and expected to be implemented'
-            );
-        }
-
         $this->assertTrue($this->voter->supportsAttribute(PublishWorkflowChecker::VIEW_ATTRIBUTE));
         $this->assertTrue($this->voter->supportsAttribute(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE));
         $this->assertFalse($this->voter->supportsAttribute('other'));
     }
 
-    public function testCachableVoterSupportsSubjectType()
+    public function testCachableVoterSupportsSubjectType(): void
     {
-        if (!$this->voter instanceof CacheableVoterInterface) {
-            $this->assertFalse(
-                is_subclass_of(Voter::class, CacheableVoterInterface::class),
-                'Voter cache is supported and expected to be implemented'
-            );
-        }
-
         $doc = $this->createMock(PublishableReadInterface::class);
         $this->assertTrue($this->voter->supportsType(\get_class($doc)));
         $this->assertFalse($this->voter->supportsType(static::class));
