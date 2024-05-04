@@ -18,10 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CmfCoreExtensionTest extends TestCase
 {
-    /**
-     * @var ContainerBuilder
-     */
-    private $container;
+    private ContainerBuilder $container;
 
     protected function setUp(): void
     {
