@@ -15,13 +15,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\Cmf;
 use Symfony\Cmf\Bundle\CoreBundle\Twig\Extension\CmfExtension;
-use Twig\Environment;
-use Twig\Loader\ArrayLoader;
 
 class CmfExtensionTest extends TestCase
 {
     private Cmf&MockObject $cmfHelper;
-    private Environment $env;
     private CmfExtension $cmfExtension;
 
     public function setUp(): void
@@ -29,8 +26,6 @@ class CmfExtensionTest extends TestCase
         $this->cmfHelper = $this->createMock(Cmf::class);
 
         $this->cmfExtension = new CmfExtension($this->cmfHelper);
-        $this->env = new Environment(new ArrayLoader([]));
-        $this->env->addExtension($this->cmfExtension);
     }
 
     /**
@@ -54,7 +49,7 @@ class CmfExtensionTest extends TestCase
     public function getFunctionsData(): array
     {
         return [
-            ['isPublished', ['document1']],
+            ['isPublished', [$this]],
             ['isLinkable', ['document1']],
             ['getChild', ['parent', 'name']],
             ['getChildren', ['parent', true], 'getChildren', ['parent', true, false, null, false, null]],

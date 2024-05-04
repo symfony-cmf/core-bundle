@@ -21,15 +21,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CmfHierarchyTest extends BaseTestCase
 {
-    /**
-     * @var AuthorizationCheckerInterface|MockObject
-     */
-    private $publishWorkflowChecker;
-
-    /**
-     * @var Cmf
-     */
-    private $helper;
+    private MockObject&AuthorizationCheckerInterface $publishWorkflowChecker;
+    private Cmf $helper;
 
     public function setUp(): void
     {
@@ -39,14 +32,14 @@ class CmfHierarchyTest extends BaseTestCase
         $this->publishWorkflowChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->publishWorkflowChecker
             ->method('isGranted')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $this->helper = new Cmf($this->publishWorkflowChecker);
         $this->helper->setDoctrineRegistry($dbManager->getRegistry(), 'default');
     }
 
-    public function testGetDescendants()
+    public function testGetDescendants(): void
     {
         $this->assertEquals([], $this->helper->getDescendants(null));
 
@@ -60,7 +53,7 @@ class CmfHierarchyTest extends BaseTestCase
     /**
      * @dataProvider getPrevData
      */
-    public function testGetPrev($expected, $path, $anchor = null, $depth = null, $class = 'Doctrine\ODM\PHPCR\Document\Generic')
+    public function testGetPrev(?string $expected, ?string $path, ?string $anchor = null, ?int $depth = null, string $class = Generic::class): void
     {
         $prev = $this->helper->getPrev($path, $anchor, $depth);
         if (null === $expected) {
@@ -71,7 +64,7 @@ class CmfHierarchyTest extends BaseTestCase
         }
     }
 
-    public static function getPrevData()
+    public static function getPrevData(): array
     {
         return [
             [null, null],
@@ -99,7 +92,7 @@ class CmfHierarchyTest extends BaseTestCase
     /**
      * @dataProvider getNextData
      */
-    public function testGetNext($expected, $path, $anchor = null, $depth = null, $class = Generic::class)
+    public function testGetNext(?string $expected, ?string $path, ?string $anchor = null, ?int $depth = null, string $class = Generic::class): void
     {
         $next = $this->helper->getNext($path, $anchor, $depth);
         if (null === $expected) {
@@ -110,7 +103,7 @@ class CmfHierarchyTest extends BaseTestCase
         }
     }
 
-    public static function getNextData()
+    public static function getNextData(): array
     {
         return [
             [null, null],
@@ -139,7 +132,7 @@ class CmfHierarchyTest extends BaseTestCase
     /**
      * @dataProvider getPrevLinkableData
      */
-    public function testGetPrevLinkable($expected, $path, $anchor = null, $depth = null)
+    public function testGetPrevLinkable(?string $expected, ?string $path, ?string $anchor = null, ?int $depth = null): void
     {
         $prev = $this->helper->getPrevLinkable($path, $anchor, $depth);
         if (null === $expected) {
@@ -150,7 +143,7 @@ class CmfHierarchyTest extends BaseTestCase
         }
     }
 
-    public static function getPrevLinkableData()
+    public static function getPrevLinkableData(): array
     {
         // TODO: expand test case
         return [
@@ -164,7 +157,7 @@ class CmfHierarchyTest extends BaseTestCase
     /**
      * @dataProvider getNextLinkableData
      */
-    public function testGetNextLinkable($expected, $path, $anchor = null, $depth = null)
+    public function testGetNextLinkable(?string $expected, ?string $path, ?string $anchor = null, ?int $depth = null): void
     {
         $next = $this->helper->getNextLinkable($path, $anchor, $depth);
         if (null === $expected) {
@@ -175,7 +168,7 @@ class CmfHierarchyTest extends BaseTestCase
         }
     }
 
-    public static function getNextLinkableData()
+    public static function getNextLinkableData(): array
     {
         // TODO: expand test case
         return [

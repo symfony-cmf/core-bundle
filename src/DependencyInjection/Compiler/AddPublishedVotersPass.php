@@ -39,7 +39,7 @@ class AddPublishedVotersPass implements CompilerPassInterface
 
         $voters = new \SplPriorityQueue();
         foreach ($container->findTaggedServiceIds('cmf_published_voter') as $id => $attributes) {
-            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
+            $priority = $attributes[0]['priority'] ?? 0;
             $voters->insert(new Reference($id), $priority);
         }
 

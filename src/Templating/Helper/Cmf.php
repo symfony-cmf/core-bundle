@@ -176,13 +176,11 @@ class Cmf
     }
 
     /**
-     * @param array       $paths      list of paths
-     * @param int|bool    $limit      int limit or false
-     * @param string|bool $offset     string node name to which to skip to or false
+     * @param string|false $offset     string node name to which to skip to or false to start from the beginning
      * @param bool|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
      * @param string|null $class      class name to filter on
      */
-    public function findMany(array $paths = [], $limit = false, $offset = false, ?bool $ignoreRole = false, ?string $class = null): array
+    public function findMany(array $paths = [], int|false $limit = false, string|false $offset = false, ?bool $ignoreRole = false, ?string $class = null): array
     {
         if ($offset) {
             $paths = \array_slice($paths, $offset);
@@ -212,16 +210,14 @@ class Cmf
      *
      * If you need the bypass role, you will have a firewall configured and can
      * simply use {{ is_granted('VIEW', document) }}
-     *
-     * @param ?object $document
      */
-    public function isPublished($document): bool
+    public function isPublished(?object $document): bool
     {
         if (null === $this->publishWorkflowChecker) {
             throw new InvalidConfigurationException('You can not check for publication as the publish workflow is not enabled.');
         }
 
-        if (empty($document)) {
+        if (null === $document) {
             return false;
         }
 
@@ -231,17 +227,15 @@ class Cmf
     /**
      * Get the locales of the document.
      *
-     * @param string|object $document Document instance or path
-     *
      * @return string[]
      */
-    public function getLocalesFor($document, bool $includeFallbacks = false): array
+    public function getLocalesFor(object|string|null $document, bool $includeFallbacks = false): array
     {
         if (\is_string($document)) {
             $document = $this->getDm()->find(null, $document);
         }
 
-        if (empty($document)) {
+        if (null === $document) {
             return [];
         }
 
@@ -255,18 +249,18 @@ class Cmf
     }
 
     /**
-     * @param string|object $parent parent path/document
+     * @param object|string $parent parent path/document
      *
      * @return bool|object|null child or null if the child cannot be found
      *                          or false if the parent is not managed by
      *                          the configured document manager
      */
-    public function getChild($parent, string $name): object|bool|null
+    public function getChild(object|string $parent, string $name): object|bool|null
     {
         if (\is_object($parent)) {
             try {
                 $parent = $this->getDm()->getUnitOfWork()->getDocumentId($parent);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return false;
             }
         }
@@ -277,17 +271,16 @@ class Cmf
     /**
      * Gets child documents.
      *
-     * @param string|object $parent     parent id or document
-     * @param int|bool      $limit      maximum number of children to get or
+     * @param int|false     $limit      maximum number of children to get or
      *                                  false for no limit
-     * @param string|bool   $offset     node name to which to skip to or false
+     * @param string|false  $offset     node name to which to skip to or false
      * @param string|null   $filter     child name filter (optional)
      * @param bool|null     $ignoreRole whether the role should be ignored or
      *                                  null if publish workflow should be
      *                                  ignored (defaults to false)
      * @param string|null   $class      class name to filter on (optional)
      */
-    public function getChildren($parent, $limit = false, $offset = false, $filter = null, $ignoreRole = false, $class = null): array
+    public function getChildren(object|string|null $parent, int|false $limit = false, string|false $offset = false, ?string $filter = null, ?bool $ignoreRole = false, ?string $class = null): array
     {
         if (empty($parent)) {
             return [];
@@ -345,9 +338,8 @@ class Cmf
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object $parent     parent path/document
-     * @param int|bool      $limit      limit or false for no limit
-     * @param string|bool   $offset     node name to which to skip to or false
+     * @param int|false     $limit      limit or false for no limit
+     * @param string|false  $offset     node name to which to skip to or false
      *                                  to not skip any elements
      * @param string|null   $filter     child name filter
      * @param bool|null     $ignoreRole whether the role should be ignored or
@@ -357,7 +349,7 @@ class Cmf
      *
      * @see isLinkable
      */
-    public function getLinkableChildren($parent, $limit = false, $offset = false, ?string $filter = null, ?bool $ignoreRole = false, ?string $class = null): array
+    public function getLinkableChildren(object|string|null $parent, int|false $limit = false, string|false $offset = false, ?string $filter = null, ?bool $ignoreRole = false, ?string $class = null): array
     {
         $children = $this->getChildren($parent, $limit, $offset, $filter, $ignoreRole, $class);
         foreach ($children as $key => $value) {
@@ -399,18 +391,19 @@ class Cmf
      * @param string[] $children
      * @param ?int     $depth
      */
-    private function getChildrenPaths(string $path, array &$children, ?int $depth): void
+    private function getChildrenPaths(?string $path, array &$children, ?int $depth): void
     {
-        if (null !== $depth) {
-            if ($depth-- < 1) {
-                return;
-            }
+        if (null === $path) {
+            return;
+        }
+        if ((null !== $depth) && $depth-- < 1) {
+            return;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
         $names = (array) $node->getNodeNames();
         foreach ($names as $name) {
-            if (0 === strpos($name, 'phpcr_locale:')) {
+            if (str_starts_with($name, 'phpcr_locale:')) {
                 continue;
             }
 
@@ -420,15 +413,14 @@ class Cmf
     }
 
     /**
-     * @param string|object $parent parent path/document
      * @param int|null      $depth  null denotes no limit, depth of 1 means
      *                              direct children only
      *
      * @return string[]
      */
-    public function getDescendants($parent, ?int $depth = null): array
+    public function getDescendants(object|string|null $parent, ?int $depth = null): array
     {
-        if (empty($parent)) {
+        if ('' === $parent) {
             return [];
         }
 
@@ -443,10 +435,8 @@ class Cmf
 
     /**
      * Check children for a possible following document.
-     *
-     * @return object|null
      */
-    private function checkChildren(array $childNames, string $path, ?bool $ignoreRole = false, ?string $class = null): object|string|null
+    private function checkChildren(array $childNames, string $path, ?bool $ignoreRole = false, ?string $class = null): object|null
     {
         foreach ($childNames as $name) {
             if (str_starts_with($name, 'phpcr_locale:')) {
@@ -465,10 +455,8 @@ class Cmf
 
     /**
      * Traverse the depth to find previous documents.
-     *
-     * @return object|null
      */
-    private function traversePrevDepth(?int $depth, int $anchorDepth, array $childNames, string $path, bool $ignoreRole, ?string $class): object|string|null
+    private function traversePrevDepth(?int $depth, int $anchorDepth, array $childNames, string $path, bool $ignoreRole, ?string $class): object|null
     {
         foreach ($childNames as $childName) {
             $childPath = "$path/$childName";
@@ -496,15 +484,13 @@ class Cmf
     /**
      * Search for a previous document.
      *
-     * @param string|object $path       document instance or path from which to search
-     * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
+     * @param object|string $path       document instance or path from which to search
+     * @param object|string $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param int|null      $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool          $ignoreRole if to ignore the role
      * @param string|null   $class      the class to filter by
-     *
-     * @return object|null
      */
-    private function searchDepthPrev($path, $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
+    private function searchDepthPrev(object|string $path, object|string $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|null
     {
         if (\is_object($path)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
@@ -520,7 +506,7 @@ class Cmf
             $anchor = $this->getDm()->getUnitOfWork()->getDocumentId($anchor);
         }
 
-        if (0 !== strpos($path, $anchor)) {
+        if (!str_starts_with($path, $anchor)) {
             throw new \RuntimeException("The anchor path '$anchor' is not a parent of the current path '$path'.");
         }
 
@@ -573,13 +559,13 @@ class Cmf
     /**
      * Search for a next document.
      *
-     * @param string|object $path       document instance or path from which to search
-     * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
+     * @param object|string $path       document instance or path from which to search
+     * @param object|string $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param int|null      $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool          $ignoreRole if to ignore the role
      * @param string|null   $class      the class to filter by
      */
-    private function searchDepthNext($path, $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
+    private function searchDepthNext(object|string $path, object|string $anchor, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|null
     {
         if (\is_object($path)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
@@ -649,10 +635,8 @@ class Cmf
      * @param bool          $reverse    if to traverse back
      * @param bool          $ignoreRole if to ignore the role
      * @param string|null   $class      the class to filter by
-     *
-     * @return object|null
      */
-    private function search($path, ?bool $reverse = false, ?bool $ignoreRole = false, ?string $class = null): object|string|null
+    private function search($path, ?bool $reverse = false, ?bool $ignoreRole = false, ?string $class = null): object|null
     {
         if (\is_object($path)) {
             $path = $this->getDm()->getUnitOfWork()->getDocumentId($path);
@@ -678,15 +662,13 @@ class Cmf
     /**
      * Gets the previous document.
      *
-     * @param string|object      $current    document instance or path from which to search
-     * @param string|object|null $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
+     * @param object|string|null $current    document instance or path from which to search
+     * @param object|string|null $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param int|null           $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool               $ignoreRole if to ignore the role
      * @param string|null        $class      the class to filter by
-     *
-     * @return object|null
      */
-    public function getPrev($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
+    public function getPrev(object|string|null $current, object|string|null $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|null
     {
         if ($anchor) {
             return $this->searchDepthPrev($current, $anchor, $depth, $ignoreRole, $class);
@@ -698,15 +680,13 @@ class Cmf
     /**
      * Gets the next document.
      *
-     * @param string|object      $current    document instance or path from which to search
-     * @param string|object|null $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
+     * @param object|string|null $current    document instance or path from which to search
+     * @param object|string|null $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
      * @param int|null           $depth      depth up to which to traverse down the tree when an anchor is provided
      * @param bool               $ignoreRole if to ignore the role
      * @param string|null        $class      the class to filter by
-     *
-     * @return object|null
      */
-    public function getNext($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|string|null
+    public function getNext(object|string|null $current, object|string|null $anchor = null, ?int $depth = null, ?bool $ignoreRole = false, ?string $class = null): object|null
     {
         if ($anchor) {
             return $this->searchDepthNext($current, $anchor, $depth, $ignoreRole, $class);
@@ -720,9 +700,9 @@ class Cmf
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object      $current    Document instance or path from
+     * @param object|string|null $current    Document instance or path from
      *                                       which to search
-     * @param string|object|null $anchor     Document instance or path which
+     * @param object|string|null $anchor     Document instance or path which
      *                                       serves as an anchor from which to
      *                                       flatten the hierarchy
      * @param int|null           $depth      Depth up to which to traverse down
@@ -730,11 +710,9 @@ class Cmf
      *                                       provided
      * @param bool               $ignoreRole Whether to ignore the role,
      *
-     * @return object|null
-     *
      * @see isLinkable
      */
-    public function getPrevLinkable($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false): object|string|null
+    public function getPrevLinkable(object|string|null $current, object|string $anchor = null, ?int $depth = null, ?bool $ignoreRole = false): object|null
     {
         while ($candidate = $this->getPrev($current, $anchor, $depth, $ignoreRole)) {
             if ($this->isLinkable($candidate)) {
@@ -752,9 +730,9 @@ class Cmf
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object      $current    Document instance or path from
+     * @param object|string|null $current    Document instance or path from
      *                                       which to search
-     * @param string|object|null $anchor     Document instance or path which
+     * @param object|string|null $anchor     Document instance or path which
      *                                       serves as an anchor from which to
      *                                       flatten the hierarchy
      * @param int|null           $depth      Depth up to which to traverse down
@@ -766,7 +744,7 @@ class Cmf
      *
      * @see isLinkable
      */
-    public function getNextLinkable($current, $anchor = null, ?int $depth = null, ?bool $ignoreRole = false): object|string|null
+    public function getNextLinkable(object|string|null $current, object|string|null $anchor = null, ?int $depth = null, ?bool $ignoreRole = false): object|null
     {
         while ($candidate = $this->getNext($current, $anchor, $depth, $ignoreRole)) {
             if ($this->isLinkable($candidate)) {
