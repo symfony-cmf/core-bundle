@@ -177,8 +177,8 @@ class Cmf
 
     /**
      * @param string|false $offset     string node name to which to skip to or false to start from the beginning
-     * @param bool|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
-     * @param string|null $class      class name to filter on
+     * @param bool|null    $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * @param string|null  $class      class name to filter on
      */
     public function findMany(array $paths = [], int|false $limit = false, string|false $offset = false, ?bool $ignoreRole = false, ?string $class = null): array
     {
@@ -271,14 +271,14 @@ class Cmf
     /**
      * Gets child documents.
      *
-     * @param int|false     $limit      maximum number of children to get or
-     *                                  false for no limit
-     * @param string|false  $offset     node name to which to skip to or false
-     * @param string|null   $filter     child name filter (optional)
-     * @param bool|null     $ignoreRole whether the role should be ignored or
-     *                                  null if publish workflow should be
-     *                                  ignored (defaults to false)
-     * @param string|null   $class      class name to filter on (optional)
+     * @param int|false    $limit      maximum number of children to get or
+     *                                 false for no limit
+     * @param string|false $offset     node name to which to skip to or false
+     * @param string|null  $filter     child name filter (optional)
+     * @param bool|null    $ignoreRole whether the role should be ignored or
+     *                                 null if publish workflow should be
+     *                                 ignored (defaults to false)
+     * @param string|null  $class      class name to filter on (optional)
      */
     public function getChildren(object|string|null $parent, int|false $limit = false, string|false $offset = false, ?string $filter = null, ?bool $ignoreRole = false, ?string $class = null): array
     {
@@ -338,14 +338,14 @@ class Cmf
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param int|false     $limit      limit or false for no limit
-     * @param string|false  $offset     node name to which to skip to or false
-     *                                  to not skip any elements
-     * @param string|null   $filter     child name filter
-     * @param bool|null     $ignoreRole whether the role should be ignored or
-     *                                  null if publish workflow should be
-     *                                  ignored (defaults to false)
-     * @param string|null   $class      class name to filter on
+     * @param int|false    $limit      limit or false for no limit
+     * @param string|false $offset     node name to which to skip to or false
+     *                                 to not skip any elements
+     * @param string|null  $filter     child name filter
+     * @param bool|null    $ignoreRole whether the role should be ignored or
+     *                                 null if publish workflow should be
+     *                                 ignored (defaults to false)
+     * @param string|null  $class      class name to filter on
      *
      * @see isLinkable
      */
@@ -413,8 +413,8 @@ class Cmf
     }
 
     /**
-     * @param int|null      $depth  null denotes no limit, depth of 1 means
-     *                              direct children only
+     * @param int|null $depth null denotes no limit, depth of 1 means
+     *                        direct children only
      *
      * @return string[]
      */
@@ -739,8 +739,6 @@ class Cmf
      *                                       the tree when an anchor is
      *                                       provided
      * @param bool               $ignoreRole Whether to ignore the role
-     *
-     * @return object|null
      *
      * @see isLinkable
      */
