@@ -37,12 +37,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-version }}
-                  tools: 'composer:v2'
-
-            - name: Install Symfony Flex
-              run: |
-                composer global require --no-progress --no-scripts --no-plugins symfony/flex
-                composer global config --no-plugins allow-plugins.symfony/flex true
+                  tools: 'composer:v2,flex'
 
             - name: Install dependencies with Composer
               uses: ramsey/composer-install@v3
