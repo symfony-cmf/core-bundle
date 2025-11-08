@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.1
+-----
+
+* Fixed configuration bug introduced with Symfony 6 support: Unanimous strategy for publish workflow was misconfigured.
+
 3.0.0
 -----
 
