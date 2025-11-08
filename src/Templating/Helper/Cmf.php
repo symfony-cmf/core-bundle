@@ -389,7 +389,6 @@ class Cmf
      * Gets the paths of children, updating the $children parameter.
      *
      * @param string[] $children
-     * @param ?int     $depth
      */
     private function getChildrenPaths(?string $path, array &$children, ?int $depth): void
     {

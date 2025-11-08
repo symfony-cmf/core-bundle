@@ -60,7 +60,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
             // the top level
             $dom->loadXml('<root>'.$html.'</root>');
         } catch (\Exception $e) {
-            $this->fail(sprintf(
+            $this->fail(\sprintf(
                 "Failed loading HTML:\n\n%s\n\nError: %s",
                 $html,
                 $e->getMessage()
@@ -71,7 +71,7 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
 
         if ($nodeList->length !== $count) {
             $dom->formatOutput = true;
-            $this->fail(sprintf(
+            $this->fail(\sprintf(
                 "Failed asserting that \n\n%s\n\nmatches exactly %s. Matches %s in \n\n%s",
                 $expression,
                 1 === $count ? 'once' : $count.' times',
